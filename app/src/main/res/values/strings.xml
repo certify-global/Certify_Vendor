@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CERTIFY Vendor</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="sign_in_title">Please sign into your account</string>
+    <string name="user_name">Username</string>
+    <string name="pass_word_text">Password</string>
+    <string name="forgot_pass_word_text">Forgot Password?</string>
+    <string name="sign_in_mobile_title">Sign in with Mobile no.</string>
+    <string name="sign_in">Sign in</string>
+
+</resources>
