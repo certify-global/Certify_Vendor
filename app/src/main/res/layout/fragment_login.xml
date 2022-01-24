@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.certify.vendor.model.LoginViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/size_62"
+            android:layout_height="@dimen/size_77"
+            android:src="@drawable/certify_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBaseline_toTopOf="@id/welcome_title">
+        </androidx.appcompat.widget.AppCompatImageView>
+
+        <TextView
+            android:id="@+id/welcome_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_17"
+            android:text="@string/welcome_back"
+            android:textSize="@dimen/text_size_24"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo"
+            app:layout_constraintBottom_toTopOf="@id/sign_in">
+        </TextView>
+
+        <TextView
+            android:id="@+id/sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:text="@string/sign_in_title"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/black"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/welcome_title"
+            app:layout_constraintBottom_toTopOf="@id/user_name">
+        </TextView>
+
+        <EditText
+            android:id="@+id/user_name"
+            android:layout_width="@dimen/size_313"
+            android:layout_height="@dimen/size_60"
+            android:layout_marginTop="@dimen/size_49"
+            android:paddingStart="@dimen/size_10"
+            android:paddingEnd="@dimen/size_10"
+            android:hint="@string/user_name"
+            android:inputType="text"
+            android:background="@drawable/edit_text_border"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sign_in"
+            app:layout_constraintBottom_toTopOf="@id/pass_word">
+
+        </EditText>
+
+        <EditText
+            android:id="@+id/pass_word"
+            android:layout_width="@dimen/size_313"
+            android:layout_height="@dimen/size_60"
+            android:layout_marginTop="@dimen/size_40"
+            android:paddingStart="@dimen/size_10"
+            android:paddingEnd="@dimen/size_10"
+            android:hint="@string/pass_word_text"
+            android:inputType="textPassword"
+            android:background="@drawable/edit_text_border"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_name">
+        </EditText>
+
+        <TextView
+            android:id="@+id/forgot_pass_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_09"
+            android:layout_marginStart="@dimen/size_238"
+            android:layout_marginEnd="@dimen/size_31"
+            android:text="@string/forgot_pass_word_text"
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@color/red"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pass_word">
+        </TextView>
+
+        <TextView
+            android:id="@+id/sign_in_mobile"
+            android:layout_width="@dimen/size_313"
+            android:layout_height="@dimen/size_56"
+            android:layout_marginTop="@dimen/size_70"
+            android:gravity="center"
+            android:text="@string/sign_in_mobile_title"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/black"
+            android:background="@color/light_blue"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/forgot_pass_word">
+        </TextView>
+
+        <TextView
+            android:layout_width="@dimen/size_313"
+            android:layout_height="@dimen/size_56"
+            android:layout_marginTop="@dimen/size_44"
+            android:gravity="center"
+            android:text="@string/sign_in"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/white"
+            android:background="@color/green"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sign_in_mobile">
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

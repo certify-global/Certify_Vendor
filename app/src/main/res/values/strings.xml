@@ -7,5 +7,11 @@
     <string name="forgot_pass_word_text">Forgot Password?</string>
     <string name="sign_in_mobile_title">Sign in with Mobile no.</string>
     <string name="sign_in">Sign in</string>
+    <string name="enter_phone_number_title">Please enter your Phone no. so we can send you Passcode</string>
+    <string name="send_confirmation_msg">We will send you a confirmation code</string>
+    <string name="phone_number_title">Phone No.</string>
+    <string name="request_passcode">Request Passcode</string>
+    <string name="enter_pass_code_title">Enter 4 Digits Passcode</string>
+    <string name="enter_pass_code_desc">Enter the 4 digits code that you received on your phone</string>
 
 </resources>
