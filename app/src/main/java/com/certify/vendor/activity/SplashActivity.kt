@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
         timer.schedule(object : TimerTask() {
             override fun run() {
                 finish()
-                startActivity(Intent(applicationContext, LoginActivity::class.java))
+                startActivity(Intent(applicationContext, MainActivity::class.java))
             }
         }, 5 * 1000)
     }

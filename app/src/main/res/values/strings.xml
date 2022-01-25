@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">CERTIFY Vendor</string>
     <string name="welcome_back">Welcome Back!</string>
+
+    <!-- Login screen -->
     <string name="sign_in_title">Please sign into your account</string>
     <string name="user_name">Username</string>
     <string name="pass_word_text">Password</string>
@@ -13,5 +15,18 @@
     <string name="request_passcode">Request Passcode</string>
     <string name="enter_pass_code_title">Enter 4 Digits Passcode</string>
     <string name="enter_pass_code_desc">Enter the 4 digits code that you received on your phone</string>
+    <string name="user_name_error">Please input user name</string>
+    <string name="pass_word_error">Please input password</string>
+    <string name="login_error">Login Error!</string>
+
+    <!-- Appointment screen -->
+    <string name="welcome_home">Welcome home</string>
+    <string name="upcoming_appointment">Upcoming Appointment</string>
+
+    <!-- Navigation menu -->
+    <string name="home">Home</string>
+    <string name="credentials">Credentials</string>
+    <string name="badge">Badge</string>
+    <string name="settings">Settings</string>
 
 </resources>

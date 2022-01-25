@@ -25,4 +25,9 @@
         android:id="@+id/loginOTPFragment"
         android:name="com.certify.vendor.activity.LoginOTPFragment"
         android:label="LoginOTPFragment" />
+
+    <activity
+        android:id="@+id/appointmentListActivity"
+        android:name="com.certify.vendor.activity.AppointmentListActivity"
+        android:label="AppointmentListActivity" />
 </navigation>

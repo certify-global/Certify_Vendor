@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.certify.vendor.R
-import com.certify.vendor.databinding.FragmentLoginMobileBinding
+//import com.certify.vendor.databinding.FragmentLoginMobileBinding
 
 class LoginMobileFragment : Fragment() {
 
-    private lateinit var loginMobileBinding : FragmentLoginMobileBinding
+    //private lateinit var loginMobileBinding : FragmentLoginMobileBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,

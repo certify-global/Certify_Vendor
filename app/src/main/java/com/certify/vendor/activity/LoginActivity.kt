@@ -16,4 +16,9 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         findNavController(R.id.nav_host_fragment).navigate(R.id.loginMainFragment)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
 }
