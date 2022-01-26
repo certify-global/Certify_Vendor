@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/size_32"
+    android:layout_marginEnd="@dimen/size_32">
+
+    <LinearLayout
+        android:id="@+id/welcome_home_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_48"
+        android:layout_marginTop="@dimen/size_17"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/welcome_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome_home"
+                android:textSize="@dimen/text_size_12"
+                android:textColor="@color/black">
+            </TextView>
+
+            <TextView
+                android:id="@+id/appt_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appt_user_name"
+                android:textSize="@dimen/text_size_24"
+                android:textColor="@color/black">
+            </TextView>
+
+        </LinearLayout>
+
+       <ImageView
+            android:id="@+id/user_eicon"
+            android:layout_width="@dimen/size_32"
+            android:layout_height="@dimen/size_32"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/size_05"
+            android:contentDescription="@string/wave_hand"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/waving_hand">
+        </ImageView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/user_pic"
+            android:layout_width="@dimen/size_48"
+            android:layout_height="@dimen/size_48"
+            android:contentDescription="@string/user_pic"
+            android:layout_gravity="end">
+        </ImageView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/upcoming_appointment_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/size_21"
+        app:layout_constraintTop_toBottomOf="@id/welcome_home_layout"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/upcoming_appointment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upcoming_appointment"
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@color/black">
+        </TextView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/view_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_all"
+            android:textSize="@dimen/text_size_12"
+            android:textColor="@color/light_gray">
+        </TextView>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/appt_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/upcoming_appointment_layout"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,7 @@
         <activity android:name=".activity.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <activity android:name=".activity.AppointmentListActivity"
+        <activity android:name=".activity.AppointmentActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

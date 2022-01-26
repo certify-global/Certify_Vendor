@@ -1,10 +1,12 @@
 package com.certify.vendor.repo
 
 import android.util.Log
+import com.certify.vendor.VendorApplication
 import com.certify.vendor.api.RetrofitInstance
 import com.certify.vendor.api.request.LoginRequest
 import com.certify.vendor.api.response.LoginResponse
 import com.certify.vendor.common.Constants
+import com.certify.vendor.data.LoginDataSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,11 +19,14 @@ class LoginRepository {
 
         RetrofitInstance.apiInterface.loginUser(loginRequest).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                Log.d(TAG, "onLogin Success " + response.body()?.responseCode)
+                Log.d(TAG, "Login Success " + response.body()?.responseCode)
                 if (response.body()?.responseCode == 1) {
+                    VendorApplication.accessToken = response.body()?.responseData?.token
+                    LoginDataSource.loginData = response.body()?.responseData
                     onResult(true, response.body())
                 } else {
-                    onResult(true, response.body())
+                    Log.d(TAG, "Login Error " + response.body()?.responseMessage)
+                    onResult(false, response.body())
                 }
             }
 

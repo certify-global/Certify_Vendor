@@ -26,6 +26,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun launchAppointmentActivity() {
-        startActivity(Intent(this, AppointmentListActivity::class.java))
+        startActivity(Intent(this, AppointmentActivity::class.java))
     }
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:background="@color/light_yellow"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/size_09"
+                android:layout_height="match_parent"
+                android:background="@color/yellow">
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/size_15"
+                android:layout_marginBottom="@dimen/size_15"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/appointment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:textSize="@dimen/text_size_18"
+                    android:textStyle="bold"
+                    android:textColor="@color/brown">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/appointment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:textSize="@dimen/text_size_18"
+                    android:textColor="@color/brown">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_07"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/size_27"
+                        android:layout_height="@dimen/size_27"
+                        android:layout_marginStart="@dimen/size_17"
+                        android:contentDescription="@string/location_pic"
+                        android:src="@drawable/ic_location_upcoming_appt">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/appointment_location"
+                        android:layout_width="@dimen/size_222"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_07"
+                        android:layout_marginEnd="@dimen/size_17"
+                        android:textSize="@dimen/text_size_18"
+                        android:textColor="@color/black">
+                    </TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/check_in"
+                    android:layout_width="@dimen/size_102"
+                    android:layout_height="@dimen/size_40"
+                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:layout_marginTop="@dimen/size_13"
+                    android:gravity="center"
+                    android:text="@string/check_in"
+                    android:textSize="@dimen/text_size_12"
+                    android:textColor="@color/white"
+                    android:background="@color/green">
+                </TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

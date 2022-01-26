@@ -1,6 +1,7 @@
 package com.certify.vendor.api
 
 import android.content.Context
+import com.certify.vendor.VendorApplication
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,7 +31,7 @@ object RetrofitInstance {
                     header("Accept", "application/json")
                     header("Content-Type", "application/json")
                     header("grant_type", "password")
-                    header("Authorization", "")
+                    header("Authorization", "Bearer " + VendorApplication.accessToken)
                     method(requestOriginal.method(), requestOriginal.body())
                 }
                 chain.proceed(requestBuilder.build())
