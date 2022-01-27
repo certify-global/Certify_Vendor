@@ -24,7 +24,7 @@ object Badge {
     private var eBadgeReceiver : EbadgeBroadcastReceiver = EbadgeBroadcastReceiver()
     private var scanConfig : ScanConfig? = null
 
-    public fun init(context : Context) {
+    fun init(context : Context?) {
         bleScanProc = BleScanProc()
         badgeArg?.setFlavor(IntentsDefined.ProductFlavor.NB.id)
         BLEManager.start(context)
@@ -33,7 +33,7 @@ object Badge {
         startScan(context)
     }
 
-    private fun startScan(context: Context) {
+    private fun startScan(context: Context?) {
         bleScanProc?.startScan(context, bleScanCallback)
     }
 
@@ -55,8 +55,8 @@ object Badge {
             return scanConfig!!
         }
 
-        override fun getOnScanCheckNamePrefix(): String {
-            TODO("Not yet implemented")
+        override fun getOnScanCheckNamePrefix(): String? {
+            return null
         }
 
         override fun getOnScanCheckServiceUUIDs(): MutableList<UUID> {
