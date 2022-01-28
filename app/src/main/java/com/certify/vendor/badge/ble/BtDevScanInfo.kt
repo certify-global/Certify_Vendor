@@ -1,4 +1,4 @@
-package com.certify.vendor.ble
+package com.certify.vendor.badge.ble
 
 import com.netronix.ble.scan.BleDevice
 

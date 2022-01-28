@@ -14,7 +14,7 @@ import com.certify.vendor.R
 //import com.certify.vendor.databinding.FragmentLoginBinding
 import com.certify.vendor.model.LoginViewModel
 
-class LoginMainFragment : Fragment() {
+class LoginMainFragment : BaseFragment() {
 
     //private lateinit var fragmentLoginBinding : FragmentLoginBinding
     private var loginViewModel : LoginViewModel? = null
@@ -33,14 +33,21 @@ class LoginMainFragment : Fragment() {
         }
         return fragmentLoginBinding.root*/
         loginViewModel = ViewModelProviders.of(this@LoginMainFragment).get(LoginViewModel::class.java)
+        baseViewModel = loginViewModel
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()   //TODO: remove when databinding is working
         setClickListener()
         setLoginDataListener()
         loginViewModel?.init(context)
+    }
+
+    private fun initView () {
+        //var progressLayout : View? = view?.findViewById(R.id.progress_circular_layout)
+        progressIndicator = view?.findViewById(R.id.progress_indicator)
     }
 
     private fun setClickListener() {

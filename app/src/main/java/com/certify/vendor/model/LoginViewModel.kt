@@ -8,7 +8,7 @@ import com.certify.vendor.api.RetrofitInstance
 import com.certify.vendor.common.Utils
 import com.certify.vendor.repo.LoginRepository
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel : BaseViewModel() {
 
     val signInLiveData = MutableLiveData<Boolean>()
     private var loginRepository : LoginRepository = LoginRepository()
@@ -18,7 +18,9 @@ class LoginViewModel : ViewModel() {
     }
 
     fun login(userName : String, password : String) {
+        loading.value = true
         loginRepository.signIn(userName, Utils.encodeToBase64(password)) { isSuccess, response ->
+            loading.value = false
             if (isSuccess) {
                 VendorApplication.isLoggedIn = true
             }

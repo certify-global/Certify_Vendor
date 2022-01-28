@@ -2,25 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/menu_home"
         android:enabled="true"
         android:icon="@drawable/ic_home"
         android:title="@string/home"/>
 
     <item
-        android:id="@+id/credentials"
+        android:id="@+id/menu_credentials"
         android:enabled="true"
         android:icon="@drawable/ic_credential"
         android:title="@string/credentials" />
 
     <item
-        android:id="@+id/badge"
+        android:id="@+id/menu_badge"
         android:enabled="true"
         android:icon="@drawable/ic_badge"
         android:title="@string/badge"/>
 
     <item
-        android:id="@+id/settings"
+        android:id="@+id/menu_settings"
         android:enabled="true"
         android:icon="@drawable/ic_setting"
         android:title="@string/settings"/>

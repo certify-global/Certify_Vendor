@@ -8,3 +8,5 @@ data class LoginResponseData(val message : String?, val status : Int, val isActi
                             val userName : String?, val password : String?, val userEmail : String?, val token : String?,
                             val lastLoginDateTime : String, val firstName : String, val lastName : String, val vendorCompanyName : String,
                             val phone : String, val badgeId : String?, val badgeExpiry : String?, val profilePhotoData : String?)
+
+data class ProfileData(val FileData : String?, val FileName : String?)

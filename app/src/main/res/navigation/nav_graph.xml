@@ -29,6 +29,15 @@
         android:id="@+id/appointmentListFragment"
         android:name="com.certify.vendor.activity.AppointmentListFragment"
         tools:layout="@layout/fragment_appointment"
-        android:label="AppointmentListFragment" />
+        android:label="AppointmentListFragment" >
+        <action
+            android:id="@+id/action_appointmentListFragment_to_badgeFragment"
+            app:destination="@id/badgeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/badgeFragment"
+        android:name="com.certify.vendor.activity.BadgeFragment"
+        android:label="BadgeFragment"
+        tools:layout="@layout/fragment_badge"/>
 
 </navigation>

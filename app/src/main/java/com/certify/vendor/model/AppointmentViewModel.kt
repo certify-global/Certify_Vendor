@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.certify.vendor.api.RetrofitInstance
 import com.certify.vendor.repo.AppointmentRepository
 
-class AppointmentViewModel : ViewModel() {
+class AppointmentViewModel : BaseViewModel() {
 
     var appointmentLiveData = MutableLiveData<Boolean>()
     private var appointmentRepository = AppointmentRepository()
@@ -16,7 +16,9 @@ class AppointmentViewModel : ViewModel() {
     }
 
     fun getAppointments() {
+        loading.value = true
         appointmentRepository.getAppointments { isSuccess, appointmentResponse ->
+            loading.value = false
             appointmentLiveData.value = isSuccess
         }
     }

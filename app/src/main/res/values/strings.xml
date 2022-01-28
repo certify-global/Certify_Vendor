@@ -30,6 +30,8 @@
     <string name="check_in">Check-in</string>
     <string name="check_out">Check-out</string>
     <string name="no_appointments">No Appointments</string>
+    <string name="appointment_location">%1$s \n%2$s%3$s, %4$s %5$s</string>
+    <string name="appointment_time">%1$s - %2$s</string>
 
     <!-- Navigation menu -->
     <string name="home">Home</string>
@@ -37,4 +39,6 @@
     <string name="badge">Badge</string>
     <string name="settings">Settings</string>
 
+    <!-- Badge -->
+    <string name="badge_user_name">%1$s %2$s</string>
 </resources>

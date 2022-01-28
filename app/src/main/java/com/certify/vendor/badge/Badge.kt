@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
-import com.certify.vendor.ble.BtDevScanInfo
 import com.netronix.ble.connect.BLEManager
 import com.netronix.ble.connect.data.Statics
 import com.netronix.ble.connect.dither.Common
@@ -19,7 +18,7 @@ import java.util.*
 object Badge {
     private val TAG : String ?= Badge::class.simpleName
 
-    private var badgeArg : IntentsDefined.BadgeArgument? = IntentsDefined.BadgeArgument()
+    private var badgeArg = IntentsDefined.BadgeArgument()
     private var bleScanProc : BleScanProc? = null
     private var eBadgeReceiver : EbadgeBroadcastReceiver = EbadgeBroadcastReceiver()
     private var scanConfig : ScanConfig? = null
@@ -30,7 +29,6 @@ object Badge {
         BLEManager.start(context)
         eBadgeReceiver.register(context)
         scanConfig = ScanConfig(context)
-        startScan(context)
     }
 
     private fun startScan(context: Context?) {
@@ -39,8 +37,10 @@ object Badge {
 
     var bleScanCallback : BleScanCallback = object : BleScanCallback {
         override fun onLeScan(bleDevice:  BleDevice?, rssi: Int, scanRecord: ByteArray?) {
-            Log.d (TAG, "Scan result " + rssi)
-            val btDevScanInfo = BtDevScanInfo (bleDevice, rssi, scanRecord)
+            Log.d (TAG, "Scan result $rssi")
+            bleScanProc?.stopScan()
+            badgeArg?.dev = bleDevice?.bluetoothDevice
+            //BLEManager.connect(badgeArg)
         }
 
         override fun onScanFailed(p0: BleScanCallback.ERR_SCAN?) {

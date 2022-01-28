@@ -70,7 +70,7 @@ dependencies {
     //EBadge library
     implementation project(':Inc_ebadge')
     implementation project(':lib_ebadge')
-    implementation project(':tools')
+    implementation project(path: ':tools')
 
     //Retrofit library
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

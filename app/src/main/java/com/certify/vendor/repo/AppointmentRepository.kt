@@ -21,7 +21,7 @@ class AppointmentRepository {
                 0, 0, 0, true)
         RetrofitInstance.apiInterface.getAppointments(appointmentRequest).enqueue(object : Callback<GetAppointmentResponse> {
             override fun onResponse(call: Call<GetAppointmentResponse>, response: Response<GetAppointmentResponse>) {
-                Log.d(TAG, "Get Appointments " + response.body()?.responseCode)
+                Log.d(TAG, "Get Appointments responseCode " + response.body()?.responseCode)
                 if (response.body()?.responseCode == 1) {
                     if (response.body()?.responseData?.isNotEmpty() == true) {
                         AppointmentDataSource.addAppointmentList(response.body()?.responseData!!)

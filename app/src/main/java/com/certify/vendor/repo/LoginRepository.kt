@@ -23,6 +23,7 @@ class LoginRepository {
                 if (response.body()?.responseCode == 1) {
                     VendorApplication.accessToken = response.body()?.responseData?.token
                     LoginDataSource.loginData = response.body()?.responseData
+                    LoginDataSource.getUserProfileEncodedData()
                     onResult(true, response.body())
                 } else {
                     Log.d(TAG, "Login Error " + response.body()?.responseMessage)
