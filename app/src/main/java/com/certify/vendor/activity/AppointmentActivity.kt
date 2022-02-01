@@ -25,12 +25,18 @@ class AppointmentActivity : AppCompatActivity() {
     }
 
     private fun setNavigationMenu() {
-        val navigationView : BottomNavigationView = findViewById(R.id.navigation_menu_view)
+        val navigationView: BottomNavigationView = findViewById(R.id.navigation_menu_view)
         navigationView.setOnItemSelectedListener(object : NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
-                Log.d("AppointmentActivity", "Menu item ${item.title}" )
-                if (item.itemId == R.id.menu_badge) {
-                    findNavController(R.id.nav_host_appointment).navigate(R.id.action_appointmentListFragment_to_badgeFragment)
+                Log.d("AppointmentActivity", "Menu item ${item.title}")
+                when (item.itemId) {
+                    R.id.menu_badge -> {
+                        findNavController(R.id.nav_host_appointment).navigate(R.id.badgeFragment)
+                    }
+                    R.id.menu_home -> {
+                        findNavController(R.id.nav_host_appointment).navigate(R.id.appointmentListFragment)
+
+                    }
                 }
                 return true
             }

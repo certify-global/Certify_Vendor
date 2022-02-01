@@ -16,10 +16,10 @@ class LoginRepository {
 
     fun signIn(userName : String, passwd : String, onResult: (isSuccess: Boolean, response: LoginResponse?) -> Unit) {
         val loginRequest = LoginRequest(0, 0, 0, 0, Constants.VENDOR_APP, userName, passwd, 0)
-
+        Log.d(TAG, "Login loginRequest " + loginRequest.toString())
         RetrofitInstance.apiInterface.loginUser(loginRequest).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                Log.d(TAG, "Login Success " + response.body()?.responseCode)
+                Log.d(TAG, "Login Success " + response.toString())
                 if (response.body()?.responseCode == 1) {
                     VendorApplication.accessToken = response.body()?.responseData?.token
                     LoginDataSource.loginData = response.body()?.responseData
@@ -32,7 +32,7 @@ class LoginRepository {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e(TAG, "Error in login")
+                Log.e(TAG, "Error in login"+t.message)
                 onResult(false, null)
             }
         })

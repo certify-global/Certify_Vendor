@@ -15,5 +15,5 @@
     <color name="light_yellow">#FFFBF0</color>
     <color name="yellow">#FFD770</color>
     <color name="brown">#8E722B</color>
-
+    <color name="light_black">#BA000000</color>
 </resources>

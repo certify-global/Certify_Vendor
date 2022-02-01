@@ -6,7 +6,8 @@ object AppointmentDataSource {
 
     private var appointmentList = arrayListOf<AppointmentData>()
 
-    fun addAppointmentList(apptmentList : List<AppointmentData>) {
+    fun addAppointmentList(apptmentList: List<AppointmentData>) {
+        appointmentList.clear()
         appointmentList.addAll(apptmentList)
     }
 

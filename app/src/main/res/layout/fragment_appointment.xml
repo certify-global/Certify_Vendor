@@ -13,8 +13,8 @@
         android:layout_marginTop="@dimen/size_17"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,31 +26,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/welcome_home"
-                android:textSize="@dimen/text_size_14"
-                android:textColor="@color/black">
-            </TextView>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14"></TextView>
 
             <TextView
                 android:id="@+id/appt_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/appt_user_name"
-                android:textSize="@dimen/text_size_24"
-                android:textColor="@color/black">
-            </TextView>
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_24"></TextView>
 
         </LinearLayout>
 
-       <ImageView
+        <ImageView
             android:id="@+id/user_eicon"
             android:layout_width="@dimen/size_32"
             android:layout_height="@dimen/size_32"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/size_05"
             android:contentDescription="@string/wave_hand"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:src="@drawable/waving_hand">
-        </ImageView>
+            android:src="@drawable/waving_hand"
+            app:layout_constraintLeft_toLeftOf="parent"></ImageView>
 
         <View
             android:layout_width="0dp"
@@ -61,9 +58,8 @@
             android:id="@+id/user_profile_pic"
             android:layout_width="@dimen/size_72"
             android:layout_height="@dimen/size_48"
-            android:contentDescription="@string/user_pic"
-            android:layout_gravity="end">
-        </ImageView>
+            android:layout_gravity="end"
+            android:contentDescription="@string/user_pic"></ImageView>
 
     </LinearLayout>
 
@@ -71,19 +67,18 @@
         android:id="@+id/upcoming_appointment_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="@dimen/size_21"
-        app:layout_constraintTop_toBottomOf="@id/welcome_home_layout"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_home_layout">
 
         <TextView
             android:id="@+id/upcoming_appointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/upcoming_appointment"
-            android:textSize="@dimen/text_size_14"
-            android:textColor="@color/black">
-        </TextView>
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14"/>
 
         <View
             android:layout_width="0dp"
@@ -95,9 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/view_all"
-            android:textSize="@dimen/text_size_14"
-            android:textColor="@color/gray">
-        </TextView>
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_14"/>
 
     </LinearLayout>
 
@@ -105,15 +99,45 @@
         android:id="@+id/appt_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/upcoming_appointment_layout"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/upcoming_appointment_layout">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <include
-        android:id="@+id/progress_circular_layout"
+    <LinearLayout android:id="@+id/ll_no_appointment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        layout="@layout/progress_bar"/>
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_appointment"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/consectetur_adipiscing_elit"
+            android:textColor="@color/gray" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@color/green"
+            android:padding="@dimen/size_10"
+            android:text="@string/schedule_appointment"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <include
+        android:id="@+id/progress_circular_layout"
+        layout="@layout/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

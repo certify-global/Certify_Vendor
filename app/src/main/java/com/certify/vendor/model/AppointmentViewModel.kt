@@ -15,9 +15,9 @@ class AppointmentViewModel : BaseViewModel() {
         RetrofitInstance.init(context)
     }
 
-    fun getAppointments() {
+    fun getAppointments(vendorId: Int) {
         loading.value = true
-        appointmentRepository.getAppointments { isSuccess, appointmentResponse ->
+        appointmentRepository.getAppointments(vendorId) { isSuccess, appointmentResponse ->
             loading.value = false
             appointmentLiveData.value = isSuccess
         }
