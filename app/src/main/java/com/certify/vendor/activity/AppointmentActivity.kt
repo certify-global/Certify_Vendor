@@ -16,6 +16,7 @@ class AppointmentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_appointment)
+
     }
 
     override fun onStart() {
@@ -35,6 +36,14 @@ class AppointmentActivity : AppCompatActivity() {
                     }
                     R.id.menu_home -> {
                         findNavController(R.id.nav_host_appointment).navigate(R.id.appointmentListFragment)
+
+                    }
+                    R.id.menu_settings -> {
+                        findNavController(R.id.nav_host_appointment).navigate(R.id.SettingsFragment)
+
+                    }
+                    R.id.menu_credentials -> {
+                        findNavController(R.id.nav_host_appointment).navigate(R.id.CredentialsFragment)
 
                     }
                 }

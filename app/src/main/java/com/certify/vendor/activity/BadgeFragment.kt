@@ -3,9 +3,11 @@ package com.certify.vendor.activity
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -46,19 +48,29 @@ class BadgeFragment : Fragment() {
         if (userPicStr.isNotEmpty())
             userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
         val badgeId: TextView? = badgeView.findViewById(R.id.badge_id)
-        badgeId?.text = AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
+        badgeId?.text = String.format("%s%s",getString(R.string.id),AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
         val companyName: TextView? = badgeView.findViewById(R.id.badge_company_name)
+        companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
         val userName: TextView? = badgeView.findViewById(R.id.badge_user_name)
         userName?.text = String.format(
             getString(R.string.badge_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
             AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
         )
-        val status: TextView? = badgeView.findViewById(R.id.badge_status)
-        status?.text = getString(R.string.check_in)
-        val validity: TextView? = badgeView.findViewById(R.id.badge_expires)
+
+        val validity: TextView? = badgeView.findViewById(R.id.badge_expires_date)
         validity?.text =
-            AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)?.let { Utils.getDate(it, "MM-dd-yyyy HH:mm:ss") }
-        val word: Spannable = SpannableString("Your message")
+            AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)?.let { Utils.getDate(it, "dd-MM-yyyy") }
+        val timeStamp: TextView? = badgeView.findViewById(R.id.badge_time)
+        timeStamp?.text = AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)?.let { Utils.getDate(it, "HH:mm a") }
+        if(Utils.getDateValidation(AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY))){
+            timeStamp?.setTextColor(resources.getColor(R.color.green))
+            validity?.setTextColor(resources.getColor(R.color.green))
+
+        }else {
+            validity?.setTextColor(resources.getColor(R.color.red))
+            timeStamp?.setTextColor(resources.getColor(R.color.red))
+
+        }
         convertUIToImage(badgeUILayout)
     }
 

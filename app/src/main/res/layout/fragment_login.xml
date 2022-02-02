@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!--<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     &lt;!&ndash;<data>
@@ -134,8 +133,7 @@
 </layout>-->
 
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -146,10 +144,9 @@
         android:layout_height="@dimen/size_100"
         android:layout_marginTop="@dimen/size_40"
         android:src="@drawable/certify_logo_login"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-    </androidx.appcompat.widget.AppCompatImageView>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></androidx.appcompat.widget.AppCompatImageView>
 
     <TextView
         android:id="@+id/welcome_title"
@@ -157,13 +154,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_17"
         android:text="@string/welcome_back"
-        android:textSize="@dimen/text_size_24"
         android:textColor="@color/black"
+        android:textSize="@dimen/text_size_24"
+        app:layout_constraintBottom_toTopOf="@id/sign_in_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo"
-        app:layout_constraintBottom_toTopOf="@id/sign_in_title">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@id/logo"></TextView>
 
     <TextView
         android:id="@+id/sign_in_title"
@@ -171,97 +167,89 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_10"
         android:text="@string/sign_in_title"
-        android:textSize="@dimen/text_size_16"
         android:textColor="@color/black"
+        android:textSize="@dimen/text_size_16"
+        app:layout_constraintBottom_toTopOf="@id/user_name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcome_title"
-        app:layout_constraintBottom_toTopOf="@id/user_name">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@id/welcome_title"></TextView>
 
     <EditText
         android:id="@+id/user_name"
         android:layout_width="@dimen/size_313"
         android:layout_height="@dimen/size_60"
         android:layout_marginTop="@dimen/size_40"
-        android:paddingStart="@dimen/size_10"
-        android:paddingEnd="@dimen/size_10"
+        android:background="@drawable/edit_text_border"
         android:hint="@string/user_name"
         android:inputType="text"
-        android:background="@drawable/edit_text_border"
+        android:paddingStart="@dimen/size_10"
+        android:paddingEnd="@dimen/size_10"
+        app:layout_constraintBottom_toTopOf="@id/pass_word"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_in_title"
-        app:layout_constraintBottom_toTopOf="@id/pass_word"
-        android:text="Annapareddy.Snehamai1@certifyglobal.com">
+        app:layout_constraintTop_toBottomOf="@id/sign_in_title"/>
 
-    </EditText>
 
     <EditText
         android:id="@+id/pass_word"
         android:layout_width="@dimen/size_313"
         android:layout_height="@dimen/size_60"
         android:layout_marginTop="@dimen/size_35"
-        android:paddingStart="@dimen/size_10"
-        android:paddingEnd="@dimen/size_10"
+        android:background="@drawable/edit_text_border"
         android:hint="@string/pass_word_text"
         android:inputType="textPassword"
-        android:background="@drawable/edit_text_border"
+        android:paddingStart="@dimen/size_10"
+        android:paddingEnd="@dimen/size_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_name"
-        android:text="Sneha@123">
-    </EditText>
+        app:layout_constraintTop_toBottomOf="@id/user_name"/>
 
     <TextView
         android:id="@+id/forgot_pass_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_09"
         android:layout_marginStart="@dimen/size_238"
+        android:layout_marginTop="@dimen/size_09"
         android:layout_marginEnd="@dimen/size_31"
         android:text="@string/forgot_pass_word_text"
-        android:textSize="@dimen/text_size_12"
         android:textColor="@color/red"
+        android:textSize="@dimen/text_size_12"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pass_word">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@id/pass_word"></TextView>
 
     <TextView
         android:id="@+id/sign_in_mobile"
         android:layout_width="@dimen/size_313"
         android:layout_height="@dimen/size_56"
         android:layout_marginTop="@dimen/size_70"
+        android:background="@color/light_blue"
         android:gravity="center"
         android:text="@string/sign_in_mobile_title"
-        android:textSize="@dimen/text_size_16"
         android:textColor="@color/black"
-        android:background="@color/light_blue"
+        android:textSize="@dimen/text_size_16"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/forgot_pass_word">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@id/forgot_pass_word"></TextView>
 
     <TextView
         android:id="@+id/sign_in"
         android:layout_width="@dimen/size_313"
         android:layout_height="@dimen/size_56"
         android:layout_marginTop="@dimen/size_40"
+        android:background="@color/green"
         android:gravity="center"
         android:text="@string/sign_in"
-        android:textSize="@dimen/text_size_16"
         android:textColor="@color/white"
-        android:background="@color/green"
+        android:textSize="@dimen/text_size_16"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_in_mobile">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@id/sign_in_mobile"></TextView>
 
     <include
         android:id="@+id/progress_circular_layout"
+        layout="@layout/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/progress_bar"/>
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

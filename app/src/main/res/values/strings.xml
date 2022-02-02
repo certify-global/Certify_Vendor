@@ -44,9 +44,10 @@
     <string name="no_appointment">No Appointment!</string>
     <string name="consectetur_adipiscing_elit">Consectetur adipiscing elit, sed do eiusmod tempor incididunt</string>
     <string name="schedule_appointment">Schedule Appointment</string>
-    <string name="status">Status:</string>
-    <string name="id">ID:</string>
-    <string name="expires_on">Expires on:</string>
-    <string name="appt">Appt:</string>
+    <string name="status">Status:&#160;</string>
+    <string name="active">Active</string>
+    <string name="id">ID:&#160;</string>
+    <string name="expires_on">Expires on:&#160;</string>
+    <string name="appt">Appt:&#160;</string>
     <string name="request_replacement_badge">Request replacement badge</string>
 </resources>

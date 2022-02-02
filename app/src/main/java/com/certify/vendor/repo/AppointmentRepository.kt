@@ -18,10 +18,12 @@ class AppointmentRepository {
 
     fun getAppointments(vendorId: Int,onResult: (isSuccess: Boolean, appointmentResponse: GetAppointmentResponse?) -> Unit) {
 
+
         val appointmentRequest = GetAppointmentRequest(
             vendorId, 0, 0, 0, Constants.VENDOR_APP,
             0, 0, 0, true
         )
+        Log.d(TAG, "appointmentRequest " + appointmentRequest)
         RetrofitInstance.apiInterface.getAppointments(appointmentRequest)
             .enqueue(object : Callback<GetAppointmentResponse> {
                 override fun onResponse(

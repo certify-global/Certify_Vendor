@@ -10,7 +10,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/size_67"
+        android:layout_marginBottom="@dimen/size_56"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,17 +23,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="10dp"
-        app:fabCradleVerticalOffset="10dp"
-        tools:ignore="MissingClass"
-        android:theme="@style/Theme.Fab_Bottom_app_bar">
+        android:theme="@style/Theme.Fab_Bottom_app_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation_menu_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/size_15"
+            app:labelVisibilityMode="labeled"
             android:background="@color/white"
             app:menu="@menu/bottom_navigation_menu" />
 
@@ -43,10 +44,10 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/ic_action_add"
         app:layout_anchor="@id/bottomAppBar"
-        tools:ignore="MissingConstraints"
-        android:clickable="true"/>
+        app:srcCompat="@drawable/ic_action_add"
+        tools:ignore="MissingConstraints" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
