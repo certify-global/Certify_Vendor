@@ -24,6 +24,17 @@
         android:id="@+id/facilityLayout"
         layout="@layout/main_layout"/>
 
+    <include
+        android:id="@+id/facilityCalendarLayout"
+        layout="@layout/calendar_layout"/>
+
+    <include
+        android:id="@+id/appoinmentSubmitLayout"
+        layout="@layout/submit_layout"/>
+    <include
+        android:id="@+id/appoinmentSuccessLayout"
+        layout="@layout/success_layout"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
