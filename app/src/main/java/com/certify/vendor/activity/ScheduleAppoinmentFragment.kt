@@ -12,7 +12,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.certify.vendor.R
 import com.certify.vendor.api.response.FacilityData
+import com.certify.vendor.common.Constants
 import com.certify.vendor.data.AppSharedPreferences
+import com.certify.vendor.data.AppointmentDataSource
 import com.certify.vendor.data.FacilityDataSource
 import com.certify.vendor.databinding.*
 import com.certify.vendor.model.FacilityViewModel
@@ -32,6 +34,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
     val mcurrentTime = Calendar.getInstance()
     val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
     val minute = mcurrentTime.get(Calendar.MINUTE)
+    private lateinit var adapter: ArrayAdapter<FacilityData>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,18 +57,28 @@ class ScheduleAppoinmentFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
-        facilityViewModel?.init(context)
-        // facilityViewModel?.facility(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
-        FacilityDataSource.addFacilityList()
-        initSpinner()
+        initView();
+        facilityViewModel?.facility(
+            AppSharedPreferences.readInt(
+                sharedPreferences,
+                Constants.VENDOR_ID
+            )
+        )
         setOnClickListener()
         timePicker()
+        setFacilityListener()
+    }
+
+    private fun initView() {
+        progressIndicator = view?.findViewById(R.id.progress_indicator)
+        sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
+        facilityViewModel?.init(context)
 
     }
 
     private fun timePicker() {
-        mTimePicker = TimePickerDialog(requireContext(),
+        mTimePicker = TimePickerDialog(
+            requireContext(),
             { view, hourOfDay, minute ->
                 Toast.makeText(
                     requireContext(),
@@ -103,19 +116,18 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         }
 
         successLayoutBinding?.buttonGotoAppoinment?.setOnClickListener {
-           launchAppointmentActivity()
+            launchAppointmentActivity()
         }
     }
+
     fun launchAppointmentActivity() {
         startActivity(Intent(requireContext(), AppointmentActivity::class.java))
     }
+
     private fun initSpinner() {
-        FacilityDataSource.getFacilityList()
-        fragmentMainLayoutBinding?.spinnerFacility?.adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            FacilityDataSource.getFacilityList()
-        )
+        val customObjects = FacilityDataSource.getFacilityList()
+        adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
+        fragmentMainLayoutBinding?.spinnerFacility?.adapter = adapter
 
         fragmentMainLayoutBinding?.spinnerFacility?.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
@@ -124,9 +136,6 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                 view: View, position: Int, id: Long
             ) {
                 val myModel: FacilityData = parent.getSelectedItem() as FacilityData
-                /* Toast.makeText(requireContext(),
-                      " selected item" +
-                             "" +myModel.facilityId+myModel.facilityName, Toast.LENGTH_SHORT).show()*/
                 updateUI(myModel)
             }
 
@@ -149,6 +158,19 @@ class ScheduleAppoinmentFragment : BaseFragment() {
             successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
 
         }
+    }
+
+    private fun setFacilityListener() {
+        facilityViewModel?.facilityLiveData?.observe(viewLifecycleOwner, {
+            if (it && FacilityDataSource.getFacilityList().isNotEmpty()) {
+                initSpinner()
+            } else {
+                Toast.makeText(
+                    requireContext(),"Facility not found",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
     }
 
 }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constraintLayoutSuccess">
+    android:id="@+id/constraintLayoutSuccess"
+    android:visibility="gone">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -15,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/certify_logo_login" />
+        app:srcCompat="@drawable/ic_confirm_appoinment" />
 
     <TextView
         android:id="@+id/textView10"

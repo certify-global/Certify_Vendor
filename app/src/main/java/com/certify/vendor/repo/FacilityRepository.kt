@@ -18,7 +18,7 @@ class FacilityRepository {
         private val TAG = FacilityRepository::class.java.name
     }
 
-  /*  fun getFacility(vendorId: Int,onResult: (isSuccess: Boolean, facilityResponse: FacilityResponse?) -> Unit) {
+    fun getFacility(vendorId: Int,onResult: (isSuccess: Boolean, facilityResponse: FacilityResponse?) -> Unit) {
 
         RetrofitInstance.apiInterface.getFacilityList(vendorId)
             .enqueue(object : Callback<FacilityResponse> {
@@ -43,5 +43,5 @@ class FacilityRepository {
                 }
 
             })
-    }*/
+    }
 }

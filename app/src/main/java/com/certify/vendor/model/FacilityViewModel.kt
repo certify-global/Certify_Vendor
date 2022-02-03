@@ -23,12 +23,11 @@ class FacilityViewModel : BaseViewModel() {
         RetrofitInstance.init(context)
     }
 
-  /*  fun facility(vendorID:Int) {
+    fun facility(vendorID:Int) {
         loading.value = true
         facilityRepository.getFacility(vendorID) { isSuccess, response ->
             loading.value = false
             facilityLiveData.value = isSuccess
         }
     }
-*/
 }
