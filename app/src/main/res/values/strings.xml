@@ -67,4 +67,6 @@
     <string name="appoinment_confirmation">You booked an appointment with Geisinger Medical Center November 2023 at 2 PM</string>
     <string name="go_to_my_appoinments">Go to my appoinments</string>
     <string name="submit">Submit</string>
+    <string name="appoinment">Appoinment with</string>
+    <string name="incomplete_credentials">Please complete the credentials required to schedule an appointment for this facility.</string>
 </resources>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/constraintSubmitLayout"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
@@ -37,14 +37,22 @@
                 android:layout_marginTop="@dimen/size_15"
                 android:layout_marginBottom="@dimen/size_15"
                 android:orientation="vertical">
-
+                <TextView
+                    android:id="@+id/appointment_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:textColor="@color/brown"
+                    android:textSize="@dimen/size_20"
+                    android:textStyle="bold"></TextView>
                 <TextView
                     android:id="@+id/appointment_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_51"
                     android:layout_marginEnd="@dimen/size_17"
-                    android:textColor="@color/brown"
+                    android:textColor="@color/header_color"
                     android:textSize="@dimen/text_size_18"
                     android:textStyle="bold"></TextView>
 
@@ -54,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_51"
                     android:layout_marginEnd="@dimen/size_17"
-                    android:textColor="@color/brown"
+                    android:textColor="@color/header_color"
                     android:textSize="@dimen/text_size_18"></TextView>
 
                 <LinearLayout
@@ -78,7 +86,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/size_07"
                         android:layout_marginEnd="@dimen/size_17"
-                        android:textColor="@color/black"
+                        android:textColor="@color/header_color"
                         android:textSize="@dimen/text_size_18"></TextView>
 
                 </LinearLayout>
@@ -90,10 +98,10 @@
                     android:layout_marginStart="@dimen/size_51"
                     android:layout_marginTop="@dimen/size_13"
                     android:layout_marginEnd="@dimen/size_17"
-                    android:background="@color/green"
+                    android:background="@drawable/border_header_color"
                     android:gravity="center"
                     android:text="@string/reshedule"
-                    android:textColor="@color/white"
+                    android:textColor="@color/header_color"
                     android:textSize="@dimen/text_size_12"></TextView>
 
             </LinearLayout>
@@ -114,7 +122,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <EditText
-        android:id="@+id/editTextTextMultiLine"
+        android:id="@+id/editTextVisit"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_150"
         android:layout_marginLeft="@dimen/size_20"
@@ -140,11 +148,11 @@
         android:text="@string/onsite_contact"
         android:textColor="@color/header_color"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextMultiLine"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+        app:layout_constraintStart_toStartOf="@+id/editTextVisit"
+        app:layout_constraintTop_toBottomOf="@+id/editTextVisit" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/editTextTextPersonName"
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_50"
         android:layout_marginLeft="@dimen/size_20"
@@ -170,8 +178,14 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
         android:layout_marginBottom="@dimen/size_20"
         android:textAllCaps="false"/>
+
+    <include
+        android:id="@+id/progress_circular_layout"
+        layout="@layout/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
