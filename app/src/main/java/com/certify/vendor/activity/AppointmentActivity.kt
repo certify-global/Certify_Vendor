@@ -7,11 +7,12 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.certify.vendor.R
+import com.certify.vendor.callback.BadgeUpdate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.navigation.NavigationBarView
 
-class AppointmentActivity : AppCompatActivity() {
+class AppointmentActivity : AppCompatActivity() ,BadgeUpdate{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,5 +60,9 @@ class AppointmentActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finishAffinity()
+    }
+
+    override fun badgeUIUpdate() {
+        TODO("Not yet implemented")
     }
 }

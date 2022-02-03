@@ -3,6 +3,7 @@ package com.certify.vendor.common
 class Constants {
 
     companion object {
+        var Badge_KEY: String = "BadgeArgument_key"
         val VENDOR_APP: String = "VENDOR_APP"
         val SHARED_PREFS = "vendorCertify"
         val IS_LOGGEDIN = "isLoggedIn"
