@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayoutCalendar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <TextView
         android:id="@+id/textView3"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6">
 
         <CalendarView
-            android:id="@+id/calendarView2"
+            android:id="@+id/calendarViewFacility"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/size_05" />
@@ -64,7 +64,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextClock
                 android:id="@+id/textClockStart"
@@ -72,16 +72,20 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:format12Hour="hh:mm a"
-                android:padding="@dimen/size_05"
                 android:textColor="@color/header_color"
-                android:textSize="@dimen/size_30" />
+                android:textSize="@dimen/size_20"
+                android:gravity="center"
+                android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:gravity="center"
+                android:padding="@dimen/size_05"
                 android:text="@string/to"
-                android:padding="@dimen/size_05" />
+                android:textSize="@dimen/size_15"
+                android:textColor="@color/header_color"/>
 
             <TextClock
                 android:id="@+id/textClockEnd"
@@ -89,9 +93,11 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:format12Hour="hh:mm a"
+                android:gravity="center"
                 android:padding="@dimen/size_05"
                 android:textColor="@color/header_color"
-                android:textSize="@dimen/size_30" />
+                android:textSize="@dimen/size_20"
+                android:textStyle="bold"/>
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>

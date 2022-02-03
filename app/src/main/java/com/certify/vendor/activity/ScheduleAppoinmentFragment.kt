@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.certify.vendor.R
@@ -18,6 +19,7 @@ import com.certify.vendor.data.AppointmentDataSource
 import com.certify.vendor.data.FacilityDataSource
 import com.certify.vendor.databinding.*
 import com.certify.vendor.model.FacilityViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -35,6 +37,10 @@ class ScheduleAppoinmentFragment : BaseFragment() {
     val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
     val minute = mcurrentTime.get(Calendar.MINUTE)
     private lateinit var adapter: ArrayAdapter<FacilityData>
+    var selectedDate: String = ""
+    var startTime: String = ""
+    var endTime: String = ""
+    var timeValue:Boolean=false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +71,6 @@ class ScheduleAppoinmentFragment : BaseFragment() {
             )
         )
         setOnClickListener()
-        timePicker()
         setFacilityListener()
     }
 
@@ -75,25 +80,35 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         facilityViewModel?.init(context)
 
     }
-
-    private fun timePicker() {
-        mTimePicker = TimePickerDialog(
-            requireContext(),
-            { view, hourOfDay, minute ->
-                Toast.makeText(
-                    requireContext(),
-                    String.format("%d : %d", hourOfDay, minute),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }, hour, minute, false
-        )
-    }
-
     private fun setOnClickListener() {
         calendarLayoutBinding?.textClockStart?.setOnClickListener {
+            mTimePicker = TimePickerDialog(
+                requireContext(),
+                { view, hourOfDay, minute ->
+                    startTime= String.format("%d : %d", hourOfDay, minute)
+                    calendarLayoutBinding?.textClockStart?.setText(startTime)
+                    Toast.makeText(
+                        requireContext(),
+                        String.format("%d : %d", hourOfDay, minute),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }, hour, minute, false
+            )
             mTimePicker?.show()
         }
         calendarLayoutBinding?.textClockEnd?.setOnClickListener {
+            mTimePicker = TimePickerDialog(
+                        requireContext(),
+                { view, hourOfDay, minute ->
+                    endTime= String.format("%d : %d", hourOfDay, minute)
+                    calendarLayoutBinding?.textClockEnd?.setText(endTime)
+                    Toast.makeText(
+                        requireContext(),
+                        String.format("%d : %d", hourOfDay, minute),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }, hour, minute, false
+            )
             mTimePicker?.show()
         }
         calendarLayoutBinding?.buttonBack?.setOnClickListener {
@@ -117,6 +132,18 @@ class ScheduleAppoinmentFragment : BaseFragment() {
 
         successLayoutBinding?.buttonGotoAppoinment?.setOnClickListener {
             launchAppointmentActivity()
+        }
+        calendarLayoutBinding?.calendarViewFacility?.setMinDate(Date().time)
+        calendarLayoutBinding?.calendarViewFacility?.setOnDateChangeListener { calendarView, year, month, dayOfmonth ->
+            val month = month + 1
+            val monthStr = if (month < 10) "0$month" else month.toString()
+            val dayStr = if (dayOfmonth < 10) "0$dayOfmonth" else dayOfmonth.toString()
+            selectedDate = "$year-$monthStr-$dayStr"
+            Toast.makeText(
+                requireContext(),
+                selectedDate,
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -166,7 +193,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                 initSpinner()
             } else {
                 Toast.makeText(
-                    requireContext(),"Facility not found",
+                    requireContext(), "Facility not found",
                     Toast.LENGTH_SHORT
                 ).show()
             }
