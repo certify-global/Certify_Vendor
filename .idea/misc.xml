@@ -3,11 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/activity_appointment.xml" value="0.264" />
+        <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/activity_appointment.xml" value="0.45131375579598143" />
         <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/badge_device_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/fragment_appointment.xml" value="0.25416666666666665" />
+        <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/fragment_badge.xml" value="0.25416666666666665" />
         <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/fragment_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/main_layout.xml" value="0.25416666666666665" />
         <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/progress_bar.xml" value="0.25416666666666665" />
+        <entry key="..\:/shakh backup2020/Certify_Vendor/app/src/main/res/layout/schedule_appoinment_layout.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

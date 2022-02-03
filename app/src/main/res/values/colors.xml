@@ -16,4 +16,7 @@
     <color name="yellow">#FFD770</color>
     <color name="brown">#8E722B</color>
     <color name="light_black">#BA000000</color>
+    <color name="header_color">#15224F</color>
+    <color name="light_grey">#A5ACB9</color>
+    <color name="text_light_blue">#525EF6</color>
 </resources>

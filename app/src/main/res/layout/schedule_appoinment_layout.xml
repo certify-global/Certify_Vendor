@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<data>
+        <variable
+            name="facilityModel"
+            type="com.certify.vendor.model.FacilityViewModel" />
+        <variable
+            name="facilityData"
+            type="com.certify.vendor.data.FacilityDataSource" />
+
+
+    </data>-->
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:visibility="visible">
+
+    <include
+        android:id="@+id/facilityLayout"
+        layout="@layout/main_layout"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

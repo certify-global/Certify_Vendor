@@ -40,4 +40,11 @@
         android:label="BadgeFragment"
         tools:layout="@layout/fragment_badge"/>
 
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="com.certify.vendor.activity.ScheduleAppoinmentFragment"
+        android:label="ScheduleAppoinmentFragment"
+        tools:layout="@layout/schedule_appoinment_layout">
+
+    </fragment>
 </navigation>

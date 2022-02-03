@@ -44,4 +44,8 @@
     <string name="no_appointment">No Appointment!</string>
     <string name="consectetur_adipiscing_elit">Consectetur adipiscing elit, sed do eiusmod tempor incididunt</string>
     <string name="schedule_appointment">Schedule Appointment</string>
+    <string name="request_appoinment">Request Appointment</string>
+    <string name="select_facility">Select Facility</string>
+    <string name="content_appoinment">The hospitals listed are hospitals you chose as part of your territory and that require you to request an appointment that needs to be approved before visiting their hospital. After you request an appointment, It will be sent by email to the person you are requesting an appointment from and they will either accept or decline your appointment request. You will receive an email when they approve or decline the appointment and it will be added to your admin area under appointments.</string>
+    <string name="textviewSize">1 of 3</string>
 </resources>
