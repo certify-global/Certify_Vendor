@@ -14,7 +14,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_10"
         android:text="@string/request_appoinment"
         android:textColor="@color/header_color"
         android:textSize="@dimen/size_20"
@@ -27,7 +27,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_10"
         android:text="@string/select_facility"
         android:textColor="@color/light_grey"
         android:textSize="@dimen/text_size_14"
@@ -38,7 +38,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/size_222"
-        android:layout_height="@dimen/size_150"
+        android:layout_height="@dimen/size_112"
         android:layout_marginTop="@dimen/size_20"
         android:src="@drawable/ic_calendar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/size_70"
         android:layout_marginLeft="@dimen/size_20"
-        android:layout_marginTop="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_10"
         android:layout_marginRight="@dimen/size_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,8 +76,7 @@
           android:lineSpacingExtra="@dimen/size_05"
           android:text="@string/content_appoinment"
           android:textColor="@color/text_light_blue"
-          android:textSize="@dimen/text_size_12"
-          android:padding="@dimen/size_05"/>
+          android:padding="@dimen/size_05" />
 
 
      </androidx.cardview.widget.CardView>

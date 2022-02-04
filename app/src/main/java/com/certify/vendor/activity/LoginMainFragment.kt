@@ -1,5 +1,6 @@
 package com.certify.vendor.activity
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.certify.vendor.R
 import com.certify.vendor.common.Constants
+import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.LoginDataSource
 //import com.certify.vendor.databinding.FragmentLoginBinding
@@ -21,6 +23,7 @@ class LoginMainFragment : BaseFragment() {
 
     //private lateinit var fragmentLoginBinding : FragmentLoginBinding
     private var loginViewModel : LoginViewModel? = null
+    private var pDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,8 +52,7 @@ class LoginMainFragment : BaseFragment() {
     }
 
     private fun initView () {
-        //var progressLayout : View? = view?.findViewById(R.id.progress_circular_layout)
-        progressIndicator = view?.findViewById(R.id.progress_indicator)
+        pDialog = Utils.ShowProgressDialog(requireContext())
     }
 
     private fun setClickListener() {
@@ -59,6 +61,7 @@ class LoginMainFragment : BaseFragment() {
         val passwd: EditText? = view?.findViewById(R.id.pass_word)
         signInButton?.setOnClickListener {
             if (userName?.text.toString().isNotEmpty() && passwd?.text.toString().isNotEmpty()) {
+                pDialog?.show()
                 loginViewModel?.login(userName?.text.toString(), passwd?.text.toString())
             }
             if (userName?.text.toString().isEmpty()) {
@@ -79,6 +82,7 @@ class LoginMainFragment : BaseFragment() {
 
     private fun setLoginDataListener() {
         loginViewModel?.signInLiveData?.observe(viewLifecycleOwner, {
+            pDialog?.dismiss()
             if (it) {
                 AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)),
                     Constants.IS_LOGGEDIN,true)

@@ -123,10 +123,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_no_appointment" />
 
-    <!-- <include
-         android:id="@+id/progress_circular_layout"
-         layout="@layout/progress_bar"
-         android:layout_width="match_parent"
-         android:layout_height="match_parent" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
