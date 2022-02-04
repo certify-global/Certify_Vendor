@@ -93,8 +93,6 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         startTime=Utils.getCurrentTime24()
         endTime= Utils.getCurrentTime24()
         pDialog = Utils.ShowProgressDialog(requireContext())
-
-
     }
     private fun setOnClickListener() {
         calendarLayoutBinding?.textClockStart?.setOnClickListener {
@@ -151,10 +149,18 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         submitLayoutBinding?.buttonSubmit?.setOnClickListener {
             var contactName: String=  submitLayoutBinding?.editTextTextPersonName?.text.toString()
             var visitReason=  submitLayoutBinding?.editTextVisit?.text.toString()
-            if(validateVisitPersonName())
+            if(validateVisitPersonName()) {
                 pDialog?.show()
-            scheduleAppointmentViewModel?.scheduleAppointments(AppSharedPreferences.readInt(sharedPreferences,Constants.VENDOR_ID),selectedDate
-            ,startTime,endTime, contactName,visitReason,facilityData!!.facilityId)
+                scheduleAppointmentViewModel?.scheduleAppointments(
+                    AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID),
+                    selectedDate,
+                    startTime,
+                    endTime,
+                    contactName,
+                    visitReason,
+                    facilityData!!.facilityId
+                )
+            }
         }
     }
 

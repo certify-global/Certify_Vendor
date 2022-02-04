@@ -19,4 +19,6 @@
     <color name="header_color">#15224F</color>
     <color name="light_grey">#A5ACB9</color>
     <color name="text_light_blue">#525EF6</color>
+    <color name="purple_transparent">#00000000</color>
+
 </resources>
