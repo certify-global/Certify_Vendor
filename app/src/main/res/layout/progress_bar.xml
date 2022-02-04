@@ -5,13 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ProgressBar
+        style="?android:attr/progressBarStyleInverse"
         android:id="@+id/progress_indicator"
         android:layout_width="@dimen/size_50"
         android:layout_height="@dimen/size_50"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        style="@android:style/Widget.ProgressBar.Inverse"
+        android:indeterminateDrawable="@drawable/progress_style"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

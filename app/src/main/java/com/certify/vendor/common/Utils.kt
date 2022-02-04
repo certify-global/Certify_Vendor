@@ -1,10 +1,15 @@
 package com.certify.vendor.common
 
+import android.app.Dialog
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.util.Base64
 import android.util.Log
+import com.certify.vendor.R
+import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -72,5 +77,66 @@ class Utils {
             }
             return Bitmap.createBitmap(newbm, retX, retY, 640, 400, null, true)
         }
+
+        fun getmonthstring(inputDate: String): String? {
+            try {
+                val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+                val outputFormat: DateFormat = SimpleDateFormat("dd MMMM yyyy")
+                val date = inputFormat.parse(inputDate)
+                return outputFormat.format(date)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+            return ""
+        }
+        fun getTime24to12(inputData: String) : String {
+            try {
+                try {
+                    val _24HourSDF = SimpleDateFormat("HH:mm")
+                    val _12HourSDF = SimpleDateFormat("hh:mm a")
+                    val _24HourDt = _24HourSDF.parse(inputData)
+                    return _12HourSDF.format(_24HourDt)
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in parsing the time " + e.message)
+            }
+            return ""
+        }
+        fun getCurrentTime24() : String {
+            val currentTime: String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+            return currentTime;
+        }
+        fun getCurrentTime() : String {
+            val currentTime: String = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
+             return currentTime;
+        }
+        fun getCurrentDate() : String {
+            val currentDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            return currentDate;
+        }
+
+        fun isTimeBigger(startTime:String,endTime:String): Boolean {
+            var result = false
+            var simpleDateFormat = SimpleDateFormat("HH:mm")
+            var startDate = simpleDateFormat.parse(startTime)
+            var endDate = simpleDateFormat.parse(endTime)
+            if (endDate!!.time > startDate!!.time) {
+                result = true
+            }
+            return result
+        }
+
+        fun ShowProgressDialog(context: Context?): Dialog? {
+            val dialog = Dialog(context!!)
+            dialog.setContentView(R.layout.progress_bar)
+            dialog.setCancelable(false)
+            return dialog
+        }
+
+
     }
+
+
 }

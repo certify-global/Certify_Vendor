@@ -64,9 +64,11 @@
     <string name="onsite_contact">on-Site Contact*</string>
     <string name="personName">Person Name</string>
     <string name="thanks_booking">Thanks for booking!</string>
-    <string name="appoinment_confirmation">You booked an appointment with Geisinger Medical Center November 2023 at 2 PM</string>
+    <string name="appoinment_confirmation">You booked an appointment with </string>
     <string name="go_to_my_appoinments">Go to my appoinments</string>
     <string name="submit">Submit</string>
     <string name="appoinment">Appoinment with</string>
     <string name="incomplete_credentials">Please complete the credentials required to schedule an appointment for this facility.</string>
+    <string name="please_enter_reason">Please enter reason for visit</string>
+    <string name="please_enter_person">Please enter contact person name</string>
 </resources>

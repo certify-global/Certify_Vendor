@@ -135,12 +135,12 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-    <include
+  <!--  <include
         android:id="@+id/progress_circular_layout"
         layout="@layout/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="-161dp"
-        tools:layout_editor_absoluteY="-222dp" />
+        tools:layout_editor_absoluteY="-222dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayoutCalendar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <TextView
         android:id="@+id/textView3"
@@ -66,16 +66,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextClock
+            <TextView
                 android:id="@+id/textClockStart"
                 android:layout_width="@dimen/size_150"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:format12Hour="hh:mm a"
+                android:gravity="center"
                 android:textColor="@color/header_color"
                 android:textSize="@dimen/size_20"
-                android:gravity="center"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,12 +86,11 @@
                 android:textSize="@dimen/size_15"
                 android:textColor="@color/header_color"/>
 
-            <TextClock
+            <TextView
                 android:id="@+id/textClockEnd"
                 android:layout_width="@dimen/size_150"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:format12Hour="hh:mm a"
                 android:gravity="center"
                 android:padding="@dimen/size_05"
                 android:textColor="@color/header_color"

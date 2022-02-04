@@ -1,6 +1,7 @@
 package com.certify.vendor.activity
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
@@ -16,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.certify.vendor.R
 import com.certify.vendor.api.response.FacilityData
 import com.certify.vendor.common.Constants
+import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
 import com.certify.vendor.data.FacilityDataSource
@@ -23,6 +26,7 @@ import com.certify.vendor.databinding.*
 import com.certify.vendor.model.AppointmentViewModel
 import com.certify.vendor.model.FacilityViewModel
 import com.certify.vendor.model.ScheduleAppointmentViewModel
+import okhttp3.internal.Util
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -45,7 +49,8 @@ class ScheduleAppoinmentFragment : BaseFragment() {
     var selectedDate: String = ""
     var startTime: String = ""
     var endTime: String = ""
-    var facilityName: FacilityData?=null
+    var facilityData: FacilityData?=null
+    private var pDialog: Dialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,16 +76,24 @@ class ScheduleAppoinmentFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initView();
+        pDialog?.show()
         facilityViewModel?.facility(AppSharedPreferences.readInt(sharedPreferences,Constants.VENDOR_ID))
         setOnClickListener()
         setFacilityListener()
     }
 
     private fun initView() {
-        progressIndicator = view?.findViewById(R.id.progress_indicator)
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         facilityViewModel?.init(context)
+        calendarLayoutBinding?.textClockStart?.setText(Utils.getCurrentTime())
+        calendarLayoutBinding?.textClockEnd?.setText(Utils.getCurrentTime())
+        selectedDate=Utils.getCurrentDate()
+        startTime=Utils.getCurrentTime24()
+        endTime= Utils.getCurrentTime24()
+        pDialog = Utils.ShowProgressDialog(requireContext())
+
 
     }
     private fun setOnClickListener() {
@@ -90,12 +103,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                 { view, hourOfDay, minute ->
                     val minute = if (minute < 10) "0$minute" else minute.toString()
                     startTime= String.format("%d", hourOfDay)+":"+minute
-                    calendarLayoutBinding?.textClockStart?.setText(startTime)
-                    Toast.makeText(
-                        requireContext(),
-                       startTime,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    calendarLayoutBinding?.textClockStart?.setText(Utils.getTime24to12(startTime))
                 }, hour, minute, false
             )
             mTimePicker?.show()
@@ -106,12 +114,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                 { view, hourOfDay, minute ->
                     val minute = if (minute < 10) "0$minute" else minute.toString()
                     endTime= String.format("%d", hourOfDay)+":"+minute
-                    calendarLayoutBinding?.textClockEnd?.setText(endTime)
-                    Toast.makeText(
-                        requireContext(),
-                       endTime,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    calendarLayoutBinding?.textClockEnd?.setText(Utils.getTime24to12(endTime))
                 }, hour, minute, false
             )
             mTimePicker?.show()
@@ -123,7 +126,11 @@ class ScheduleAppoinmentFragment : BaseFragment() {
             successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
         }
         calendarLayoutBinding?.buttonNext?.setOnClickListener {
-           launchAppoinmentSchedulePage()
+            if(Utils.isTimeBigger(startTime,endTime)) {
+                launchAppoinmentSchedulePage()
+            }else{
+                Toast.makeText(requireContext(),"Start time should be greater that end time",Toast.LENGTH_SHORT).show()
+            }
         }
 
         successLayoutBinding?.buttonGotoAppoinment?.setOnClickListener {
@@ -135,18 +142,19 @@ class ScheduleAppoinmentFragment : BaseFragment() {
             val monthStr = if (month < 10) "0$month" else month.toString()
             val dayStr = if (dayOfmonth < 10) "0$dayOfmonth" else dayOfmonth.toString()
             selectedDate = "$year-$monthStr-$dayStr"
-            Toast.makeText(
-                requireContext(),
-                selectedDate,
-                Toast.LENGTH_SHORT
-            ).show()
+
         }
+        submitLayoutBinding?.reSchedule?.setOnClickListener {
+              launchCalendarLayout()
+        }
+
         submitLayoutBinding?.buttonSubmit?.setOnClickListener {
             var contactName: String=  submitLayoutBinding?.editTextTextPersonName?.text.toString()
             var visitReason=  submitLayoutBinding?.editTextVisit?.text.toString()
+            if(validateVisitPersonName())
+                pDialog?.show()
             scheduleAppointmentViewModel?.scheduleAppointments(AppSharedPreferences.readInt(sharedPreferences,Constants.VENDOR_ID),selectedDate
-            ,startTime,endTime, contactName,visitReason)
-
+            ,startTime,endTime, contactName,visitReason,facilityData!!.facilityId)
         }
     }
 
@@ -161,8 +169,8 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
             ) {
-              facilityName = parent.getSelectedItem() as FacilityData
-                updateUI(facilityName!!)
+              facilityData = parent.getSelectedItem() as FacilityData
+                updateUI(facilityData!!)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -173,23 +181,18 @@ class ScheduleAppoinmentFragment : BaseFragment() {
 
     private fun updateUI(myModel: FacilityData) {
         if (!myModel.facilityName.equals("Select Facility") && myModel.incompleteRequirementCount ==0) {
-            calendarLayoutBinding?.constraintLayoutCalendar?.setVisibility(View.VISIBLE)
-            fragmentMainLayoutBinding?.constraintLayoutFacility?.setVisibility(View.GONE)
-            submitLayoutBinding?.constraintSubmitLayout?.setVisibility(View.GONE)
-            successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
+           launchCalendarLayout();
         }else if(myModel.incompleteRequirementCount !=0) {
                  basicAlert()
         }else {
-            fragmentMainLayoutBinding?.constraintLayoutFacility?.setVisibility(View.VISIBLE)
-            calendarLayoutBinding?.constraintLayoutCalendar?.setVisibility(View.GONE)
-            submitLayoutBinding?.constraintSubmitLayout?.setVisibility(View.GONE)
-            successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
+           launchMainLayout()
 
         }
     }
 
     private fun setFacilityListener() {
         facilityViewModel?.facilityLiveData?.observe(viewLifecycleOwner, {
+            pDialog?.dismiss()
             if (it && FacilityDataSource.getFacilityList().isNotEmpty()) {
                 initSpinner()
             } else {
@@ -201,6 +204,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         })
 
         scheduleAppointmentViewModel?.scheduleAppointmentLiveData?.observe(viewLifecycleOwner,{
+            pDialog?.dismiss()
             if(it){
                 launchSuccesPage();
             }else{
@@ -217,6 +221,8 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         calendarLayoutBinding?.constraintLayoutCalendar?.setVisibility(View.GONE)
         submitLayoutBinding?.constraintSubmitLayout?.setVisibility(View.GONE)
         successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.VISIBLE)
+       successLayoutBinding?.textViewConfirmation?.setText(resources.getString(R.string.appoinment_confirmation) +" "+facilityData?.facilityName+ " "+
+       Utils.getmonthstring(selectedDate) +" at "+Utils.getTime24to12(startTime))
     }
 
     private fun launchAppoinmentSchedulePage() {
@@ -224,15 +230,26 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         calendarLayoutBinding?.constraintLayoutCalendar?.setVisibility(View.GONE)
         submitLayoutBinding?.constraintSubmitLayout?.setVisibility(View.VISIBLE)
         successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
-        submitLayoutBinding?.appointmentDate?.text=selectedDate
+        submitLayoutBinding?.appointmentDate?.text=Utils.getmonthstring(selectedDate)
         submitLayoutBinding?.appointmentTime?.text=startTime+"-"+endTime
-        submitLayoutBinding?.appointmentPlace?.text=resources.getString(R.string.appoinment)+" "+facilityName?.facilityName
-        submitLayoutBinding?.appointmentLocation?.text=facilityName.toString()+","+ facilityName?.streetAddress+"\n"
-        ""+facilityName?.city+","+facilityName?.state+","+facilityName?.zip
-
-        submitLayoutBinding?.appointmentDate?.text=selectedDate
+        submitLayoutBinding?.appointmentPlace?.text=resources.getString(R.string.appoinment)+" "+facilityData?.facilityName
+        submitLayoutBinding?.appointmentLocation?.text=facilityData?.facilityName+","+ facilityData?.streetAddress+","+facilityData?.city+","+facilityData?.state+" "+facilityData?.zip
 
     }
+
+    private fun launchMainLayout() {
+        fragmentMainLayoutBinding?.constraintLayoutFacility?.setVisibility(View.VISIBLE)
+        calendarLayoutBinding?.constraintLayoutCalendar?.setVisibility(View.GONE)
+        submitLayoutBinding?.constraintSubmitLayout?.setVisibility(View.GONE)
+        successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
+    }
+    private fun launchCalendarLayout() {
+        calendarLayoutBinding?.constraintLayoutCalendar?.setVisibility(View.VISIBLE)
+        fragmentMainLayoutBinding?.constraintLayoutFacility?.setVisibility(View.GONE)
+        submitLayoutBinding?.constraintSubmitLayout?.setVisibility(View.GONE)
+        successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
+    }
+
 
     fun launchAppointmentActivity() {
         startActivity(Intent(requireContext(), AppointmentActivity::class.java))
@@ -247,6 +264,18 @@ class ScheduleAppoinmentFragment : BaseFragment() {
             }
         val alert = dialogBuilder.create()
         alert.show()
+    }
+
+    private fun validateVisitPersonName(): Boolean {
+        if (submitLayoutBinding?.editTextVisit?.getText().toString().isEmpty()) {
+            submitLayoutBinding?.editTextVisit?.setError(resources.getString(R.string.please_enter_reason))
+            return false
+        }
+        if (submitLayoutBinding?.editTextTextPersonName?.getText().toString().isEmpty()) {
+            submitLayoutBinding?.editTextTextPersonName?.setError(resources.getString(R.string.please_enter_person))
+            return false
+        }
+        return true
     }
 
 }

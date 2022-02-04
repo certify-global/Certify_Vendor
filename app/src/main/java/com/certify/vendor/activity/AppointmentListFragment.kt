@@ -1,5 +1,6 @@
 package com.certify.vendor.activity
 
+import android.app.Dialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,6 +31,8 @@ class AppointmentListFragment : BaseFragment() {
     private var llUpcomingAppointment: LinearLayout? = null
     private var adapter: AppointmentListAdapter? = null
     private var sharedPreferences: SharedPreferences? = null
+    private var pDialog: Dialog? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,20 +49,18 @@ class AppointmentListFragment : BaseFragment() {
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         baseViewModel = appointmentViewModel
         appointmentViewModel.init(context)
-        appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
         initView()
+        pDialog?.show()
+        appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
         initRecyclerView()
         setAppointmentListener()
     }
 
     private fun initView() {
-        progressIndicator = view?.findViewById(R.id.progress_indicator)
+        pDialog = Utils.ShowProgressDialog(requireContext())
         val userName: TextView? = view?.findViewById(R.id.appt_user_name)
         userName?.text =
-            String.format(
-                getString(R.string.appt_user_name),
-                AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME)
-            )
+            String.format(getString(R.string.appt_user_name),AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
         val userPic: ImageView? = view?.findViewById(R.id.user_profile_pic)
         val userPicStr =
             AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
@@ -79,6 +80,7 @@ class AppointmentListFragment : BaseFragment() {
 
     private fun setAppointmentListener() {
         appointmentViewModel.appointmentLiveData.observe(viewLifecycleOwner, {
+            pDialog?.dismiss()
             if (it && AppointmentDataSource.getAppointmentList().isNotEmpty()) {
                 adapter?.updateAppointmentList(AppointmentDataSource.getAppointmentList())
                 recyclerView?.adapter?.notifyDataSetChanged()

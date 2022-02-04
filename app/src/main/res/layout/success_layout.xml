@@ -32,7 +32,7 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/textViewConfirmation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/appoinment_confirmation"
@@ -44,7 +44,9 @@
         android:paddingRight="@dimen/size_20"
         android:textColor="@color/header_color"
         android:gravity="center"
-        android:lineSpacingExtra="@dimen/size_05"/>
+        android:lineSpacingExtra="@dimen/size_05"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_10"/>
 
     <Button
         android:id="@+id/buttonGotoAppoinment"
@@ -56,7 +58,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        app:layout_constraintTop_toBottomOf="@+id/textViewConfirmation"
         android:textAllCaps="false"
         android:paddingLeft="@dimen/size_40"
         android:paddingRight="@dimen/size_40"/>

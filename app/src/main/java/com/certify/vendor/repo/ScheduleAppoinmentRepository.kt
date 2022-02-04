@@ -20,10 +20,10 @@ class ScheduleAppoinmentRepository {
 
     fun scheduleAppoinments(vendorId: Int, selectedDate: String,
                             startTime: String, endTime: String, contactName: String,visitReason: String
-                            ,onResult: (isSuccess: Boolean, scheduleAppointmentResponse: ScheduleAppointmentResponse?) -> Unit) {
+                            ,facilityID:Int,onResult: (isSuccess: Boolean, scheduleAppointmentResponse: ScheduleAppointmentResponse?) -> Unit) {
 
         val scheduleAppointmentRequest = ScheduleAppointmentRequest(
-            vendorId, 0, 0, 0,
+            vendorId, 0, facilityID, 0,
             Constants.VENDOR_APP, selectedDate, startTime, endTime, contactName,visitReason)
 
         RetrofitInstance.apiInterface.scheduleAppoinments(scheduleAppointmentRequest)

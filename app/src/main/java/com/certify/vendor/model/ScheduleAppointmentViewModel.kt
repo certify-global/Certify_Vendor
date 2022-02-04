@@ -17,9 +17,9 @@ class ScheduleAppointmentViewModel : BaseViewModel() {
     }
 
     fun scheduleAppointments(vendorId: Int,selectedDate: String,
-                             startTime: String, endTime: String, contactName: String,visitReason: String) {
+                             startTime: String, endTime: String, contactName: String,visitReason: String,facilityID: Int) {
         loading.value = true
-        appointmentRepository.scheduleAppoinments(vendorId,selectedDate,startTime,endTime,contactName,visitReason) { isSuccess, appointmentResponse ->
+        appointmentRepository.scheduleAppoinments(vendorId,selectedDate,startTime,endTime,contactName,visitReason,facilityID) { isSuccess, appointmentResponse ->
             loading.value = false
             scheduleAppointmentLiveData.value = isSuccess
         }
