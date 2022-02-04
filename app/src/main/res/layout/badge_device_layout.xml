@@ -2,171 +2,173 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/badge_screen"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="320dp"
+    android:layout_height="200dp"
     android:background="@color/light_gray">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="200dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="200dp"
             android:gravity="center"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/img_user_badge"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="@dimen/size_20"
+                android:src="@drawable/ic_user_pic" />
+
+            <LinearLayout
+                android:id="@+id/ll_status"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/size_20"
-                android:layout_marginEnd="@dimen/size_20"
-                android:background="@color/white">
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_05"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_status_badge"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/size_10"
-                    android:layout_marginEnd="@dimen/size_20"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:text="@string/status"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_10"
+                    android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/badge_qr_code"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/size_20"
-                        android:src="@drawable/qrcode" />
-
-                    <TextView
-                        android:id="@+id/badge_company_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:text="CompanyName"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/badge_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/status"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/text_size_14" />
-
-                        <TextView
-                            android:id="@+id/badge_active"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/active"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/badge_expires"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/expires_on"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/text_size_14" />
-
-                        <TextView
-                            android:id="@+id/badge_expires_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/text_size_14" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/badge_user_image"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:src="@android:drawable/gallery_thumb" />
-
-
-                    <TextView
-                        android:id="@+id/badge_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:text="@string/id"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/text_size_14" />
-
-                    <TextView
-                        android:id="@+id/badge_user_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:text="User Name"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/badge_appt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/appt"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14" />
-                        <TextView
-                            android:id="@+id/badge_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/text_size_14" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/badge_logo"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/size_05"
-                        android:layout_marginBottom="@dimen/size_10"
-                        android:src="@drawable/certify_logo" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tv_active_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/active"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_10" />
+            </LinearLayout>
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/tv_id_badge"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_20"
-                android:layout_marginTop="@dimen/size_30"
-                android:layout_marginRight="@dimen/size_20"
-                android:layout_marginBottom="@dimen/size_50"
-                android:background="@drawable/border_black"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/request_replacement_badge"
-                android:textColor="@color/light_black" />
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_05"
+                android:text="@string/id"
+                android:textColor="@color/light_black"
+                android:textSize="@dimen/text_size_10"
+                android:visibility="visible" />
+
+
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="160dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="3dp">
+
+
+            <TextView
+                android:id="@+id/tv_company_name_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_05"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+
+            <TextView
+                android:id="@+id/tv_user_name_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="2"
+                android:text="User Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_12" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_05"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_appt_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appt"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_10" />
+
+                <TextView
+                    android:id="@+id/tv_time_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/text_size_10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_expire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_05"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_expires_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/expires_on"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/text_size_10" />
+
+                <TextView
+                    android:id="@+id/tv_expires_date_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/text_size_10" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="60dp"
+            android:layout_height="200dp"
+            android:gravity="right"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_qa_badge"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="@dimen/size_10"
+                android:src="@drawable/qrcode" />
+
+
+            <ImageView
+                android:id="@+id/img_logo_badge"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/size_05"
+                android:src="@drawable/certify_logo" />
+        </RelativeLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

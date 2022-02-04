@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
+import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
@@ -30,6 +29,7 @@ class AppointmentListFragment : BaseFragment() {
     private var llUpcomingAppointment: LinearLayout? = null
     private var adapter: AppointmentListAdapter? = null
     private var sharedPreferences: SharedPreferences? = null
+    private lateinit var badgeView: View
 
     override fun onCreateView(
         inflater: LayoutInflater,

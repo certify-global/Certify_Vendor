@@ -59,7 +59,7 @@
             android:layout_width="@dimen/size_72"
             android:layout_height="@dimen/size_48"
             android:layout_gravity="end"
-            android:contentDescription="@string/user_pic"></ImageView>
+            android:contentDescription="@string/user_pic" />
 
     </LinearLayout>
 
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:text="@string/upcoming_appointment"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_14"/>
+            android:textSize="@dimen/text_size_14" />
 
         <View
             android:layout_width="0dp"
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:text="@string/view_all"
             android:textColor="@color/gray"
-            android:textSize="@dimen/text_size_14"/>
+            android:textSize="@dimen/text_size_14" />
 
     </LinearLayout>
 
@@ -104,12 +104,13 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <LinearLayout android:id="@+id/ll_no_appointment"
+    <LinearLayout
+        android:id="@+id/ll_no_appointment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"

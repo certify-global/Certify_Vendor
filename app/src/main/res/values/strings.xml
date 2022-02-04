@@ -42,7 +42,7 @@
     <!-- Badge -->
     <string name="badge_user_name">%1$s %2$s</string>
     <string name="no_appointment">No Appointment!</string>
-    <string name="consectetur_adipiscing_elit">Consectetur adipiscing elit, sed do eiusmod tempor incididunt</string>
+    <string name="consectetur_adipiscing_elit">Please click on "Scedule appointment" to add appointments. Use "Manage facilities" to add a facility </string>
     <string name="schedule_appointment">Schedule Appointment</string>
     <string name="status">Status:&#160;</string>
     <string name="active">Active</string>

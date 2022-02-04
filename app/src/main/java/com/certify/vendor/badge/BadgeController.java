@@ -1,5 +1,11 @@
 package com.certify.vendor.badge;
 
+import static android.bluetooth.BluetoothDevice.BOND_BONDED;
+import static android.bluetooth.BluetoothDevice.BOND_BONDING;
+import static android.bluetooth.BluetoothDevice.BOND_NONE;
+import static com.netronix.ble.scan.BleScanConfig.ScanApi.API_21;
+
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,7 +13,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.util.Log;
+import android.view.View;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.certify.vendor.common.Utils;
 import com.netronix.ble.connect.BLEManager;
@@ -21,17 +31,10 @@ import com.netronix.ble.scan.BleScanProc;
 import com.netronix.ebadge.inc.IntentsDefined;
 
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
-
-import static android.bluetooth.BluetoothDevice.BOND_BONDED;
-import static android.bluetooth.BluetoothDevice.BOND_BONDING;
-import static android.bluetooth.BluetoothDevice.BOND_NONE;
-import static com.netronix.ble.scan.BleScanConfig.ScanApi.API_21;
 
 public class BadgeController {
     private static final String TAG = BadgeController.class.getSimpleName();
@@ -174,7 +177,7 @@ public class BadgeController {
 
         boolean mIsRegistered = false;
 
-        void register (Context context) {
+        void register(Context context) {
             IntentFilter iF = new IntentFilter();
 
             iF.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
@@ -184,12 +187,12 @@ public class BadgeController {
             iF.addAction(IntentsDefined.INTENT_action_name.ToApp_Progress.toString());
             iF.addAction(IntentsDefined.INTENT_action_name.ToApp_ReportStatus.toString());
 
-            context.registerReceiver(mBR,iF);
+            context.registerReceiver(mBR, iF);
             mIsRegistered = true;
             Log.i(TAG, "BleReceiver - registered !");
         }
 
-        void unRegister (Context context) {
+        void unRegister(Context context) {
             context.unregisterReceiver(mBR);
             mIsRegistered = false;
             Log.i(TAG, "BleReceiver - unregistered !");
@@ -199,14 +202,16 @@ public class BadgeController {
             reset();
         }
 
-        void reset () {
+        void reset() {
         }
 
         Intent mUserResult;
-        Intent getUserResult () {
+
+        Intent getUserResult() {
             return mUserResult;
         }
 
+        @SuppressLint("MissingPermission")
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -219,41 +224,37 @@ public class BadgeController {
 
                 IntentsDefined.ExtraValue_Command exCmd = IntentsDefined.ExtraValue_Command.getById(cmd);
 
-                Log.i(TAG, "onReceived : ToApp_CommandResult cmd="+exCmd.toString()+" result="+result);
+                Log.i(TAG, "onReceived : ToApp_CommandResult cmd=" + exCmd.toString() + " result=" + result);
 
-                if (cmd== IntentsDefined.ExtraValue_Command.Disconnect.getId()) {
+                if (cmd == IntentsDefined.ExtraValue_Command.Disconnect.getId()) {
                     //mH.sendMessage(mH.obtainMessage(MSG.disconnect.getWhat(), 1, result));
-                    return ;
+                    return;
                 }
-                if (cmd== IntentsDefined.ExtraValue_Command.Connect.getId()) {
+                if (cmd == IntentsDefined.ExtraValue_Command.Connect.getId()) {
                     //mH.sendMessage(mH.obtainMessage(MSG.connect.getWhat(), 1, result));
                     return;
                 }
 
                 Log.i(TAG, "Unknown ToApp_CommandResult received !");
 
-            }
-            else if (action.equals(IntentsDefined.INTENT_action_name.ToApp_ReportStatus.toString())) {
+            } else if (action.equals(IntentsDefined.INTENT_action_name.ToApp_ReportStatus.toString())) {
                 int istatus = intent.getIntExtra(IntentsDefined.INTENT_extra_name.ReportStatus.toString(), -1);
                 IntentsDefined.Status status = IntentsDefined.Status.getStatus(istatus);
 
-                if (null==status) {
-                    Log.e(TAG, "onReceive : ToApp_ReportStatus - received unknown status "+istatus);
+                if (null == status) {
+                    Log.e(TAG, "onReceive : ToApp_ReportStatus - received unknown status " + istatus);
                     //return;
                 }
                 int ierr = intent.getIntExtra(IntentsDefined.INTENT_extra_name.ErrorCode.toString(), -1);
 
                 //mH.sendMessage(mH.obtainMessage(MSG.status.what, istatus, ierr));
 
-            }
-            else if (action.equals(IntentsDefined.INTENT_action_name.ToApp_Progress.toString())) {
+            } else if (action.equals(IntentsDefined.INTENT_action_name.ToApp_Progress.toString())) {
                 // todo.
-            }
-            else if (action.equals(BluetoothDevice.ACTION_PAIRING_REQUEST)) {
+            } else if (action.equals(BluetoothDevice.ACTION_PAIRING_REQUEST)) {
                 Log.i(TAG, "onReceive : ACTION_PAIRING_REQUEST");
 
-            }
-            else if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
+            } else if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
                 BluetoothDevice dev = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
                 int state = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, -1);
@@ -261,15 +262,13 @@ public class BadgeController {
                 state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
                 BondState cur = BondState.getBondState(state);
 
-                Log.i(TAG, "onReceive : "+old+" -> "+cur);
+                Log.i(TAG, "onReceive : " + old + " -> " + cur);
 
-                if (BondState.bonding==cur) {
+                if (BondState.bonding == cur) {
                     dev.setPin("123456".getBytes()); //
-                }
-                else if (BondState.bonded==cur) {
+                } else if (BondState.bonded == cur) {
                     //mH.sendMessage(mH.obtainMessage(MSG.start.getWhat(), 0, 0));
-                }
-                else if (BondState.none==cur) {
+                } else if (BondState.none == cur) {
                 }
             }
         }
@@ -279,7 +278,7 @@ public class BadgeController {
 
         boolean mIsRegistered = false;
 
-        void register (Context context) {
+        void register(Context context) {
             IntentFilter iF = new IntentFilter();
             iF.addAction(IntentsDefined.Action.Response.toString());
             iF.addAction(IntentsDefined.Action.ReportStatus.toString());
@@ -290,12 +289,12 @@ public class BadgeController {
             iF.addAction(IntentsDefined.Action.ReportOTAStep.toString());
             iF.addAction(Statics.BLUETOOTH_GATT_UPDATE.toString());
 
-            context.registerReceiver(mBR,iF);
+            context.registerReceiver(mBR, iF);
             mIsRegistered = true;
             Log.i(TAG, "EbadgeBroadcastReceiver - registered !");
         }
 
-        void unRegister (Context context) {
+        void unRegister(Context context) {
             context.unregisterReceiver(mBR);
             mIsRegistered = false;
             Log.i(TAG, "EbadgeBroadcastReceiver - unregistered !");
@@ -310,34 +309,28 @@ public class BadgeController {
             if (action.equals(IntentsDefined.Action.Response.toString())) { //Response of command
                 int err = intent.getIntExtra(IntentsDefined.ExtraName.ErrorCode.toString(), -1);
                 IntentsDefined.ErrorCode errCode = IntentsDefined.ErrorCode.getErrorCode(err);
-                Log.i(TAG, "onReceived : Response["+errCode+"]");
+                Log.i(TAG, "onReceived : Response[" + errCode + "]");
                 if (errCode == IntentsDefined.ErrorCode.Send_Success_NextOne) {
                     getBattery();
                 }
-            }
-            else if (action.equals(IntentsDefined.Action.ReportStatus.toString())) { //return the connectiong Status between app and device
+            } else if (action.equals(IntentsDefined.Action.ReportStatus.toString())) { //return the connectiong Status between app and device
                 int status = intent.getIntExtra(IntentsDefined.ExtraName.Status.toString(), -1);
-                Log.i(TAG, "onReceived : ReportStatus = "+ status);
-            }
-            else if (action.equals(IntentsDefined.Action.ReportGetData.toString())) {
+                Log.i(TAG, "onReceived : ReportStatus = " + status);
+            } else if (action.equals(IntentsDefined.Action.ReportGetData.toString())) {
                 String getData = intent.getStringExtra(IntentsDefined.ExtraName.GetData.toString());
                 String getCmdAction = intent.getStringExtra(IntentsDefined.ExtraName.GetCmdAction.toString());
-                String reportData = String.format(getCmdAction+":"+getData);
-                Log.i(TAG, "onReceived : ReportGetData getData = "+getData);
+                String reportData = String.format(getCmdAction + ":" + getData);
+                Log.i(TAG, "onReceived : ReportGetData getData = " + getData);
                 //mH.sendMessageDelayed(mH.obtainMessage(MSG_bleGetData, reportData), 0);
                 /*badgeArg.setAction(IntentsDefined.Badge_action.Template_Image.getId());
                 setImage();*/
-            }
-            else if (action.equals(IntentsDefined.Action.ReportWriteProgress.toString())) {
+            } else if (action.equals(IntentsDefined.Action.ReportWriteProgress.toString())) {
                 /*precent = intent.getIntExtra(IntentsDefined.ExtraName.WriteProgress.toString(), -1);
                 mH.sendMessageDelayed(mH.obtainMessage(MSG_sendingPrecent), 0);*/
-            }
-            else if (action.equals(IntentsDefined.Action.ReportWriteOTAProgress.toString())) {
+            } else if (action.equals(IntentsDefined.Action.ReportWriteOTAProgress.toString())) {
                 /*otaPecent = intent.getIntExtra(IntentsDefined.ExtraName.WriteOTAProgress.toString(), -1);
                 mH.sendMessageDelayed(mH.obtainMessage(MSG_sendingOTAPrecent), 0);*/
-            }
-
-            else if (action.equals(IntentsDefined.Action.ReportOTAStep.toString())) {
+            } else if (action.equals(IntentsDefined.Action.ReportOTAStep.toString())) {
                 /*OTAResult = intent.getIntExtra(IntentsDefined.ExtraName.ReportOTAResult.toString(), -1);
                 if (OTAResult == Statics.OTA_STEP_SET_CHUNK_GONE) {
                     mf_suota.setChunkGone();
@@ -347,11 +340,25 @@ public class BadgeController {
                 } else if (OTAResult == Statics.OTA_STEP_ON_ERROR) {
                     mH.sendMessageDelayed(mH.obtainMessage(MSG_bleDisconnected), 0);
                 }*/
-            }
-            else if (action.equals(Statics.BLUETOOTH_GATT_UPDATE)) {
+            } else if (action.equals(Statics.BLUETOOTH_GATT_UPDATE)) {
                 int OTAStep = intent.getIntExtra("step", -1);
                 //mf_suota.processStep(intent);
             }
         }
+    }
+
+    public void convertUIToImage(ConstraintLayout badgeLayout, Context context) {
+        badgeLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                badgeLayout.getMeasuredWidth(),
+                badgeLayout.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888
+        );
+        Canvas canvas = new Canvas(bitmap);
+        badgeLayout.layout(0, 0, badgeLayout.getMeasuredWidth(), badgeLayout.getMeasuredHeight());
+        badgeLayout.draw(canvas);
+        Log.d(TAG, "Badge Convert to image");
+        BadgeController.getInstance().initBle(context, bitmap);
     }
 }

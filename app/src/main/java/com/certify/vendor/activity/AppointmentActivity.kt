@@ -12,7 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.navigation.NavigationBarView
 
-class AppointmentActivity : AppCompatActivity() ,BadgeUpdate{
+class AppointmentActivity : AppCompatActivity(), BadgeUpdate {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
