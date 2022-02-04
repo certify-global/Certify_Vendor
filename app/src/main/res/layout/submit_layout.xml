@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/constraintSubmitLayout"
+    android:visibility="gone">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginRight="@dimen/size_20"
+        app:cardBackgroundColor="@color/light_yellow"
+        app:cardCornerRadius="@dimen/size_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/size_09"
+                android:layout_height="match_parent"
+                android:background="@color/yellow"></View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_15"
+                android:layout_marginBottom="@dimen/size_15"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/appointment_place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:textColor="@color/brown"
+                    android:textSize="@dimen/size_20"
+                    android:textStyle="bold"></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_07"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/text_size_24"
+                        android:layout_height="@dimen/text_size_24"
+                        android:layout_marginStart="@dimen/size_17"
+                        android:src="@drawable/ic_appoinment_icon"/>
+
+                <TextView
+                    android:id="@+id/appointment_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_07"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:textColor="@color/header_color"
+                    android:textSize="@dimen/text_size_18"
+                    android:textStyle="bold"></TextView>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/appointment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:textColor="@color/header_color"
+                    android:textSize="@dimen/text_size_18"></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_07"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/size_27"
+                        android:layout_height="@dimen/size_27"
+                        android:layout_marginStart="@dimen/size_17"
+                        android:contentDescription="@string/location_pic"
+                        android:src="@drawable/ic_location_upcoming_appt">
+
+                    </ImageView>
+
+                    <TextView
+                        android:id="@+id/appointment_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/size_07"
+                        android:layout_marginEnd="@dimen/size_17"
+                        android:textColor="@color/header_color"
+                        android:textSize="@dimen/text_size_18"></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/re_schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_40"
+                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginTop="@dimen/size_05"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:background="@drawable/border_header_color"
+                    android:gravity="center"
+                    android:text="@string/reshedule"
+                    android:textColor="@color/header_color"
+                    android:textSize="@dimen/text_size_16"
+                    android:paddingLeft="@dimen/size_40"
+                    android:paddingRight="@dimen/size_40"></TextView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:text="@string/reason_for_visit"
+        android:textColor="@color/header_color"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/cardView2"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+
+    <EditText
+        android:id="@+id/editTextVisit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_150"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="@dimen/size_20"
+        android:background="@drawable/border_grey"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="@string/limit_140"
+        android:inputType="textMultiLine"
+        android:maxLength="140"
+        android:padding="@dimen/size_05"
+        app:layout_constraintEnd_toEndOf="@+id/cardView2"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:hint="@string/personName"
+        android:text="@string/onsite_contact"
+        android:textColor="@color/header_color"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/editTextVisit"
+        app:layout_constraintTop_toBottomOf="@+id/editTextVisit" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50"
+        android:layout_marginLeft="@dimen/size_20"
+        android:layout_marginRight="@dimen/size_20"
+        android:background="@drawable/border_grey"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:padding="@dimen/size_05"
+        android:hint="@string/personName"
+        app:layout_constraintStart_toStartOf="@+id/textView9"
+        app:layout_constraintTop_toBottomOf="@+id/textView9"
+        android:layout_marginTop="02dp"/>
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20"
+        android:background="@color/green"
+        android:paddingLeft="@dimen/size_60"
+        android:paddingRight="@dimen/size_60"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        android:layout_marginBottom="@dimen/size_20"
+        android:textAllCaps="false"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
