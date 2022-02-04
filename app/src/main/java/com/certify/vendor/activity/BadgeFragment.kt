@@ -7,10 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.certify.vendor.R
-import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
@@ -19,7 +17,6 @@ class BadgeFragment : Fragment() {
 
     private val TAG = BadgeFragment::class.java.name
     private lateinit var badgeView: View
-    private lateinit var badgeViewDevice: View
 
     private var sharedPreferences: SharedPreferences? = null
 
@@ -28,7 +25,6 @@ class BadgeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        badgeViewDevice = inflater.inflate(R.layout.badge_device_layout, container, false)
         badgeView = inflater.inflate(R.layout.fragment_badge, container, false)
         return badgeView
     }
@@ -80,8 +76,6 @@ class BadgeFragment : Fragment() {
                 validity?.setTextColor(resources.getColor(R.color.red))
                 timeStamp?.setTextColor(resources.getColor(R.color.red))
             }
-            setBadgeUI()
-
         } catch (e: Exception) {
 
         }
@@ -93,57 +87,5 @@ class BadgeFragment : Fragment() {
         //BadgeController.getInstance().init(context)
     }
 
-    private fun setBadgeUI() {
-        try {
-            val badgeUILayout: ConstraintLayout = badgeViewDevice.findViewById(R.id.badge_screen)
-            val userImage: ImageView? = badgeViewDevice.findViewById(R.id.img_user_badge)
-            val userPicStr =
-                AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
-            if (userPicStr.isNotEmpty())
-                userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
-            val badgeId: TextView? = badgeViewDevice.findViewById(R.id.tv_id_badge)
-            badgeId?.text = String.format(
-                "%s%s",
-                getString(R.string.id),
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
-            )
-            val companyName: TextView? = badgeViewDevice.findViewById(R.id.tv_company_name_badge)
-
-            companyName?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
-            val userName: TextView? = badgeViewDevice.findViewById(R.id.tv_user_name_badge)
-            userName?.text = String.format(
-                getString(R.string.badge_user_name),
-                AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
-                AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
-            )
-
-            val validity: TextView? = badgeViewDevice.findViewById(R.id.tv_expires_date_badge)
-            validity?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)
-                    ?.let { Utils.getDate(it, "dd-MM-yyyy") }
-            val timeStamp: TextView? = badgeViewDevice.findViewById(R.id.tv_time_badge)
-            timeStamp?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)
-                    ?.let { Utils.getDate(it, "HH:mm a") }
-            if (Utils.getDateValidation(
-                    AppSharedPreferences.readString(
-                        sharedPreferences,
-                        Constants.BADGE_EXPIRY
-                    )
-                )
-            ) {
-                timeStamp?.setTextColor(resources.getColor(R.color.green))
-                validity?.setTextColor(resources.getColor(R.color.green))
-
-            } else {
-                validity?.setTextColor(resources.getColor(R.color.red))
-                timeStamp?.setTextColor(resources.getColor(R.color.red))
-            }
-            BadgeController.getInstance().convertUIToImage(badgeUILayout, context)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
 }

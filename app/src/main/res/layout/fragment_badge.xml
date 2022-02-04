@@ -5,12 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray">
 
-    <include
-        layout="@layout/badge_device_layout"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent" />
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

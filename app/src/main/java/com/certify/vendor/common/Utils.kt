@@ -57,12 +57,29 @@ class Utils {
                 val hours = TimeUnit.MILLISECONDS.toHours(differenceInTime) % 24
                 val days = TimeUnit.MILLISECONDS.toDays(differenceInTime) % 365
                 val totalHours = hours + days * 24
-                Log.i(TAG,"getDateValidation :"+totalHours)
+                Log.i(TAG, "getDateValidation :" + totalHours)
                 return totalHours > 0
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             return false
+        }
+
+        fun getDateHours(inputData: String): Long {
+            try {
+                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val appLaunchDateTime = format.parse(inputData)
+                val currentDateTime = Date(System.currentTimeMillis())
+                val differenceInTime = currentDateTime.time - appLaunchDateTime?.time!!
+                val hours = TimeUnit.MILLISECONDS.toHours(differenceInTime) % 24
+                val days = TimeUnit.MILLISECONDS.toDays(differenceInTime) % 365
+                val totalHours = hours + (days * 24)
+                Log.i(TAG, "totalMinute :" + totalHours)
+                return totalHours
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return 0
         }
 
         fun setBitmapScale(selectBitmap: Bitmap): Bitmap? {

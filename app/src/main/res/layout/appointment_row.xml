@@ -1,18 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/appointment_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_05"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/appointment_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upcoming_appointment"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/view_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/view_all"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_14" />
+
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_15"
-        app:cardCornerRadius="@dimen/size_10"
         android:background="@color/light_yellow"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardCornerRadius="@dimen/size_10"
+        tools:ignore="NotSibling">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,10 +53,10 @@
             android:orientation="horizontal">
 
             <View
+                android:id="@+id/view_type"
                 android:layout_width="@dimen/size_09"
                 android:layout_height="match_parent"
-                android:background="@color/yellow">
-            </View>
+                android:background="@color/yellow" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,10 +71,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_51"
                     android:layout_marginEnd="@dimen/size_17"
+                    android:textColor="@color/brown"
                     android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold"
-                    android:textColor="@color/brown">
-                </TextView>
+                    android:textStyle="bold"></TextView>
 
                 <TextView
                     android:id="@+id/appointment_time"
@@ -49,9 +81,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/size_51"
                     android:layout_marginEnd="@dimen/size_17"
-                    android:textSize="@dimen/text_size_18"
-                    android:textColor="@color/brown">
-                </TextView>
+                    android:textColor="@color/brown"
+                    android:textSize="@dimen/text_size_18"></TextView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -74,9 +105,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/size_07"
                         android:layout_marginEnd="@dimen/size_17"
-                        android:textSize="@dimen/text_size_18"
-                        android:textColor="@color/black">
-                    </TextView>
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_18"></TextView>
 
                 </LinearLayout>
 
@@ -85,19 +115,17 @@
                     android:layout_width="@dimen/size_102"
                     android:layout_height="@dimen/size_40"
                     android:layout_marginStart="@dimen/size_51"
-                    android:layout_marginEnd="@dimen/size_17"
                     android:layout_marginTop="@dimen/size_13"
+                    android:layout_marginEnd="@dimen/size_17"
+                    android:background="@color/green"
                     android:gravity="center"
                     android:text="@string/check_in"
-                    android:textSize="@dimen/text_size_12"
                     android:textColor="@color/white"
-                    android:background="@color/green">
-                </TextView>
+                    android:textSize="@dimen/text_size_12"></TextView>
 
             </LinearLayout>
 
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

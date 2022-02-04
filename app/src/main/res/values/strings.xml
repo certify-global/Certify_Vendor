@@ -22,6 +22,7 @@
     <!-- Appointment screen -->
     <string name="welcome_home">Welcome home</string>
     <string name="upcoming_appointment">Upcoming Appointment</string>
+    <string name="past_appointment">Past Appointment</string>
     <string name="appt_user_name">Hi %1$s</string>
     <string name="wave_hand">Wave Hand</string>
     <string name="user_pic">User Profile pic</string>
