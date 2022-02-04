@@ -63,12 +63,10 @@ class AppointmentListFragment : BaseFragment() {
 
     private fun initView() {
         pDialog = Utils.ShowProgressDialog(requireContext())
-        val userName: TextView? = view?.findViewById(R.id.appt_user_name)
         progressIndicator = appointView.findViewById(R.id.progress_indicator)
         val userName: TextView? = appointView.findViewById(R.id.appt_user_name)
         userName?.text =
             String.format(getString(R.string.appt_user_name),AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
-        val userPic: ImageView? = view?.findViewById(R.id.user_profile_pic)
             String.format(
                 getString(R.string.appt_user_name),
                 AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME)
@@ -135,19 +133,11 @@ class AppointmentListFragment : BaseFragment() {
 
             val validity: TextView? = appointView.findViewById(R.id.tv_expires_date_badge)
             validity?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)
-                    ?.let { Utils.getDate(it, "dd-MM-yyyy") }
+                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)?.let { Utils.getDate(it, "dd-MM-yyyy") }
             val timeStamp: TextView? = appointView.findViewById(R.id.tv_time_badge)
             timeStamp?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)
-                    ?.let { Utils.getDate(it, "HH:mm a") }
-            if (Utils.getDateValidation(
-                    AppSharedPreferences.readString(
-                        sharedPreferences,
-                        Constants.BADGE_EXPIRY
-                    )
-                )
-            ) {
+                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)?.let { Utils.getDate(it, "HH:mm a") }
+            if (Utils.getDateValidation(AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY))) {
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
 
