@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.certify.vendor.R
 import com.certify.vendor.api.response.AppointmentData
 import com.certify.vendor.badge.Badge
+import com.certify.vendor.callback.AppointmentCheckIn
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppointmentDataSource
 
 class AppointmentListAdapter(
     var context: Context?,
+    var appointmentLagenar: AppointmentCheckIn,
     var appointmentList: List<AppointmentData>
 ) : RecyclerView.Adapter<AppointmentListAdapter.AppointmentViewHolder>() {
 
@@ -26,26 +28,35 @@ class AppointmentListAdapter(
     }
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
-
-
         if (!Utils.getDateValidation(appointmentList.get(position).end)) {
-            if (Utils.getDateHours(appointmentList.get(position).start).equals(0)) {
-                holder.checkInOut.visibility = View.VISIBLE
-            } else holder.checkInOut.visibility = View.VISIBLE
-            context?.getColor(R.color.yellow)?.let { holder.viewColor.setBackgroundColor(it) }
+            if (Utils.isCheckInTime(appointmentList.get(position).start,appointmentList.get(position).end)) {
+                context?.getColor(R.color.red)?.let { holder.viewColor.setBackgroundColor(it)}
+                    holder.checkInOut.visibility = View.VISIBLE
+                if(appointmentList.get(position).statusFlag == 7 )
+                    holder.checkInOut.text = context?.getString(R.string.check_in)
+                else if(appointmentList.get(position).statusFlag == 1) holder.checkInOut.text = context?.getString(R.string.check_out)
+            } else {
+                holder.checkInOut.visibility = View.GONE
+                context?.getColor(R.color.yellow)?.let { holder.viewColor.setBackgroundColor(it) }
+            }
             if (isUpcoming) {
                 holder.appointmentStatus.text = context?.getString(R.string.upcoming_appointment)
-                holder.appointmentLayout.visibility = View.VISIBLE
                 isUpcoming = false;
-            } else if (position != 0) holder.appointmentLayout.visibility = View.GONE
+            }
+            if (position == 0) holder.appointmentLayout.visibility = View.VISIBLE
+            else holder.appointmentLayout.visibility = View.GONE
         } else {
-            context?.getColor(R.color.blue)?.let { holder.viewColor.setBackgroundColor(it) }
             holder.checkInOut.visibility = View.GONE
+            context?.getColor(R.color.blue)?.let { holder.viewColor.setBackgroundColor(it) }
             if (ispast) {
                 holder.appointmentStatus.text = context?.getString(R.string.past_appointment)
+                pastAppointPosition = position
                 holder.appointmentLayout.visibility = View.VISIBLE
                 ispast = false
-            } else holder.appointmentLayout.visibility = View.GONE
+            }
+            if(pastAppointPosition==position)
+                holder.appointmentLayout.visibility = View.VISIBLE
+            else holder.appointmentLayout.visibility = View.GONE
         }
         holder.appointmentDate.text =
             Utils.getDate(appointmentList.get(position).start, "dd MMM yyyy")
@@ -65,7 +76,7 @@ class AppointmentListAdapter(
             )
         }
         holder.checkInOut.setOnClickListener {
-            //Badge.init(context)
+            appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
         }
     }
 
@@ -92,5 +103,6 @@ class AppointmentListAdapter(
 
     var isUpcoming: Boolean = true
     var ispast: Boolean = true
+    var pastAppointPosition = -1
 
 }

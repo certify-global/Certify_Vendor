@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.certify.vendor.R
@@ -56,12 +57,11 @@ class BadgeFragment : Fragment() {
 
             val validity: TextView? = badgeView.findViewById(R.id.badge_expires_date)
             validity?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)
-                    ?.let { Utils.getDate(it, "dd-MM-yyyy") }
+                AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
             val timeStamp: TextView? = badgeView.findViewById(R.id.badge_time)
             timeStamp?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY)
-                    ?.let { Utils.getDate(it, "HH:mm a") }
+                AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_TIME)
+
             if (Utils.getDateValidation(
                     AppSharedPreferences.readString(
                         sharedPreferences,
@@ -76,6 +76,13 @@ class BadgeFragment : Fragment() {
                 validity?.setTextColor(resources.getColor(R.color.red))
                 timeStamp?.setTextColor(resources.getColor(R.color.red))
             }
+            val imgInactive: ImageView? = badgeView.findViewById(R.id.img_inactive)
+            val llView: LinearLayout? = badgeView.findViewById(R.id.ll_view)
+if(AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE).isEmpty())
+{
+    imgInactive?.visibility = View.VISIBLE
+    llView?.alpha =.2f
+}else imgInactive?.visibility = View.GONE
         } catch (e: Exception) {
 
         }

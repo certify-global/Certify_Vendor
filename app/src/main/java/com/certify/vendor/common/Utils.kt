@@ -1,6 +1,8 @@
 package com.certify.vendor.common
 
+import android.annotation.SuppressLint
 import android.app.Dialog
+import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,7 +11,6 @@ import android.util.Base64
 import android.util.Log
 import com.certify.vendor.R
 import java.text.DateFormat
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -87,6 +88,22 @@ class Utils {
             return 0
         }
 
+        fun isCheckInTime(startDate: String, endDate: String): Boolean {
+            try{
+                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val startDateTime = format.parse(startDate)
+                val endDateTime = format.parse(endDate)
+                val currentDateTime = Date(System.currentTimeMillis())
+
+                 if(currentDateTime.compareTo(startDateTime) >= 0 && currentDateTime.compareTo(endDateTime) < 0)
+                    return true
+                else return false
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+            return false
+        }
+
         fun setBitmapScale(selectBitmap: Bitmap): Bitmap? {
             val fw = 640f
             val fh = 400f
@@ -136,7 +153,8 @@ class Utils {
             }
             return ""
         }
-        fun getTime24to12(inputData: String) : String {
+
+        fun getTime24to12(inputData: String): String {
             try {
                 try {
                     val _24HourSDF = SimpleDateFormat("HH:mm")
@@ -151,20 +169,25 @@ class Utils {
             }
             return ""
         }
-        fun getCurrentTime24() : String {
+
+        fun getCurrentTime24(): String {
             val currentTime: String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
             return currentTime;
         }
-        fun getCurrentTime() : String {
-            val currentTime: String = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
-             return currentTime;
+
+        fun getCurrentTime(): String {
+            val currentTime: String =
+                SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
+            return currentTime;
         }
-        fun getCurrentDate() : String {
-            val currentDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+        fun getCurrentDate(): String {
+            val currentDate: String =
+                SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
             return currentDate;
         }
 
-        fun isTimeBigger(startTime:String,endTime:String): Boolean {
+        fun isTimeBigger(startTime: String, endTime: String): Boolean {
             var result = false
             var simpleDateFormat = SimpleDateFormat("HH:mm")
             var startDate = simpleDateFormat.parse(startTime)
@@ -182,8 +205,14 @@ class Utils {
             return dialog
         }
 
-
+    @SuppressLint("MissingPermission")
+    fun enableBluetooth() {
+        try {
+            val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+            bluetoothAdapter.enable()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
     }
-
-
+    }
 }
