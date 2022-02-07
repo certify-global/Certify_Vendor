@@ -128,6 +128,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         val badgeUILayout: ConstraintLayout = appointView.findViewById(R.id.badge_screen)
         val rlBadge: RelativeLayout = appointView.findViewById(R.id.rl_badge_status);
         val userImage: ImageView? = appointView.findViewById(R.id.img_user_badge)
+        val QRCodeImage: ImageView? = appointView.findViewById(R.id.img_qa_badge)
         val companyName: TextView? = appointView.findViewById(R.id.tv_company_name_badge)
         val badgeId: TextView? = appointView.findViewById(R.id.tv_id_badge)
         val userName: TextView? = appointView.findViewById(R.id.tv_user_name_badge)
@@ -148,7 +149,9 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
             )
 
-            companyName?.text =
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)))
+
+                    companyName?.text =
                 AppSharedPreferences.readString(
                     sharedPreferences,
                     Constants.VENDOR_COMPANY_NAME

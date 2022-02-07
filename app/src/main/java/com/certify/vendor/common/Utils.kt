@@ -10,6 +10,11 @@ import android.graphics.Matrix
 import android.util.Base64
 import android.util.Log
 import com.certify.vendor.R
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -214,5 +219,18 @@ class Utils {
             e.printStackTrace()
         }
     }
+        fun QRCodeGenerator(guid: String?): Bitmap? {
+            val multiFormatWriter = MultiFormatWriter()
+            try {
+                val bitMatrix: BitMatrix =
+                    multiFormatWriter.encode(guid, BarcodeFormat.QR_CODE, 60, 60)
+                val barcodeEncoder = BarcodeEncoder()
+                return barcodeEncoder.createBitmap(bitMatrix)
+            } catch (e: WriterException) {
+                e.printStackTrace()
+            }
+            return null
+        }
+
     }
 }

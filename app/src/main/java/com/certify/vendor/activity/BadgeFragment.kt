@@ -62,6 +62,17 @@ class BadgeFragment : Fragment() {
             timeStamp?.text =
                 AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_TIME)
 
+            val qrCodeImage: ImageView? = badgeView.findViewById(R.id.badge_qr_code)
+            qrCodeImage?.setImageBitmap(
+                Utils.QRCodeGenerator(
+                    AppSharedPreferences.readString(
+                        sharedPreferences,
+                        Constants.BADGE_ID
+                    )
+                )
+            )
+
+
             if (Utils.getDateValidation(
                     AppSharedPreferences.readString(
                         sharedPreferences,
@@ -78,11 +89,12 @@ class BadgeFragment : Fragment() {
             }
             val imgInactive: ImageView? = badgeView.findViewById(R.id.img_inactive)
             val llView: LinearLayout? = badgeView.findViewById(R.id.ll_view)
-if(AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE).isEmpty())
-{
-    imgInactive?.visibility = View.VISIBLE
-    llView?.alpha =.2f
-}else imgInactive?.visibility = View.GONE
+            if (AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
+                    .isEmpty()
+            ) {
+                imgInactive?.visibility = View.VISIBLE
+                llView?.alpha = .2f
+            } else imgInactive?.visibility = View.GONE
         } catch (e: Exception) {
 
         }

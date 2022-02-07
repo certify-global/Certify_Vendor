@@ -33,10 +33,10 @@ android {
         jvmTarget = '1.8'
     }
 
-    /*buildFeatures {
+    buildFeatures {
         dataBinding true
         viewBinding true
-    }*/
+    }
 }
 
 dependencies {
@@ -58,9 +58,9 @@ dependencies {
     implementation "android.arch.work:work-runtime-ktx:2.3.5"
     androidTestImplementation("androidx.navigation:navigation-testing:2.3.5")
     //data binding
-    /*implementation 'com.android.databinding:viewbinding:7.0.4'
+    implementation 'com.android.databinding:viewbinding:7.0.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
-    implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"*/
+    implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
@@ -71,6 +71,9 @@ dependencies {
 
     //CountryCode picker
     implementation 'com.github.joielechong:countrycodepicker:2.4.2'
+    implementation 'com.google.zxing:core:3.4.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+
 
     //EBadge library
     implementation project(':Inc_ebadge')
