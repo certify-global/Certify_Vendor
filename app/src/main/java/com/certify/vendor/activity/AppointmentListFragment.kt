@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.certify.vendor.Controller.AppointmentController
@@ -39,6 +41,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
     private var userLocation: Location? = Location("")
+    private var textviewscheduleAppoinment: TextView? =null
 
 
     //private lateinit var badgeViewDevice: View
@@ -70,6 +73,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         baseViewModel = appointmentViewModel
         baseViewModel = updateAppointmentViewModel
         initView()
+        setOnClickListener()
         pDialog?.show()
         appointmentViewModel.init(context)
         appointmentViewModel.getAppointments(
@@ -88,10 +92,18 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         )
     }
 
+    private fun setOnClickListener() {
+     textviewscheduleAppoinment?.setOnClickListener {
+         findNavController().navigate(R.id.scheduleFragment)
+
+     }
+    }
+
     private fun initView() {
         pDialog = Utils.ShowProgressDialog(requireContext())
         progressIndicator = appointView.findViewById(R.id.progress_indicator)
         val userName: TextView? = appointView.findViewById(R.id.appt_user_name)
+        textviewscheduleAppoinment= appointView.findViewById(R.id.textview_scheduleAppoinment)
         userName?.text =
             String.format(
                 getString(R.string.appt_user_name),

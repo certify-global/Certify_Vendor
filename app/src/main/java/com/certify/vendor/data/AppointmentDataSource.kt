@@ -10,7 +10,7 @@ object AppointmentDataSource {
     private var pastAppointPosition = -1
 
 
-    fun addAppointmentList(apptmentList: List<AppointmentData>) {//Utils.getDate(apptmentList.get(0).start,"yyyy-MM-dd")
+    fun addAppointmentList(apptmentList: List<AppointmentData>) {
         appointmentList.clear()
         appointmentList.addAll(apptmentList.sortedByDescending {it.start })
     }
