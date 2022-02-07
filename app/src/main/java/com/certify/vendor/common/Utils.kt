@@ -59,7 +59,7 @@ class Utils {
             return ""
         }
 
-        fun getDateValidation(inputData: String): Boolean {
+        fun getDateValidation(inputData: String): Long {
             try {
                 val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
                 val appLaunchDateTime = format.parse(inputData)
@@ -69,11 +69,11 @@ class Utils {
                 val days = TimeUnit.MILLISECONDS.toDays(differenceInTime) % 365
                 val totalHours = hours + days * 24
                 Log.i(TAG, "getDateValidation :" + totalHours)
-                return totalHours > 0
+                return totalHours
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return false
+            return 0
         }
 
         fun getDateHours(inputData: String): Long {

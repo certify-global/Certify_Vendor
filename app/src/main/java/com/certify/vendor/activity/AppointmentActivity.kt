@@ -1,6 +1,5 @@
 package com.certify.vendor.activity
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,13 +7,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.certify.vendor.R
-import com.certify.vendor.callback.BadgeUpdate
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.internal.NavigationMenu
 import com.google.android.material.navigation.NavigationBarView
 
-class AppointmentActivity : AppCompatActivity() , BadgeUpdate {
+class AppointmentActivity : AppCompatActivity() {
     private var floatingActionButton: FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,9 +72,5 @@ class AppointmentActivity : AppCompatActivity() , BadgeUpdate {
     override fun onBackPressed() {
         super.onBackPressed()
         finishAffinity()
-    }
-
-    override fun badgeUIUpdate() {
-        TODO("Not yet implemented")
     }
 }

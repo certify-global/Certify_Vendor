@@ -78,7 +78,7 @@ class BadgeFragment : Fragment() {
                         sharedPreferences,
                         Constants.BADGE_EXPIRY
                     )
-                )
+                ) > 0
             ) {
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
