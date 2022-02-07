@@ -1,6 +1,7 @@
 package com.certify.vendor.data
 
 import com.certify.vendor.api.response.AppointmentData
+import com.certify.vendor.common.Utils
 
 object AppointmentDataSource {
 
@@ -9,9 +10,9 @@ object AppointmentDataSource {
     private var pastAppointPosition = -1
 
 
-    fun addAppointmentList(apptmentList: List<AppointmentData>) {
+    fun addAppointmentList(apptmentList: List<AppointmentData>) {//Utils.getDate(apptmentList.get(0).start,"yyyy-MM-dd")
         appointmentList.clear()
-        appointmentList.addAll(apptmentList.reversed())
+        appointmentList.addAll(apptmentList.sortedByDescending {it.start })
     }
 
 
