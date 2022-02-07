@@ -67,7 +67,7 @@ class BadgeFragment : Fragment() {
                         sharedPreferences,
                         Constants.BADGE_EXPIRY
                     )
-                )
+                ) > 0
             ) {
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
@@ -78,11 +78,12 @@ class BadgeFragment : Fragment() {
             }
             val imgInactive: ImageView? = badgeView.findViewById(R.id.img_inactive)
             val llView: LinearLayout? = badgeView.findViewById(R.id.ll_view)
-if(AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE).isEmpty())
-{
-    imgInactive?.visibility = View.VISIBLE
-    llView?.alpha =.2f
-}else imgInactive?.visibility = View.GONE
+            if (AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
+                    .isEmpty()
+            ) {
+                imgInactive?.visibility = View.VISIBLE
+                llView?.alpha = .2f
+            } else imgInactive?.visibility = View.GONE
         } catch (e: Exception) {
 
         }

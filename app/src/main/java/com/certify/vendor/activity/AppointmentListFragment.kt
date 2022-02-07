@@ -1,17 +1,21 @@
 package com.certify.vendor.activity
 
+import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.SharedPreferences
+import android.location.*
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.certify.vendor.Controller.AppointmentController
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.api.response.AppointmentData
@@ -21,7 +25,6 @@ import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
-import com.certify.vendor.data.LoginDataSource
 import com.certify.vendor.model.AppointmentViewModel
 import com.certify.vendor.model.UpdateAppointmentViewModel
 
@@ -35,6 +38,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     private var adapter: AppointmentListAdapter? = null
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
+    private var userLocation: Location? = Location("")
 
 
     //private lateinit var badgeViewDevice: View
@@ -52,6 +56,12 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        context?.let { it ->
+            AppointmentController.getInstance()?.initAppointment(
+                it
+            )
+        }
+        getUserLocation()
         appointmentViewModel = ViewModelProviders.of(this@AppointmentListFragment)
             .get(AppointmentViewModel::class.java)
         updateAppointmentViewModel = ViewModelProviders.of(this@AppointmentListFragment)
@@ -72,8 +82,10 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         setAppointmentListener()
         updateAppointmentListener()
         Utils.enableBluetooth()
-        AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)),
-            Constants.APPOINT_DATE, "")
+        AppSharedPreferences.writeSp(
+            (AppSharedPreferences.getSharedPreferences(context)),
+            Constants.APPOINT_DATE, ""
+        )
     }
 
     private fun initView() {
@@ -114,7 +126,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 recyclerView?.adapter?.notifyDataSetChanged()
                 llNoAppointment?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
-                if (Utils.getDateValidation(AppointmentDataSource.getAppointmentList()[0].end))
+                if (Utils.getDateValidation(AppointmentDataSource.getAppointmentList()[0].end) > 0)
                     llNoAppointment?.visibility = View.VISIBLE
                 else llNoAppointment?.visibility = View.GONE
             } else {
@@ -160,8 +172,10 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             )
             var dateStr = endDate.let { Utils.getDate(it, "dd-MM-yyyy") }
             validity?.text = dateStr
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)),
-                Constants.APPOINT_DATE, dateStr)
+            AppSharedPreferences.writeSp(
+                (AppSharedPreferences.getSharedPreferences(context)),
+                Constants.APPOINT_DATE, dateStr
+            )
             var timeStampStr = context?.getString(R.string.appointment_time)?.let {
                 String.format(
                     it,
@@ -170,9 +184,11 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 )
             }
             timeStamp?.text = timeStampStr
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)),
-                Constants.APPOINT_TIME, timeStampStr)
-            if (Utils.getDateValidation(endDate)) {
+            AppSharedPreferences.writeSp(
+                (AppSharedPreferences.getSharedPreferences(context)),
+                Constants.APPOINT_TIME, timeStampStr
+            )
+            if (Utils.getDateValidation(endDate)>0) {
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
 
@@ -225,4 +241,32 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
         })
     }
+
+    @SuppressLint("MissingPermission")
+    fun getUserLocation() {
+        val lm = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val criteria = Criteria()
+        val bestProvider = lm.getBestProvider(criteria, false)
+        val location = lm.getLastKnownLocation(bestProvider!!)
+        if (location == null) {
+            Toast.makeText(activity, "Location Not found", Toast.LENGTH_LONG).show()
+        } else {
+            val geocoder = Geocoder(activity)
+            try {
+                val user =
+                    geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                userLocation?.latitude = user.get(0).latitude;
+                userLocation?.longitude = user.get(0).longitude;
+                Log.i("getUserLocation", "" + user.get(0).latitude + "," + user.get(0).longitude)
+                userLocation?.let { it1 ->
+                    AppointmentController.getInstance()?.setAppointmentLocation(
+                        it1
+                    )
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
 }

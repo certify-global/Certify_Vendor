@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.certify.vendor.Controller.AppointmentController
 import com.certify.vendor.R
 import com.certify.vendor.api.response.AppointmentData
 import com.certify.vendor.badge.Badge
 import com.certify.vendor.callback.AppointmentCheckIn
 import com.certify.vendor.common.Utils
+import com.certify.vendor.common.Utils.Companion.getDateValidation
 import com.certify.vendor.data.AppointmentDataSource
 
 class AppointmentListAdapter(
@@ -28,13 +30,29 @@ class AppointmentListAdapter(
     }
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
-        if (!Utils.getDateValidation(appointmentList.get(position).end)) {
-            if (Utils.isCheckInTime(appointmentList.get(position).start,appointmentList.get(position).end)) {
-                context?.getColor(R.color.red)?.let { holder.viewColor.setBackgroundColor(it)}
-                    holder.checkInOut.visibility = View.VISIBLE
-                if(appointmentList.get(position).statusFlag == 7 )
+        val facilityAddress = appointmentList.get(position).facilityAddress
+        val address = context?.getString(R.string.appointment_location)?.let {
+            String.format(
+                it,
+                facilityAddress.address1, facilityAddress.address2,
+                facilityAddress.city, facilityAddress.state, facilityAddress.zip
+            )
+        }
+        if (getDateValidation(appointmentList.get(position).end) <= 0) {
+            if (Utils.isCheckInTime(
+                    appointmentList.get(position).start,
+                    appointmentList.get(position).end
+                )
+            ) {
+                context?.getColor(R.color.red)?.let { holder.viewColor.setBackgroundColor(it) }
+
+                if( AppointmentController.getInstance()?.getAddressToLatLon(address!!)!! && Utils.getDateValidation(appointmentList.get(position).end).compareTo(0)==0)
+                holder.checkInOut.visibility = View.VISIBLE
+                else holder.checkInOut.visibility = View.GONE
+                if (appointmentList.get(position).statusFlag == 7)
                     holder.checkInOut.text = context?.getString(R.string.check_in)
-                else if(appointmentList.get(position).statusFlag == 1) holder.checkInOut.text = context?.getString(R.string.check_out)
+                else if (appointmentList.get(position).statusFlag == 1) holder.checkInOut.text =
+                    context?.getString(R.string.check_out)
             } else {
                 holder.checkInOut.visibility = View.GONE
                 context?.getColor(R.color.yellow)?.let { holder.viewColor.setBackgroundColor(it) }
@@ -54,7 +72,7 @@ class AppointmentListAdapter(
                 holder.appointmentLayout.visibility = View.VISIBLE
                 ispast = false
             }
-            if(pastAppointPosition==position)
+            if (pastAppointPosition == position)
                 holder.appointmentLayout.visibility = View.VISIBLE
             else holder.appointmentLayout.visibility = View.GONE
         }
@@ -67,14 +85,7 @@ class AppointmentListAdapter(
                 Utils.getTime(appointmentList.get(position).end)
             )
         }
-        val facilityAddress = appointmentList.get(position).facilityAddress
-        holder.appointmentLocation.text = context?.getString(R.string.appointment_location)?.let {
-            String.format(
-                it,
-                facilityAddress.address1, facilityAddress.address2,
-                facilityAddress.city, facilityAddress.state, facilityAddress.zip
-            )
-        }
+        holder.appointmentLocation.text = address
         holder.checkInOut.setOnClickListener {
             appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
         }
