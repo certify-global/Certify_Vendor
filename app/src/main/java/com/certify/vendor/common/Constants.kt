@@ -14,7 +14,8 @@ class Constants {
         val VENDOR_COMPANY_NAME = "vendorCompanyName"
         val LAST_NAME = "lastName"
         val BADGE_EXPIRY = "badgeExpiry"
-
+        val APPOINT_TIME = "appointTime"
+        val APPOINT_DATE = "appointDate"
 
     }
 }

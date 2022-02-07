@@ -3,6 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/border_black.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/border_grey.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/border_header_color.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/edit_text_border.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_appoinment_icon.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_arrow_back.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_badge.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_credential.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_home.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_location_upcoming_appt.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/wight_view.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/badge_device_layout.xml" value="0.176" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_appointment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_badge.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/Certify_Vendor/app/src/main/res/drawable-anydpi/ic_action_add.xml" value="0.287109375" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/Certify_Vendor/app/src/main/res/drawable/edit_text_border.xml" value="0.287109375" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/Certify_Vendor/app/src/main/res/drawable/ic_home.xml" value="0.287109375" />
@@ -22,7 +36,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
