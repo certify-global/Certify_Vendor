@@ -113,7 +113,6 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/appt_recycler_view"
         android:layout_width="match_parent"
@@ -122,6 +121,5 @@
         android:visibility="visible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ll_no_appointment" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
