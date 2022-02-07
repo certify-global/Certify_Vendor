@@ -93,6 +93,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         startTime=Utils.getCurrentTime24()
         endTime= Utils.getCurrentTime24()
         pDialog = Utils.ShowProgressDialog(requireContext())
+
     }
     private fun setOnClickListener() {
         calendarLayoutBinding?.textClockStart?.setOnClickListener {
@@ -102,7 +103,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                     val minute = if (minute < 10) "0$minute" else minute.toString()
                     startTime= String.format("%d", hourOfDay)+":"+minute
                     calendarLayoutBinding?.textClockStart?.setText(Utils.getTime24to12(startTime))
-                }, hour, minute, false
+                },hour, minute, false
             )
             mTimePicker?.show()
         }

@@ -27,7 +27,6 @@ class AppointmentListAdapter(
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
 
-
         if (!Utils.getDateValidation(appointmentList.get(position).end)) {
             if (Utils.getDateHours(appointmentList.get(position).start).equals(0)) {
                 holder.checkInOut.visibility = View.VISIBLE
