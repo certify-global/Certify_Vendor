@@ -63,7 +63,7 @@
     <string name="reshedule">Reschedule</string>
     <string name="reason_for_visit">Reason for visit*</string>
     <string name="limit_140">Maximum 140 characters</string>
-    <string name="onsite_contact">on-Site Contact*</string>
+    <string name="onsite_contact">On-Site Contact*</string>
     <string name="personName">Person Name</string>
     <string name="thanks_booking">Thanks for booking!</string>
     <string name="appoinment_confirmation">You booked an appointment with </string>

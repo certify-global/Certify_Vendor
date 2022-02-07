@@ -6,6 +6,8 @@ import android.app.TimePickerDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +16,7 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.certify.vendor.R
 import com.certify.vendor.api.response.FacilityData
 import com.certify.vendor.common.Constants
@@ -26,6 +28,7 @@ import com.certify.vendor.databinding.*
 import com.certify.vendor.model.AppointmentViewModel
 import com.certify.vendor.model.FacilityViewModel
 import com.certify.vendor.model.ScheduleAppointmentViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.internal.Util
 import java.text.SimpleDateFormat
 import java.util.*
@@ -65,9 +68,9 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         calendarLayoutBinding = fragmentBinding?.facilityCalendarLayout
         submitLayoutBinding = fragmentBinding?.appoinmentSubmitLayout
         successLayoutBinding = fragmentBinding?.appoinmentSuccessLayout
-        facilityViewModel = ViewModelProviders.of(this@ScheduleAppoinmentFragment)
+        facilityViewModel = ViewModelProvider(this)
             .get(FacilityViewModel::class.java)
-        scheduleAppointmentViewModel = ViewModelProviders.of(this@ScheduleAppoinmentFragment)
+        scheduleAppointmentViewModel =ViewModelProvider(this)
             .get(ScheduleAppointmentViewModel::class.java)
         baseViewModel = facilityViewModel
         baseViewModel = scheduleAppointmentViewModel
@@ -93,6 +96,8 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         startTime=Utils.getCurrentTime24()
         endTime= Utils.getCurrentTime24()
         pDialog = Utils.ShowProgressDialog(requireContext())
+//        var mBottomNavigationView:BottomNavigationView = (requireActivity().findViewById<View>(R.id.navigation_menu_view) as BottomNavigationView)
+//        mBottomNavigationView.getMenu().findItem(R.id.menu_home).setChecked()
 
     }
     private fun setOnClickListener() {

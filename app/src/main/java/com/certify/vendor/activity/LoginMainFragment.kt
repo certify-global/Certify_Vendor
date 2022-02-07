@@ -9,7 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.certify.vendor.R
 import com.certify.vendor.common.Constants
@@ -38,7 +38,7 @@ class LoginMainFragment : BaseFragment() {
             viewmodel = loginViewModel
         }
         return fragmentLoginBinding.root*/
-        loginViewModel = ViewModelProviders.of(this@LoginMainFragment).get(LoginViewModel::class.java)
+        loginViewModel =ViewModelProvider(this).get(LoginViewModel::class.java)
         baseViewModel = loginViewModel
         return view
     }

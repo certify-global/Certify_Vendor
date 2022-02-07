@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.location.*
 import android.os.Bundle
 import android.util.Log
@@ -12,7 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +32,7 @@ import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
 import com.certify.vendor.model.AppointmentViewModel
 import com.certify.vendor.model.UpdateAppointmentViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
@@ -65,9 +69,9 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             )
         }
         getUserLocation()
-        appointmentViewModel = ViewModelProviders.of(this@AppointmentListFragment)
+        appointmentViewModel =  ViewModelProvider(this)
             .get(AppointmentViewModel::class.java)
-        updateAppointmentViewModel = ViewModelProviders.of(this@AppointmentListFragment)
+        updateAppointmentViewModel =  ViewModelProvider(this)
             .get(UpdateAppointmentViewModel::class.java)
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         baseViewModel = appointmentViewModel
@@ -95,7 +99,6 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     private fun setOnClickListener() {
      textviewscheduleAppoinment?.setOnClickListener {
          findNavController().navigate(R.id.scheduleFragment)
-
      }
     }
 
