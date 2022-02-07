@@ -21,5 +21,11 @@
     <color name="light_grey">#A5ACB9</color>
     <color name="text_light_blue">#525EF6</color>
     <color name="purple_transparent">#00000000</color>
+    <color name="check_in">#28a745</color>
+    <color name="cancelled">#dc3545</color>
+    <color name="pending">#007bff</color>
+    <color name="checkout">#007bff</color>
+    <color name="approved">#28a745</color>
+    <color name="declined">#dc3545</color>
 
 </resources>

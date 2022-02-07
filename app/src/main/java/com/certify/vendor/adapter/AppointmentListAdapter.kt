@@ -44,7 +44,6 @@ class AppointmentListAdapter(
                     appointmentList.get(position).end
                 )
             ) {
-                context?.getColor(R.color.red)?.let { holder.viewColor.setBackgroundColor(it) }
 
                 if( AppointmentController.getInstance()?.getAddressToLatLon(address!!)!! && Utils.getDateValidation(appointmentList.get(position).end).compareTo(0)==0)
                 holder.checkInOut.visibility = View.VISIBLE
@@ -55,7 +54,6 @@ class AppointmentListAdapter(
                     context?.getString(R.string.check_out)
             } else {
                 holder.checkInOut.visibility = View.GONE
-                context?.getColor(R.color.yellow)?.let { holder.viewColor.setBackgroundColor(it) }
             }
             if (isUpcoming) {
                 holder.appointmentStatus.text = context?.getString(R.string.upcoming_appointment)
@@ -65,7 +63,6 @@ class AppointmentListAdapter(
             else holder.appointmentLayout.visibility = View.GONE
         } else {
             holder.checkInOut.visibility = View.GONE
-            context?.getColor(R.color.blue)?.let { holder.viewColor.setBackgroundColor(it) }
             if (ispast) {
                 holder.appointmentStatus.text = context?.getString(R.string.past_appointment)
                 pastAppointPosition = position
@@ -89,6 +86,17 @@ class AppointmentListAdapter(
         holder.checkInOut.setOnClickListener {
             appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
         }
+
+        when(appointmentList.get(position).statusFlag){
+            1->context?.getColor(R.color.check_in)?.let { holder.viewColor.setBackgroundColor(it) }
+            5->context?.getColor(R.color.cancelled)?.let { holder.viewColor.setBackgroundColor(it) }
+            7->context?.getColor(R.color.pending)?.let { holder.viewColor.setBackgroundColor(it) }
+            10->context?.getColor(R.color.checkout)?.let { holder.viewColor.setBackgroundColor(it) }
+            12->context?.getColor(R.color.approved)?.let { holder.viewColor.setBackgroundColor(it) }
+            13->context?.getColor(R.color.declined)?.let { holder.viewColor.setBackgroundColor(it) }
+
+        }
+
     }
 
     override fun getItemCount() = appointmentList.size
