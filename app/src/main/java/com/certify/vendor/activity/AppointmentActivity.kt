@@ -25,10 +25,10 @@ class AppointmentActivity : AppCompatActivity() , BadgeUpdate {
     }
 
     private fun setClickListener() {
-     floatingActionButton?.setOnClickListener({
+     floatingActionButton?.setOnClickListener {
          findNavController(R.id.nav_host_appointment).navigate(R.id.scheduleFragment)
 
-     })
+     }
     }
 
     private fun initView() {
