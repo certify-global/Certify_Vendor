@@ -171,7 +171,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginTop="@dimen/size_05"
                                 android:layout_marginBottom="@dimen/size_10"
-                                android:src="@mipmap/ic_launcher" />
+                                android:src="@drawable/ic_c_logo" />
                         </LinearLayout>
                     </LinearLayout>
 

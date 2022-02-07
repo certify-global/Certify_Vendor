@@ -128,7 +128,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_c_logo" />
 
         <TextView
             android:layout_width="wrap_content"
