@@ -38,20 +38,16 @@ class AppointmentListAdapter(
                 facilityAddress.city, facilityAddress.state, facilityAddress.zip
             )
         }
-        if (getDateValidation(appointmentList.get(position).end) <= 0) {
-            if (Utils.isCheckInTime(
-                    appointmentList.get(position).start,
-                    appointmentList.get(position).end
-                )
-            ) {
+        if (getDateValidation( appointmentList.get(
+                position
+            ).start, appointmentList.get(position).end)) {
+            if (AppointmentController.getInstance()
+                ?.getAddressToLatLon(address!!)!! && Utils.getDateCompare(
+                appointmentList.get(
+                    position
+                ).start, appointmentList.get(position).end) ){
 
-                if (AppointmentController.getInstance()
-                        ?.getAddressToLatLon(address!!)!! && Utils.getDateCompare(
-                        appointmentList.get(
-                            position
-                        ).start, appointmentList.get(position).end
-                    )
-                )
+                if ((appointmentList.get(position).statusFlag == 12 || appointmentList.get(position).statusFlag == 1))
                     holder.checkInOut.visibility = View.VISIBLE
                 else holder.checkInOut.visibility = View.GONE
                 if (appointmentList.get(position).statusFlag == 1) holder.checkInOut.text =

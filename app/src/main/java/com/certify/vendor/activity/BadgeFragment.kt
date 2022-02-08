@@ -71,22 +71,13 @@ class BadgeFragment : Fragment() {
                     )
                 )
             )
-
-
-            if (Utils.getDateValidation(
-                    AppSharedPreferences.readString(
-                        sharedPreferences,
-                        Constants.BADGE_EXPIRY
-                    )
-                ) > 0
-            ) {
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
 
-            } else {
+           /* } else {
                 validity?.setTextColor(resources.getColor(R.color.red))
                 timeStamp?.setTextColor(resources.getColor(R.color.red))
-            }
+            }*/
             val imgInactive: ImageView? = badgeView.findViewById(R.id.img_inactive)
             val llView: LinearLayout? = badgeView.findViewById(R.id.ll_view)
             if (AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
