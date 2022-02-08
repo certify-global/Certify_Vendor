@@ -45,7 +45,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
     private var userLocation: Location? = Location("")
-    private var textviewscheduleAppoinment: TextView? =null
+    private var textviewscheduleAppoinment: TextView? = null
 
 
     //private lateinit var badgeViewDevice: View
@@ -69,9 +69,10 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             )
         }
         getUserLocation()
-        appointmentViewModel =  ViewModelProvider(this)
+
+        appointmentViewModel = ViewModelProvider(this)
             .get(AppointmentViewModel::class.java)
-        updateAppointmentViewModel =  ViewModelProvider(this)
+        updateAppointmentViewModel = ViewModelProvider(this)
             .get(UpdateAppointmentViewModel::class.java)
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         baseViewModel = appointmentViewModel
@@ -97,16 +98,16 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     }
 
     private fun setOnClickListener() {
-     textviewscheduleAppoinment?.setOnClickListener {
-         findNavController().navigate(R.id.scheduleFragment)
-     }
+        textviewscheduleAppoinment?.setOnClickListener {
+            findNavController().navigate(R.id.scheduleFragment)
+        }
     }
 
     private fun initView() {
         pDialog = Utils.ShowProgressDialog(requireContext())
         progressIndicator = appointView.findViewById(R.id.progress_indicator)
         val userName: TextView? = appointView.findViewById(R.id.appt_user_name)
-        textviewscheduleAppoinment= appointView.findViewById(R.id.textview_scheduleAppoinment)
+        textviewscheduleAppoinment = appointView.findViewById(R.id.textview_scheduleAppoinment)
         userName?.text =
             String.format(
                 getString(R.string.appt_user_name),
@@ -176,9 +177,16 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
             )
 
-            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)))
+            QRCodeImage?.setImageBitmap(
+                Utils.QRCodeGenerator(
+                    AppSharedPreferences.readString(
+                        sharedPreferences,
+                        Constants.BADGE_ID
+                    )
+                )
+            )
 
-                    companyName?.text =
+            companyName?.text =
                 AppSharedPreferences.readString(
                     sharedPreferences,
                     Constants.VENDOR_COMPANY_NAME
@@ -206,7 +214,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 (AppSharedPreferences.getSharedPreferences(context)),
                 Constants.APPOINT_TIME, timeStampStr
             )
-            if (Utils.getDateValidation(endDate)>0) {
+            if (Utils.getDateValidation(endDate) > 0) {
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
 
@@ -223,7 +231,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     override fun onAppointmentCheckIn(appoinmentValue: AppointmentData) {
 
         var appointment: Int
-        if (appoinmentValue.statusFlag == 7) {
+        if (appoinmentValue.statusFlag != 1) {
             appointment = 2
         } else {
             appointment = 3

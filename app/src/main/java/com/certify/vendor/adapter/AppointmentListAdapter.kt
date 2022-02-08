@@ -45,13 +45,18 @@ class AppointmentListAdapter(
                 )
             ) {
 
-                if( AppointmentController.getInstance()?.getAddressToLatLon(address!!)!! && Utils.getDateValidation(appointmentList.get(position).end).compareTo(0)==0)
-                holder.checkInOut.visibility = View.VISIBLE
+                if (AppointmentController.getInstance()
+                        ?.getAddressToLatLon(address!!)!! && Utils.getDateCompare(
+                        appointmentList.get(
+                            position
+                        ).start, appointmentList.get(position).end
+                    )
+                )
+                    holder.checkInOut.visibility = View.VISIBLE
                 else holder.checkInOut.visibility = View.GONE
-                if (appointmentList.get(position).statusFlag == 7)
-                    holder.checkInOut.text = context?.getString(R.string.check_in)
-                else if (appointmentList.get(position).statusFlag == 1) holder.checkInOut.text =
+                if (appointmentList.get(position).statusFlag == 1) holder.checkInOut.text =
                     context?.getString(R.string.check_out)
+                else  holder.checkInOut.text = context?.getString(R.string.check_in)
             } else {
                 holder.checkInOut.visibility = View.GONE
             }
@@ -87,13 +92,19 @@ class AppointmentListAdapter(
             appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
         }
 
-        when(appointmentList.get(position).statusFlag){
-            1->context?.getColor(R.color.check_in)?.let { holder.viewColor.setBackgroundColor(it) }
-            5->context?.getColor(R.color.cancelled)?.let { holder.viewColor.setBackgroundColor(it) }
-            7->context?.getColor(R.color.pending)?.let { holder.viewColor.setBackgroundColor(it) }
-            10->context?.getColor(R.color.checkout)?.let { holder.viewColor.setBackgroundColor(it) }
-            12->context?.getColor(R.color.approved)?.let { holder.viewColor.setBackgroundColor(it) }
-            13->context?.getColor(R.color.declined)?.let { holder.viewColor.setBackgroundColor(it) }
+        when (appointmentList.get(position).statusFlag) {
+            1 -> context?.getColor(R.color.check_in)
+                ?.let { holder.viewColor.setBackgroundColor(it) }
+            5 -> context?.getColor(R.color.cancelled)
+                ?.let { holder.viewColor.setBackgroundColor(it) }
+            7 -> context?.getColor(R.color.pending)?.let { holder.viewColor.setBackgroundColor(it) }
+            10 -> context?.getColor(R.color.checkout)
+                ?.let { holder.viewColor.setBackgroundColor(it) }
+            12 -> context?.getColor(R.color.approved)
+                ?.let { holder.viewColor.setBackgroundColor(it) }
+            13 -> context?.getColor(R.color.declined)
+                ?.let { holder.viewColor.setBackgroundColor(it) }
+            0 -> context?.getColor(R.color.white)?.let { holder.viewColor.setBackgroundColor(it) }
 
         }
 

@@ -45,8 +45,8 @@ public class AppointmentController {
 
                 val distanceInMeters = userLocation?.distanceTo(location)
                 val km = distanceInMeters?.div(1000)
-                Log.i("getUserLocation", "distanceInMeters :" + distanceInMeters + "km = " + km +"km!! < 0.06" +(km!! < 0.06))
-                return km!! < 0.06
+                Log.i("getUserLocation", "distanceInMeters :" + distanceInMeters + "km = " + km +"km!! < 0.06" +(km!! < 1))
+                return km!! < 1
             }
 
         } catch (e: Exception) {

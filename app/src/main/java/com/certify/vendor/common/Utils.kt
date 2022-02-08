@@ -76,6 +76,23 @@ class Utils {
             return 0
         }
 
+        fun getDateCompare(startDate: String, endDate: String): Boolean {
+            try {
+                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val startDateTime = format.parse(startDate)
+                val endDateTime = format.parse(endDate)
+                val currentDateTime = Date(System.currentTimeMillis())
+                Log.i(
+                    TAG,
+                    "getDateCompare : totalHours =" + (startDateTime.time > currentDateTime.time) + " ,totalHoursE  =" + (endDateTime.time > currentDateTime.time)+ "  =="+(!(startDateTime.time > currentDateTime.time) && (endDateTime.time > currentDateTime.time))
+                )
+                return !(startDateTime.time > currentDateTime.time) && (endDateTime.time > currentDateTime.time)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return false
+        }
+
         fun getDateHours(inputData: String): Long {
             try {
                 val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
@@ -94,16 +111,19 @@ class Utils {
         }
 
         fun isCheckInTime(startDate: String, endDate: String): Boolean {
-            try{
+            try {
                 val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
                 val startDateTime = format.parse(startDate)
                 val endDateTime = format.parse(endDate)
                 val currentDateTime = Date(System.currentTimeMillis())
 
-                 if(currentDateTime.compareTo(startDateTime) >= 0 && currentDateTime.compareTo(endDateTime) < 0)
+                if (currentDateTime.compareTo(startDateTime) >= 0 && currentDateTime.compareTo(
+                        endDateTime
+                    ) < 0
+                )
                     return true
                 else return false
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
             return false
@@ -210,15 +230,16 @@ class Utils {
             return dialog
         }
 
-    @SuppressLint("MissingPermission")
-    fun enableBluetooth() {
-        try {
-            val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-            bluetoothAdapter.enable()
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
+        @SuppressLint("MissingPermission")
+        fun enableBluetooth() {
+            try {
+                val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+                bluetoothAdapter.enable()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
         }
-    }
+
         fun QRCodeGenerator(guid: String?): Bitmap? {
             val multiFormatWriter = MultiFormatWriter()
             try {
