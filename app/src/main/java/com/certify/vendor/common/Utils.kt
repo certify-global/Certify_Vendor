@@ -41,7 +41,7 @@ class Utils {
                 val simpleDateFormat2 = SimpleDateFormat(format, Locale.getDefault())
                 return simpleDateFormat2.format(date)
             } catch (e: Exception) {
-                Log.e(TAG, "Error in parsing the date " + e.message)
+                Log.e(TAG, "getDate(inputData: String, format: String)" + e.message)
             }
             return ""
         }
@@ -54,26 +54,27 @@ class Utils {
                 val simpleDateFormat2 = SimpleDateFormat("h:mm a", Locale.getDefault())
                 return simpleDateFormat2.format(date)
             } catch (e: Exception) {
-                Log.e(TAG, "Error in parsing the time " + e.message)
+                Log.e(TAG, "getTime(inputData: String)" + e.message)
             }
             return ""
         }
 
-        fun getDateValidation(inputData: String): Long {
+        fun getDateValidation(startDate: String, endDate: String): Boolean {
             try {
                 val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-                val appLaunchDateTime = format.parse(inputData)
+                val startDateTime = format.parse(startDate)
+                val endDateTime = format.parse(endDate)
                 val currentDateTime = Date(System.currentTimeMillis())
-                val differenceInTime = currentDateTime.time - appLaunchDateTime?.time!!
-                val hours = TimeUnit.MILLISECONDS.toHours(differenceInTime) % 24
-                val days = TimeUnit.MILLISECONDS.toDays(differenceInTime) % 365
-                val totalHours = hours + days * 24
-                Log.i(TAG, "getDateValidation :" + totalHours)
-                return totalHours
+                Log.i(
+                    TAG,
+                    "getDateValidation ="  +((startDateTime.time >= currentDateTime.time) || (endDateTime.time > currentDateTime.time)))
+
+               return ((startDateTime.time >= currentDateTime.time) || (endDateTime.time > currentDateTime.time))
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e(TAG, "getDateValidation(startDate: String, endDate: String)" + e.message)
+
             }
-            return 0
+            return false
         }
 
         fun getDateCompare(startDate: String, endDate: String): Boolean {
@@ -86,43 +87,8 @@ class Utils {
                     TAG,
                     "getDateCompare : totalHours =" + (startDateTime.time > currentDateTime.time) + " ,totalHoursE  =" + (endDateTime.time > currentDateTime.time)+ "  =="+(!(startDateTime.time > currentDateTime.time) && (endDateTime.time > currentDateTime.time))
                 )
-                return !(startDateTime.time > currentDateTime.time) && (endDateTime.time > currentDateTime.time)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            return false
-        }
 
-        fun getDateHours(inputData: String): Long {
-            try {
-                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-                val appLaunchDateTime = format.parse(inputData)
-                val currentDateTime = Date(System.currentTimeMillis())
-                val differenceInTime = currentDateTime.time - appLaunchDateTime?.time!!
-                val hours = TimeUnit.MILLISECONDS.toHours(differenceInTime) % 24
-                val days = TimeUnit.MILLISECONDS.toDays(differenceInTime) % 365
-                val totalHours = hours + (days * 24)
-                Log.i(TAG, "totalMinute :" + totalHours)
-                return totalHours
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            return 0
-        }
-
-        fun isCheckInTime(startDate: String, endDate: String): Boolean {
-            try {
-                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-                val startDateTime = format.parse(startDate)
-                val endDateTime = format.parse(endDate)
-                val currentDateTime = Date(System.currentTimeMillis())
-
-                if (currentDateTime.compareTo(startDateTime) >= 0 && currentDateTime.compareTo(
-                        endDateTime
-                    ) < 0
-                )
-                    return true
-                else return false
+                return (startDateTime.time <= currentDateTime.time) && (endDateTime.time > currentDateTime.time)
             } catch (e: Exception) {
                 e.printStackTrace()
             }

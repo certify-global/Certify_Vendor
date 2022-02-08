@@ -142,9 +142,9 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 recyclerView?.adapter?.notifyDataSetChanged()
                 llNoAppointment?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
-                if (Utils.getDateValidation(AppointmentDataSource.getAppointmentList()[0].end) > 0)
-                    llNoAppointment?.visibility = View.VISIBLE
-                else llNoAppointment?.visibility = View.GONE
+                if (Utils.getDateValidation(AppointmentDataSource.getAppointmentList()[0].start, AppointmentDataSource.getAppointmentList()[0].end))
+                    llNoAppointment?.visibility = View.GONE
+                else llNoAppointment?.visibility = View.VISIBLE
             } else {
                 recyclerView?.visibility = View.GONE
                 llNoAppointment?.visibility = View.VISIBLE
@@ -214,14 +214,14 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 (AppSharedPreferences.getSharedPreferences(context)),
                 Constants.APPOINT_TIME, timeStampStr
             )
-            if (Utils.getDateValidation(endDate) > 0) {
+
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
 
-            } else {
+            /*} else {
                 validity?.setTextColor(resources.getColor(R.color.red))
                 timeStamp?.setTextColor(resources.getColor(R.color.red))
-            }
+            }*/
         }
         BadgeController.getInstance().convertUIToImage(badgeUILayout, context)
     } catch (e: Exception) {
