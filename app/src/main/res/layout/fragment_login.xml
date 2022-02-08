@@ -189,7 +189,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sign_in_title"
-        android:text="Annapareddy.Snehamai1@certifyglobal.com"/>
+       />
 
 
     <EditText
@@ -204,8 +204,7 @@
         android:paddingEnd="@dimen/size_10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_name"
-        android:text="Sneha@123">
+        app:layout_constraintTop_toBottomOf="@id/user_name">
     </EditText>
 
     <TextView

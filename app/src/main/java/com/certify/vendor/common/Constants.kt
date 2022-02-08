@@ -8,6 +8,7 @@ class Constants {
         val SHARED_PREFS = "vendorCertify"
         val IS_LOGGEDIN = "isLoggedIn"
         val FIRST_NAME = "firstName"
+        val USER_EMAIL = "userEmail"
         val USER_PROFILE_PIC = "userProfilePic"
         val VENDOR_ID = "vendorId"
         val BADGE_ID = "badgeId"

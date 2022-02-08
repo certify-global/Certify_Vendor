@@ -40,6 +40,11 @@
 
         <activity android:name=".activity.AppointmentActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity android:name=".activity.MyAccountActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.WebViewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

@@ -4,12 +4,21 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.drawable.ColorDrawable
 import android.util.Base64
 import android.util.Log
+import android.view.Window
+import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.certify.vendor.R
+import com.certify.vendor.activity.LoginActivity
+import com.certify.vendor.data.AppSharedPreferences.Companion.getSharedPreferences
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
@@ -251,6 +260,25 @@ class Utils {
                 e.printStackTrace()
             }
             return null
+        }
+         fun logOut(context: Context?) {
+            val sharedPreferences: SharedPreferences? = getSharedPreferences(context)
+            val editor = sharedPreferences?.edit()
+            editor?.clear()
+            editor?.commit()
+            context?.startActivity(Intent(context, LoginActivity::class.java))
+        }
+         fun logOutDialog(context: Context?) {
+            val d = Dialog(context!!)
+            d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            d.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            d.setCancelable(false)
+            d.setContentView(R.layout.dialog_device)
+            val tv_confirm = d.findViewById<TextView>(R.id.tv_confirm)
+            val tv_cancel = d.findViewById<TextView>(R.id.tv_cancel)
+            tv_confirm.setOnClickListener { logOut(context) }
+            tv_cancel.setOnClickListener { d.dismiss() }
+            d.show()
         }
 
     }

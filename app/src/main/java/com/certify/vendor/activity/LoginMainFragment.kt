@@ -100,6 +100,8 @@ class LoginMainFragment : BaseFragment() {
                     Constants.BADGE_ID,LoginDataSource.loginData?.badgeId!!)
                 AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)),
                     Constants.VENDOR_COMPANY_NAME,LoginDataSource.loginData?.vendorCompanyName)
+                AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)),
+                    Constants.USER_EMAIL, LoginDataSource.loginData?.userEmail)
                 activity?.finish()
             } else {
                 Toast.makeText(context, getString(R.string.login_error), Toast.LENGTH_LONG).show()

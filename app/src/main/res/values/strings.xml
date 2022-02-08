@@ -73,4 +73,18 @@
     <string name="incomplete_credentials">Please complete the credentials required to schedule an appointment for this facility.</string>
     <string name="please_enter_reason">Please enter reason for visit</string>
     <string name="please_enter_person">Please enter contact person name</string>
+    <string name="myaccount">My account</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="terms"><![CDATA[Terms & Conditions]]></string>
+    <string name="logout">LogOut</string>
+    <string name="security_title">Security warning</string>
+    <string name="invalid_ssl_cert">There are problems with the security certificate for this site</string>
+    <string name="tv_confirm">Confirm</string>
+    <string name="tv_cancel">Cancel</string>
+    <string name="logout_header">Are you sure to logout?</string>
+    <string name="full_name">Full Name</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="email">Email</string>
 </resources>
