@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import com.certify.vendor.R
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
@@ -35,6 +36,6 @@ class MyAccountActivity : AppCompatActivity() {
     }
 
     private fun setClickListener() {
-        activityAccountBinding?.imgBack?.setOnClickListener { finish() }
+        activityAccountBinding?.imgBack?.setOnClickListener {finish()}
     }
 }
