@@ -161,32 +161,18 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         val inactive: ImageView? = appointView.findViewById(R.id.img_inactive_badge)
         if (appointmentStatus == 3) {
             inactive?.visibility = View.VISIBLE
+            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, "")
+
         } else {
             inactive?.visibility = View.GONE
-            val userPicStr =
-                AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
-            if (userPicStr.isNotEmpty())
-                userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
+            val userPicStr = AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
+            if (userPicStr.isNotEmpty()) userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
             badgeId?.text = String.format(
-                "%s%s",
-                getString(R.string.id),
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
-            )
+                "%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
+            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)))
 
-            QRCodeImage?.setImageBitmap(
-                Utils.QRCodeGenerator(
-                    AppSharedPreferences.readString(
-                        sharedPreferences,
-                        Constants.BADGE_ID
-                    )
-                )
-            )
-
-            companyName?.text =
-                AppSharedPreferences.readString(
-                    sharedPreferences,
-                    Constants.VENDOR_COMPANY_NAME
-                )
+            companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
             userName?.text = String.format(
                 getString(R.string.badge_user_name),
                 AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
@@ -204,7 +190,6 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             }
             timeStamp?.text = timeStampStr
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_TIME, timeStampStr)
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
 
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))
