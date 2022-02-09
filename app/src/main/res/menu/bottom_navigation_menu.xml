@@ -10,6 +10,7 @@
     <item
         android:id="@+id/menu_credentials"
         android:enabled="true"
+        android:visible="false"
         android:icon="@drawable/ic_credential"
         android:title="@string/credentials" />
 

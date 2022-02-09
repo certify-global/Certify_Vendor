@@ -17,6 +17,8 @@ class Constants {
         val BADGE_EXPIRY = "badgeExpiry"
         val APPOINT_TIME = "appointTime"
         val APPOINT_DATE = "appointDate"
+        val APPOINT_END_TIME = "appoint_end_time"
+
 
     }
 }

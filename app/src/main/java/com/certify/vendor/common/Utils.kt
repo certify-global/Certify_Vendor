@@ -76,9 +76,10 @@ class Utils {
                 val currentDateTime = Date(System.currentTimeMillis())
                 Log.i(
                     TAG,
-                    "getDateValidation ="  +((startDateTime.time >= currentDateTime.time) || (endDateTime.time > currentDateTime.time)))
+                    "getDateValidation =" + ((startDateTime.time >= currentDateTime.time) || (endDateTime.time > currentDateTime.time))
+                )
 
-               return ((startDateTime.time >= currentDateTime.time) || (endDateTime.time > currentDateTime.time))
+                return ((startDateTime.time >= currentDateTime.time) || (endDateTime.time > currentDateTime.time))
             } catch (e: Exception) {
                 Log.e(TAG, "getDateValidation(startDate: String, endDate: String)" + e.message)
 
@@ -94,7 +95,7 @@ class Utils {
                 val currentDateTime = Date(System.currentTimeMillis())
                 Log.i(
                     TAG,
-                    "getDateCompare : totalHours =" + (startDateTime.time > currentDateTime.time) + " ,totalHoursE  =" + (endDateTime.time > currentDateTime.time)+ "  =="+(!(startDateTime.time > currentDateTime.time) && (endDateTime.time > currentDateTime.time))
+                    "getDateCompare : totalHours =" + (startDateTime.time > currentDateTime.time) + " ,totalHoursE  =" + (endDateTime.time > currentDateTime.time) + "  ==" + (!(startDateTime.time > currentDateTime.time) && (endDateTime.time > currentDateTime.time))
                 )
 
                 return (startDateTime.time <= currentDateTime.time) && (endDateTime.time > currentDateTime.time)
@@ -102,6 +103,19 @@ class Utils {
                 e.printStackTrace()
             }
             return false
+        }
+
+        fun getDateCompareEndDate(endDate: String): Boolean {
+            try {
+                if (endDate.isEmpty()) return true;
+                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val endDateTime = format.parse(endDate)
+                val currentDateTime = Date(System.currentTimeMillis())
+                return endDateTime.time < currentDateTime.time
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return true
         }
 
         fun setBitmapScale(selectBitmap: Bitmap): Bitmap? {
@@ -227,14 +241,16 @@ class Utils {
             }
             return null
         }
-         fun logOut(context: Context?) {
+
+        fun logOut(context: Context?) {
             val sharedPreferences: SharedPreferences? = getSharedPreferences(context)
             val editor = sharedPreferences?.edit()
             editor?.clear()
             editor?.commit()
             context?.startActivity(Intent(context, LoginActivity::class.java))
         }
-         fun logOutDialog(context: Context?) {
+
+        fun logOutDialog(context: Context?) {
             val d = Dialog(context!!)
             d.requestWindowFeature(Window.FEATURE_NO_TITLE)
             d.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

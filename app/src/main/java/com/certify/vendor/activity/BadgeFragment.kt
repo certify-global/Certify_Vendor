@@ -80,9 +80,7 @@ class BadgeFragment : Fragment() {
             }*/
             val imgInactive: ImageView? = badgeView.findViewById(R.id.img_inactive)
             val llView: LinearLayout? = badgeView.findViewById(R.id.ll_view)
-            if (AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
-                    .isEmpty()
-            ) {
+            if (Utils.getDateCompareEndDate(AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_END_TIME))) {
                 imgInactive?.visibility = View.VISIBLE
                 llView?.alpha = .2f
             } else imgInactive?.visibility = View.GONE

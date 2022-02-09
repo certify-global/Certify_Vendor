@@ -41,8 +41,8 @@ class AppointmentListAdapter(
         if (getDateValidation( appointmentList.get(
                 position
             ).start, appointmentList.get(position).end)) {
-            if (AppointmentController.getInstance()
-                ?.getAddressToLatLon(address!!)!! && Utils.getDateCompare(
+                //AppointmentController.getInstance() ?.getAddressToLatLon(address!!)!! &&
+            if (Utils.getDateCompare(
                 appointmentList.get(
                     position
                 ).start, appointmentList.get(position).end) ){

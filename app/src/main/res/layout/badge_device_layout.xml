@@ -24,34 +24,7 @@
             android:src="@drawable/ic_user_pic" />
 
 
-        <TextView
-            android:id="@+id/tv_active_badge"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/img_user_badge"
-            android:layout_marginTop="2dp"
-            android:text="@string/active"
-            android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/tv_id_badge"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_active_badge"
-            android:layout_marginTop="@dimen/size_05"
-            android:text="@string/id"
-            android:textColor="@color/light_black"
-            android:visibility="visible" />
-
-
-        <TextView
-            android:id="@+id/tv_expires_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_id_badge"
-            android:text="@string/expires_on"
-            android:textColor="@color/light_black"
-            />
 
         <TextView
             android:id="@+id/tv_expires_date_badge"
@@ -104,12 +77,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_user_badge"
-            android:layout_marginLeft="-20dp"
-            android:layout_toRightOf="@+id/img_user_badge"
+            android:gravity="center"
             android:text="@string/appt"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_12" />
+        <TextView
+            android:id="@+id/tv_active_badge"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_appt_badge"
+            android:layout_marginTop="2dp"
+            android:text="@string/active"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tv_id_badge"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_active_badge"
+            android:layout_marginTop="@dimen/size_05"
+            android:text="@string/id"
+            android:textColor="@color/light_black"
+            android:visibility="visible" />
 
+
+        <TextView
+            android:id="@+id/tv_expires_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_id_badge"
+            android:text="@string/expires_on"
+            android:textColor="@color/light_black"
+            />
         <TextView
             android:id="@+id/tv_time_badge"
             android:layout_width="wrap_content"

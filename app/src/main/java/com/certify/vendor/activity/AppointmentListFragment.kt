@@ -91,10 +91,6 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         setAppointmentListener()
         updateAppointmentListener()
         Utils.enableBluetooth()
-        AppSharedPreferences.writeSp(
-            (AppSharedPreferences.getSharedPreferences(context)),
-            Constants.APPOINT_DATE, ""
-        )
     }
 
     private fun setOnClickListener() {
@@ -198,10 +194,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             )
             var dateStr = endDate.let { Utils.getDate(it, "dd-MM-yyyy") }
             validity?.text = dateStr
-            AppSharedPreferences.writeSp(
-                (AppSharedPreferences.getSharedPreferences(context)),
-                Constants.APPOINT_DATE, dateStr
-            )
+            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_DATE, dateStr)
             var timeStampStr = context?.getString(R.string.appointment_time)?.let {
                 String.format(
                     it,
@@ -210,10 +203,8 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 )
             }
             timeStamp?.text = timeStampStr
-            AppSharedPreferences.writeSp(
-                (AppSharedPreferences.getSharedPreferences(context)),
-                Constants.APPOINT_TIME, timeStampStr
-            )
+            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_TIME, timeStampStr)
+            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
 
                 timeStamp?.setTextColor(resources.getColor(R.color.green))
                 validity?.setTextColor(resources.getColor(R.color.green))

@@ -16,7 +16,7 @@ object RetrofitInstance {
 
     private fun createRetrofitInstance(context: Context?) {
         apiInterface = Retrofit.Builder().run {
-            baseUrl("https://apiqa.certify.me/VCSAPI/api/")
+            baseUrl("https://apidev.certify.me/VCSAPI/api/")
             addConverterFactory(GsonConverterFactory.create())
             client(createOkHttpClient())
             build()
