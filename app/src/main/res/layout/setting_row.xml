@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_myaccount"
@@ -102,17 +102,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView_logout"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_terms"
-        android:layout_marginTop="@dimen/size_10"
         android:layout_marginLeft="@dimen/size_20"
         android:layout_marginRight="@dimen/size_20"
-        app:cardBackgroundColor="@color/white"
-        android:layout_marginBottom="@dimen/size_10">
+        android:layout_marginBottom="@dimen/size_60">
 
         <TextView
             android:id="@+id/textView17"
@@ -121,7 +119,9 @@
             android:gravity="center"
             android:text="@string/logout"
             android:textColor="@color/header_color"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:paddingLeft="@dimen/size_40"
+            android:paddingRight="@dimen/size_40"/>
 
         <ImageView
             android:id="@+id/imageView7"
@@ -129,8 +129,8 @@
             android:layout_height="@dimen/size_40"
             android:layout_gravity="right|center"
             android:layout_marginRight="@dimen/size_10"
-            app:srcCompat="@drawable/ic_arrow_right"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_arrow_right" />
     </androidx.cardview.widget.CardView>
 
 

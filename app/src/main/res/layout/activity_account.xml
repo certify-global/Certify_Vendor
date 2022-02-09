@@ -78,43 +78,6 @@
         android:paddingLeft="@dimen/size_05"
         android:paddingRight="@dimen/size_05"/>
 
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/gender"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_name"
-        android:layout_marginLeft="@dimen/size_20"
-        android:textColor="@color/header_color"
-        android:layout_marginTop="@dimen/size_10"/>
-
-    <Button
-        android:id="@+id/button_male"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/green"
-        android:text="@string/male"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-    <Button
-        android:id="@+id/button_female"
-        android:layout_width="@dimen/size_150"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@color/green"
-        android:text="@string/female"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.463"
-        app:layout_constraintStart_toEndOf="@+id/button_male"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <TextView
         android:id="@+id/textView19"
@@ -122,7 +85,7 @@
         android:layout_height="wrap_content"
         android:text="@string/email"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_male"
+        app:layout_constraintTop_toBottomOf="@+id/editText_name"
         android:textColor="@color/header_color"
         android:layout_marginLeft="@dimen/size_20"
         android:layout_marginTop="@dimen/size_10"/>
