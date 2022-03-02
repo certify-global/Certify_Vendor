@@ -4,9 +4,10 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.location.*
+import android.location.Criteria
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,8 +16,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +31,6 @@ import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
 import com.certify.vendor.model.AppointmentViewModel
 import com.certify.vendor.model.UpdateAppointmentViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
@@ -56,7 +54,6 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // badgeViewDevice = inflater.inflate(R.layout.badge_device_layout, container, false)
         appointView = inflater.inflate(R.layout.fragment_appointment, container, false)
         return appointView
     }
@@ -131,21 +128,25 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     }
 
     private fun setAppointmentListener() {
-        appointmentViewModel.appointmentLiveData.observe(viewLifecycleOwner, {
+        appointmentViewModel.appointmentLiveData.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
             if (it && AppointmentDataSource.getAppointmentList().isNotEmpty()) {
                 adapter?.updateAppointmentList(AppointmentDataSource.getAppointmentList())
                 recyclerView?.adapter?.notifyDataSetChanged()
                 llNoAppointment?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
-                if (Utils.getDateValidation(AppointmentDataSource.getAppointmentList()[0].start, AppointmentDataSource.getAppointmentList()[0].end))
+                if (Utils.getDateValidation(
+                        AppointmentDataSource.getAppointmentList()[0].start,
+                        AppointmentDataSource.getAppointmentList()[0].end
+                    )
+                )
                     llNoAppointment?.visibility = View.GONE
                 else llNoAppointment?.visibility = View.VISIBLE
             } else {
                 recyclerView?.visibility = View.GONE
                 llNoAppointment?.visibility = View.VISIBLE
             }
-        })
+        }
     }
 
     private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int) = try {
@@ -233,7 +234,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     }
 
     fun updateAppointmentListener() {
-        updateAppointmentViewModel.updateAppointmentLiveData.observe(viewLifecycleOwner, {
+        updateAppointmentViewModel.updateAppointmentLiveData.observe(viewLifecycleOwner) {
             appointmentViewModel.getAppointments(
                 AppSharedPreferences.readInt(
                     sharedPreferences,
@@ -241,7 +242,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 )
             )
 
-        })
+        }
     }
 
     @SuppressLint("MissingPermission")

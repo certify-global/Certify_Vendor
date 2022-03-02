@@ -65,10 +65,6 @@ class AppointmentActivity : AppCompatActivity() {
         })
     }
 
-    private fun launchActivity() {
-        startActivity(Intent(this, BadgeActivity::class.java))
-    }
-
     override fun onBackPressed() {
         super.onBackPressed()
         finishAffinity()

@@ -203,10 +203,13 @@ class Utils {
 
         fun isTimeBigger(startTime: String, endTime: String): Boolean {
             var result = false
-            var simpleDateFormat = SimpleDateFormat("HH:mm")
-            var startDate = simpleDateFormat.parse(startTime)
-            var endDate = simpleDateFormat.parse(endTime)
-            if (endDate!!.time > startDate!!.time) {
+            val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+            val startDate = simpleDateFormat.parse(startTime)
+            val endDate = simpleDateFormat.parse(endTime)
+            val currentTime: String =
+                SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+            val currentDate = simpleDateFormat.parse(currentTime)
+            if ((startDate!!.time > currentDate!!.time) && (endDate!!.time > startDate.time)) {
                 result = true
             }
             return result

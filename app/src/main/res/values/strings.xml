@@ -43,7 +43,7 @@
     <!-- Badge -->
     <string name="badge_user_name">%1$s %2$s</string>
     <string name="no_appointment">No Appointment!</string>
-    <string name="consectetur_adipiscing_elit">Please click on "Scedule appointment" to add appointments. Use "Manage facilities" to add a facility </string>
+    <string name="consectetur_adipiscing_elit">Please click on "Schedule appointment" to add appointments. Use "Manage facilities" to add a facility </string>
     <string name="schedule_appointment">Schedule Appointment</string>
     <string name="request_appoinment">Request Appointment</string>
     <string name="select_facility">Select Facility</string>
@@ -67,9 +67,9 @@
     <string name="personName">Person Name</string>
     <string name="thanks_booking">Thanks for booking!</string>
     <string name="appoinment_confirmation">You booked an appointment with </string>
-    <string name="go_to_my_appoinments">Go to my appoinments</string>
+    <string name="go_to_my_appoinments">Go to my appointments</string>
     <string name="submit">Submit</string>
-    <string name="appoinment">Appoinment with</string>
+    <string name="appoinment">Appointment with</string>
     <string name="incomplete_credentials">Please complete the credentials required to schedule an appointment for this facility.</string>
     <string name="please_enter_reason">Please enter reason for visit</string>
     <string name="please_enter_person">Please enter contact person name</string>
