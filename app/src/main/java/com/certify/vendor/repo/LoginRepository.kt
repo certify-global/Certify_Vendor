@@ -15,7 +15,7 @@ class LoginRepository {
     private val TAG : String = LoginRepository::class.java.name
 
     fun signIn(userName : String, passwd : String, onResult: (isSuccess: Boolean, response: LoginResponse?) -> Unit) {
-        val loginRequest = LoginRequest(0, 0, 0, 0, Constants.VENDOR_APP, userName, passwd, 0)
+        val loginRequest = LoginRequest(0, 0, 0, 0, Constants.VENDOR_APP, userName, passwd, 0, 2)
         Log.d(TAG, "Login loginRequest " + loginRequest.toString())
         RetrofitInstance.apiInterface.loginUser(loginRequest).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {

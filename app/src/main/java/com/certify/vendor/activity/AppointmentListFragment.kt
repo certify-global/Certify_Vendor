@@ -252,7 +252,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         val bestProvider = lm.getBestProvider(criteria, false)
         val location = lm.getLastKnownLocation(bestProvider!!)
         if (location == null) {
-            Toast.makeText(activity, "Location Not found", Toast.LENGTH_LONG).show()
+         //   Toast.makeText(activity, "Location Not found", Toast.LENGTH_LONG).show()
         } else {
             val geocoder = Geocoder(activity)
             try {

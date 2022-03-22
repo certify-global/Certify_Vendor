@@ -5,6 +5,6 @@ data class GetAppointmentResponse(val responseCode : Int, val responseSubCode : 
 
 data class AppointmentData(val appointmentId : Int, val vendorId : Int, val facilityId : Int, val facilityName : String,
                            val facilityAddress: FacilityAddress, val start : String, val end : String, val visitReason : String,
-                           val statusFlag : Int, val reasonForDecline : String)
+                           val statusFlag : Int, val reasonForDecline : String, val mobileCheckinAllowed : Int)
 
 data class FacilityAddress(val address1 : String, val address2 : String, val city : String, val zip : String, val state : String)

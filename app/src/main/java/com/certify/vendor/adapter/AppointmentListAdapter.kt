@@ -42,7 +42,7 @@ class AppointmentListAdapter(
                 position
             ).start, appointmentList.get(position).end)) {
                 //AppointmentController.getInstance() ?.getAddressToLatLon(address!!)!! &&
-            if (Utils.getDateCompare(
+            if (appointmentList.get(position).mobileCheckinAllowed == 1 && Utils.getDateCompare(
                 appointmentList.get(
                     position
                 ).start, appointmentList.get(position).end) ){
