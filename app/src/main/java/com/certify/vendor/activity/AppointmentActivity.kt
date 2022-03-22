@@ -40,6 +40,7 @@ class AppointmentActivity : AppCompatActivity() {
 
     private fun setNavigationMenu() {
         val navigationView: BottomNavigationView = findViewById(R.id.navigation_menu_view)
+        navigationView.selectedItemId = R.id.menu_home
         navigationView.setOnItemSelectedListener(object : NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 Log.d("AppointmentActivity", "Menu item ${item.title}")

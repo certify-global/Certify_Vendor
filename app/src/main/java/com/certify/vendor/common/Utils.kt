@@ -261,7 +261,8 @@ class Utils {
             d.setContentView(R.layout.dialog_device)
             val tv_confirm = d.findViewById<TextView>(R.id.tv_confirm)
             val tv_cancel = d.findViewById<TextView>(R.id.tv_cancel)
-            tv_confirm.setOnClickListener { logOut(context) }
+            tv_confirm.setOnClickListener { d.dismiss()
+                logOut(context) }
             tv_cancel.setOnClickListener { d.dismiss() }
             d.show()
         }
