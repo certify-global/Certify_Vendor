@@ -17,7 +17,9 @@ object AppointmentDataSource {
 
 
     fun getAppointmentList() = appointmentList
-
+    fun clearAppointment() {
+        appointmentList.clear()
+    }
     fun getAppointmentIsUpcoming() = isupcoming
     fun setAppointmentIsUpcoming(status: Boolean) {
         isupcoming = status;

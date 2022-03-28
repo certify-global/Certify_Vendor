@@ -3,6 +3,7 @@ package com.certify.vendor.activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.SyncStateContract
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.certify.vendor.R
 import com.certify.vendor.VendorApplication

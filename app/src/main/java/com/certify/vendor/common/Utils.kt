@@ -19,6 +19,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import com.certify.vendor.R
 import com.certify.vendor.activity.LoginActivity
 import com.certify.vendor.data.AppSharedPreferences.Companion.getSharedPreferences
+import com.certify.vendor.data.AppointmentDataSource
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
@@ -232,11 +233,11 @@ class Utils {
             }
         }
 
-        fun QRCodeGenerator(guid: String?): Bitmap? {
+        fun QRCodeGenerator(guid: String?, width: Int, height: Int): Bitmap? {
             val multiFormatWriter = MultiFormatWriter()
             try {
                 val bitMatrix: BitMatrix =
-                    multiFormatWriter.encode(guid, BarcodeFormat.QR_CODE, 60, 60)
+                    multiFormatWriter.encode(guid, BarcodeFormat.QR_CODE, width, height)
                 val barcodeEncoder = BarcodeEncoder()
                 return barcodeEncoder.createBitmap(bitMatrix)
             } catch (e: WriterException) {
@@ -249,6 +250,7 @@ class Utils {
             val sharedPreferences: SharedPreferences? = getSharedPreferences(context)
             val editor = sharedPreferences?.edit()
             editor?.clear()
+            AppointmentDataSource.clearAppointment()
             editor?.commit()
             context?.startActivity(Intent(context, LoginActivity::class.java))
         }
@@ -261,8 +263,10 @@ class Utils {
             d.setContentView(R.layout.dialog_device)
             val tv_confirm = d.findViewById<TextView>(R.id.tv_confirm)
             val tv_cancel = d.findViewById<TextView>(R.id.tv_cancel)
-            tv_confirm.setOnClickListener { d.dismiss()
-                logOut(context) }
+            tv_confirm.setOnClickListener {
+                d.dismiss()
+                logOut(context)
+            }
             tv_cancel.setOnClickListener { d.dismiss() }
             d.show()
         }

@@ -135,6 +135,8 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 recyclerView?.adapter?.notifyDataSetChanged()
                 llNoAppointment?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
+                AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.VENDOR_GUID, AppointmentDataSource.getAppointmentList()[0].vendorGuid)
+
                 if (Utils.getDateValidation(
                         AppointmentDataSource.getAppointmentList()[0].start,
                         AppointmentDataSource.getAppointmentList()[0].end
@@ -149,7 +151,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         }
     }
 
-    private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int) = try {
+    private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int,vendorGuid: String) = try {
         val badgeUILayout: ConstraintLayout = appointView.findViewById(R.id.badge_screen)
         val rlBadge: RelativeLayout = appointView.findViewById(R.id.rl_badge_status);
         val userImage: ImageView? = appointView.findViewById(R.id.img_user_badge)
@@ -171,7 +173,8 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             badgeId?.text = String.format(
                 "%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
-            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)))
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(vendorGuid, 60, 60))
+            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.VENDOR_GUID, vendorGuid)
 
             companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
             userName?.text = String.format(
@@ -214,7 +217,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             appointment = 3
         }
 
-        setBadgeUI(appoinmentValue.start, appoinmentValue.end, appointment)
+        setBadgeUI(appoinmentValue.start, appoinmentValue.end, appointment, appoinmentValue.vendorGuid)
 
         pDialog?.show()
         updateAppointmentViewModel.init(context)
@@ -235,8 +238,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
     fun updateAppointmentListener() {
         updateAppointmentViewModel.updateAppointmentLiveData.observe(viewLifecycleOwner) {
-            appointmentViewModel.getAppointments(
-                AppSharedPreferences.readInt(
+            appointmentViewModel.getAppointments(AppSharedPreferences.readInt(
                     sharedPreferences,
                     Constants.VENDOR_ID
                 )

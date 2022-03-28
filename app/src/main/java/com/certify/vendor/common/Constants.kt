@@ -12,6 +12,7 @@ class Constants {
         val USER_PROFILE_PIC = "userProfilePic"
         val VENDOR_ID = "vendorId"
         val BADGE_ID = "badgeId"
+        val VENDOR_GUID = "vendorGuid"
         val VENDOR_COMPANY_NAME = "vendorCompanyName"
         val LAST_NAME = "lastName"
         val BADGE_EXPIRY = "badgeExpiry"
