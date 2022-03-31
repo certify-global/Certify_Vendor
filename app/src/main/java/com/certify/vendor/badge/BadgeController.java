@@ -376,4 +376,9 @@ public class BadgeController {
             e.printStackTrace();
         }
     }
+
+    public void writeFirmwareOTA() {
+        mBR.unRegister(context);
+        BadgeFirmwareUpdate.INSTANCE.writeFirmwareOTA(context, badgeArg);
+    }
 }
