@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.certify.vendor.Controller.AppointmentController
+import com.certify.vendor.controller.AppointmentController
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.api.response.AppointmentData
