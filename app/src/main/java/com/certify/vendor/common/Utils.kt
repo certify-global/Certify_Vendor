@@ -15,9 +15,9 @@ import android.util.Base64
 import android.util.Log
 import android.view.Window
 import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.certify.vendor.R
 import com.certify.vendor.activity.LoginActivity
+import com.certify.vendor.api.response.FacilityAddress
 import com.certify.vendor.data.AppSharedPreferences.Companion.getSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
 import com.google.zxing.BarcodeFormat
@@ -28,7 +28,6 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class Utils {
 
@@ -271,5 +270,9 @@ class Utils {
             d.show()
         }
 
+        fun validateFacilityAddress(location : FacilityAddress?) : Boolean {
+            return (location?.address1.isNullOrEmpty() && location?.city.isNullOrEmpty() && location?.state.isNullOrEmpty()
+                    && location?.zip.isNullOrEmpty())
+        }
     }
 }

@@ -73,7 +73,8 @@
                     android:layout_marginEnd="@dimen/size_17"
                     android:textColor="@color/brown"
                     android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold"></TextView>
+                    android:textStyle="bold">
+                </TextView>
 
                 <TextView
                     android:id="@+id/appointment_time"
@@ -82,9 +83,11 @@
                     android:layout_marginStart="@dimen/size_51"
                     android:layout_marginEnd="@dimen/size_17"
                     android:textColor="@color/brown"
-                    android:textSize="@dimen/text_size_18"></TextView>
+                    android:textSize="@dimen/text_size_18">
+                </TextView>
 
                 <LinearLayout
+                    android:id="@+id/appointment_location_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_07"
@@ -106,7 +109,8 @@
                         android:layout_marginStart="@dimen/size_07"
                         android:layout_marginEnd="@dimen/size_17"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18"></TextView>
+                        android:textSize="@dimen/text_size_18">
+                    </TextView>
 
                 </LinearLayout>
 
@@ -121,7 +125,8 @@
                     android:gravity="center"
                     android:text="@string/check_in"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_12"></TextView>
+                    android:textSize="@dimen/text_size_12">
+                </TextView>
 
             </LinearLayout>
 

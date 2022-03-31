@@ -33,6 +33,7 @@
     <string name="no_appointments">No Appointments</string>
     <string name="appointment_location">%1$s \n%2$s%3$s, %4$s %5$s</string>
     <string name="appointment_time">%1$s - %2$s</string>
+    <string name="no_location">No Location</string>
 
     <!-- Navigation menu -->
     <string name="home">Home</string>

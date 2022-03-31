@@ -8,14 +8,11 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.certify.vendor.Controller.AppointmentController
 import com.certify.vendor.R
 import com.certify.vendor.api.response.AppointmentData
-import com.certify.vendor.badge.Badge
 import com.certify.vendor.callback.AppointmentCheckIn
 import com.certify.vendor.common.Utils
 import com.certify.vendor.common.Utils.Companion.getDateValidation
-import com.certify.vendor.data.AppointmentDataSource
 
 class AppointmentListAdapter(
     var context: Context?,
@@ -31,26 +28,26 @@ class AppointmentListAdapter(
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
         val facilityAddress = appointmentList.get(position).facilityAddress
-        val address = context?.getString(R.string.appointment_location)?.let {
-            String.format(
-                it,
-                facilityAddress.address1, facilityAddress.address2,
-                facilityAddress.city, facilityAddress.state, facilityAddress.zip
-            )
+        if (!Utils.validateFacilityAddress(appointmentList[position].facilityAddress)) {
+            val address = context?.getString(R.string.appointment_location)?.let {
+                String.format(
+                    it,
+                    facilityAddress.address1, facilityAddress.address2,
+                    facilityAddress.city, facilityAddress.state, facilityAddress.zip
+                )
+            }
+            holder.appointmentLocation.text = address
+        } else {
+            holder.appointmentLocation.text = context?.getString(R.string.no_location)
         }
-        if (getDateValidation( appointmentList.get(
-                position
-            ).start, appointmentList.get(position).end)) {
-                //AppointmentController.getInstance() ?.getAddressToLatLon(address!!)!! &&
-            if (appointmentList.get(position).mobileCheckinAllowed == 1 && Utils.getDateCompare(
-                appointmentList.get(
-                    position
-                ).start, appointmentList.get(position).end) ){
+        if (getDateValidation( appointmentList[position].start, appointmentList[position].end)) {
+            if (appointmentList[position].mobileCheckinAllowed == 1 && Utils.getDateCompare(
+                appointmentList[position].start, appointmentList[position].end) ){
 
-                if ((appointmentList.get(position).statusFlag == 12 || appointmentList.get(position).statusFlag == 1))
+                if ((appointmentList[position].statusFlag == 12 || appointmentList[position].statusFlag == 1))
                     holder.checkInOut.visibility = View.VISIBLE
                 else holder.checkInOut.visibility = View.GONE
-                if (appointmentList.get(position).statusFlag == 1) holder.checkInOut.text =
+                if (appointmentList[position].statusFlag == 1) holder.checkInOut.text =
                     context?.getString(R.string.check_out)
                 else  holder.checkInOut.text = context?.getString(R.string.check_in)
             } else {
@@ -75,15 +72,14 @@ class AppointmentListAdapter(
             else holder.appointmentLayout.visibility = View.GONE
         }
         holder.appointmentDate.text =
-            Utils.getDate(appointmentList.get(position).start, "dd MMM yyyy")
+            Utils.getDate(appointmentList[position].start, "dd MMM yyyy")
         holder.appointmentTime.text = context?.getString(R.string.appointment_time)?.let {
             String.format(
                 it,
-                Utils.getTime(appointmentList.get(position).start),
-                Utils.getTime(appointmentList.get(position).end)
+                Utils.getTime(appointmentList[position].start),
+                Utils.getTime(appointmentList[position].end)
             )
         }
-        holder.appointmentLocation.text = address
         holder.checkInOut.setOnClickListener {
             appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
         }
@@ -119,6 +115,7 @@ class AppointmentListAdapter(
     class AppointmentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var appointmentDate = view.findViewById<TextView>(R.id.appointment_date)
         var appointmentTime = view.findViewById<TextView>(R.id.appointment_time)
+        var appointmentLocationLayout = view.findViewById<LinearLayout>(R.id.appointment_location_layout)
         var appointmentLocation = view.findViewById<TextView>(R.id.appointment_location)
         var checkInOut = view.findViewById<TextView>(R.id.check_in)
         var appointmentStatus = view.findViewById<TextView>(R.id.appointment_status)

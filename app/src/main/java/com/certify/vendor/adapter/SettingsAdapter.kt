@@ -1,23 +1,13 @@
 package com.certify.vendor.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.certify.vendor.Controller.AppointmentController
 import com.certify.vendor.R
-import com.certify.vendor.api.response.AppointmentData
-import com.certify.vendor.badge.Badge
-import com.certify.vendor.callback.AppointmentCheckIn
 import com.certify.vendor.callback.SettingCallback
-import com.certify.vendor.common.Utils
-import com.certify.vendor.common.Utils.Companion.getDateValidation
-import com.certify.vendor.data.AppointmentDataSource
 
 class SettingsAdapter(
     var context: Context?,

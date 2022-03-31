@@ -1,4 +1,4 @@
-package com.certify.vendor.Controller
+package com.certify.vendor.controller
 
 import android.annotation.SuppressLint
 import android.content.Context
