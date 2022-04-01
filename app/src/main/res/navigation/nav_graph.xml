@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_appointmentListFragment_to_badgeFragment"
             app:destination="@id/badgeFragment" />
+        <action
+            android:id="@+id/action_appointmentListFragment_to_badgeFWUpdateFragment"
+            app:destination="@id/badgeFWUpdateFragment" />
     </fragment>
     <fragment
         android:id="@+id/badgeFragment"
@@ -58,4 +61,8 @@
         tools:layout="@layout/schedule_appoinment_layout">
 
     </fragment>
+    <fragment
+        android:id="@+id/badgeFWUpdateFragment"
+        android:name="com.certify.vendor.activity.BadgeFWUpdateFragment"
+        android:label="BadgeFWUpdateFragment" />
 </navigation>

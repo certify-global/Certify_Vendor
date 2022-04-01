@@ -5,12 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.netronix.ble.connect.BLEManager
 import com.netronix.ble.connect.OTAManager.BluetoothGattSingleton
 import com.netronix.ble.connect.data.File
 import com.netronix.ble.connect.data.Statics
 import com.netronix.ebadge.inc.IntentsDefined
-import com.netronix.ebadge.inc.IntentsDefined.Connection_status
 
 object BadgeFirmwareUpdate {
 
@@ -19,15 +19,15 @@ object BadgeFirmwareUpdate {
     private const val FIRMWARE_VERSION = "0.4.01"
     private const val FIRMWARE_FILE_NAME = "H40D01_OTA_NB_V0.4.01.img"
     private var mBroadcastReceiver : EBadgeBroadcastReceiver? = null
+    var fwUpdateProgress = MutableLiveData<Int>()
 
     fun writeFirmwareOTA(context: Context?, badge : IntentsDefined.BadgeArgument) {
         badgeArg = badge
-        if (isBadgeFirmwareUpdateRequired()) {
-            initFirmwareUpdate(context)
-        }
+        initFirmwareUpdate(context)
     }
 
     private fun initFirmwareUpdate(context: Context?) {
+        Log.d(TAG, "Firmware Update init")
         mBroadcastReceiver = EBadgeBroadcastReceiver()
         mBroadcastReceiver?.register(context)
 
@@ -51,38 +51,15 @@ object BadgeFirmwareUpdate {
         BLEManager.getOTAManager().setImageBank(Statics.DEFAULT_MEMORY_BANK)
     }
 
-    private fun isBadgeFirmwareUpdateRequired() : Boolean {
-        return !badgeArg?.fwVersion.equals(FIRMWARE_VERSION)
-    }
+    fun isBadgeFirmwareUpdateRequired() : Boolean = false
+        //!badgeArg?.fwVersion.equals(FIRMWARE_VERSION)
 
     private fun startUpdate() {
+        Log.d(TAG, "Firmware Start update")
         val intent = Intent()
         intent.action = Statics.BLUETOOTH_GATT_UPDATE
         intent.putExtra("step", 1)
         BLEManager.getOTAManager().processStep(intent)
-    }
-
-    /**
-     *
-     */
-    fun setPageStatus(connectionStatus: Connection_status) {
-        when (connectionStatus.id) {
-            1 -> {
-                Log.d(TAG, "Firmware update Auth fail" )
-            }
-
-            2 -> {
-                Log.d(TAG, "Firmware update connected sending" )
-            }
-
-            3 -> {
-                Log.d(TAG, "Firmware update sending success" )
-            }
-
-            4 -> {
-                Log.d(TAG, "Firmware update send failed" )
-            }
-        }
     }
 
     internal class EBadgeBroadcastReceiver : BroadcastReceiver() {
@@ -141,6 +118,7 @@ object BadgeFirmwareUpdate {
                     IntentsDefined.Action.ReportWriteProgress.toString() -> {
                         val percent = intent.getIntExtra(IntentsDefined.ExtraName.WriteProgress.toString(), -1);
                         Log.d(TAG, "Update percent $percent")
+                        fwUpdateProgress.value = percent
                     }
                     IntentsDefined.Action.ReportWriteOTAProgress.toString() -> {
                         val otaPercent = intent.getIntExtra(IntentsDefined.ExtraName.WriteOTAProgress.toString(), -1);
@@ -149,9 +127,6 @@ object BadgeFirmwareUpdate {
                     IntentsDefined.Action.ReportOTAStep.toString() -> {
                         val otaResult = intent.getIntExtra(IntentsDefined.ExtraName.ReportOTAResult.toString(), -1);
                         Log.d(TAG, "Update percent $otaResult")
-                        if (otaResult == Statics.OTA_STEP_ON_SUCCESS) {
-                            onFirmwareUpdateComplete()
-                        }
                     }
                     Statics.BLUETOOTH_GATT_UPDATE -> {
                         val otaStep = intent.getIntExtra("step", -1)
@@ -168,6 +143,11 @@ object BadgeFirmwareUpdate {
         Log.d(TAG, "Firmware update success")
         BLEManager.getOTAManager().sendRebootSignal()
         badgeArg?.forceOTA = false;
+        fwUpdateProgress.value = 101;
+        unregisterReceiver()
+    }
+
+    fun unregisterReceiver() {
         mBroadcastReceiver?.unRegister(mBroadcastReceiver?.context)
     }
 }

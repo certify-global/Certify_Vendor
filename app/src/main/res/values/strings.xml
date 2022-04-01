@@ -88,4 +88,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="email">Email</string>
+
+    <!-- Badge firmware -->
+    <string name="updating_firmware">Updating firmware, Please wait....</string>
 </resources>

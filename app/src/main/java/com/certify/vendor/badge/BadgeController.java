@@ -45,6 +45,15 @@ public class BadgeController {
     EbadgeBroadcastReceiver mBR = new EbadgeBroadcastReceiver();
     private NtxBleReceiver ntxBleReceiver = new NtxBleReceiver();
     private ScanConfig mSC = new ScanConfig();
+    private BadgeState badgeState = BadgeState.WRITE_DATA;
+
+    public enum BadgeState {
+        NONE,
+        WRITE_DATA,
+        GET_BATTERY,
+        GET_FIRMWARE_VERSION,
+        WRITE_FIRMWARE
+    }
 
     public static BadgeController getInstance() {
         if (instance == null) {
@@ -53,19 +62,46 @@ public class BadgeController {
         return instance;
     }
 
-    public void initBle(Context context, Bitmap bitmap) {
+    public void initBle(Context context) {
         try {
             this.context = context;
             BLEManager.start(context);
             bleScanProc = new BleScanProc();
             badgeArg.setFlavor(IntentsDefined.ProductFlavor.NB.getId());
+            BadgeFirmwareUpdate.INSTANCE.unregisterReceiver();
             mBR.register(context);
             ntxBleReceiver.register(context);
-            setImage(bitmap);
-            startScan();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void convertUIToImage(ConstraintLayout badgeLayout, Context context) {
+        try {
+            badgeLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+            Bitmap bitmap = Bitmap.createBitmap(
+                    badgeLayout.getMeasuredWidth(),
+                    badgeLayout.getMeasuredHeight(),
+                    Bitmap.Config.ARGB_8888
+            );
+            Canvas canvas = new Canvas(bitmap);
+            badgeLayout.layout(0, 0, badgeLayout.getMeasuredWidth(), badgeLayout.getMeasuredHeight());
+            badgeLayout.draw(canvas);
+            Log.d(TAG, "Badge Convert to image");
+            initBle(context);
+            badgeState = BadgeState.WRITE_DATA;
+            setImage(bitmap);
+            startScan();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeFirmwareOTA() {
+        Log.d(TAG, "Firmware Initiate ");
+        startScan();
+        badgeState = BadgeState.WRITE_FIRMWARE;
     }
 
     private void startScan() {
@@ -110,6 +146,22 @@ public class BadgeController {
         BLEManager.connect(badgeArg);
     }
 
+    private void onBadgeConnected() {
+        switch (badgeState) {
+            case WRITE_DATA: {
+                Log.d(TAG, "Badge Write Data");
+            }
+            break;
+
+            case WRITE_FIRMWARE:{
+                mBR.unRegister(context);
+                Log.d(TAG, "Firmware Device connected Write OTA");
+                BadgeFirmwareUpdate.INSTANCE.writeFirmwareOTA(context, badgeArg);
+            }
+            break;
+        }
+    }
+
     private void setImage(Bitmap bitmap) {
         try {
             badgeArg.setAction(IntentsDefined.Badge_action.Template_Image.getId());
@@ -127,10 +179,6 @@ public class BadgeController {
             option.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
             badgeArg.setBitmapArray(outputBuffer.array());
-        /*Bitmap finalBitmap = Util.setBitmapScale(bitmap);
-        badgeArg.setImageBitmap(finalBitmap);
-        badgeArg.setAction(IntentsDefined.Badge_action.Transfer_Image.getId());
-        *///BLEManager.setImageByte(badgeArg);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -319,11 +367,14 @@ public class BadgeController {
                     IntentsDefined.ErrorCode errCode = IntentsDefined.ErrorCode.getErrorCode(err);
                     Log.i(TAG, "onReceived : Response[" + errCode + "]");
                     if (errCode == IntentsDefined.ErrorCode.Send_Success_NextOne) {
-                        getBattery();
+                        //getBattery();
                     }
                 } else if (action.equals(IntentsDefined.Action.ReportStatus.toString())) { //return the connectiong Status between app and device
                     int status = intent.getIntExtra(IntentsDefined.ExtraName.Status.toString(), -1);
                     Log.i(TAG, "onReceived : ReportStatus = " + status);
+                    if (status == 30) {
+                        onBadgeConnected();
+                    }
                 } else if (action.equals(IntentsDefined.Action.ReportGetData.toString())) {
                     String getData = intent.getStringExtra(IntentsDefined.ExtraName.GetData.toString());
                     String getCmdAction = intent.getStringExtra(IntentsDefined.ExtraName.GetCmdAction.toString());
@@ -356,29 +407,5 @@ public class BadgeController {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void convertUIToImage(ConstraintLayout badgeLayout, Context context) {
-        try {
-            badgeLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
-
-            Bitmap bitmap = Bitmap.createBitmap(
-                    badgeLayout.getMeasuredWidth(),
-                    badgeLayout.getMeasuredHeight(),
-                    Bitmap.Config.ARGB_8888
-            );
-            Canvas canvas = new Canvas(bitmap);
-            badgeLayout.layout(0, 0, badgeLayout.getMeasuredWidth(), badgeLayout.getMeasuredHeight());
-            badgeLayout.draw(canvas);
-            Log.d(TAG, "Badge Convert to image");
-            BadgeController.getInstance().initBle(context, bitmap);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void writeFirmwareOTA() {
-        mBR.unRegister(context);
-        BadgeFirmwareUpdate.INSTANCE.writeFirmwareOTA(context, badgeArg);
     }
 }
