@@ -32,8 +32,6 @@ import com.netronix.ebadge.inc.IntentsDefined;
 
 import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 public class BadgeController {
@@ -45,7 +43,8 @@ public class BadgeController {
     EbadgeBroadcastReceiver mBR = new EbadgeBroadcastReceiver();
     private NtxBleReceiver ntxBleReceiver = new NtxBleReceiver();
     private ScanConfig mSC = new ScanConfig();
-    private BadgeState badgeState = BadgeState.WRITE_DATA;
+    private BadgeState badgeState = BadgeState.NONE;
+    private BadgeListener listener = null;
 
     public enum BadgeState {
         NONE,
@@ -53,6 +52,19 @@ public class BadgeController {
         GET_BATTERY,
         GET_FIRMWARE_VERSION,
         WRITE_FIRMWARE
+    }
+
+    public enum BatteryLevel {
+        TOO_LOW,
+        LOW_POWER,
+        MEDIUM,
+        HIGH,
+        COMPLETE
+    }
+
+    public interface BadgeListener {
+        void onBadgeScan(BluetoothDevice device);
+        void onBadgeGetBattery(int batteryLevel);
     }
 
     public static BadgeController getInstance() {
@@ -74,6 +86,10 @@ public class BadgeController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setListener(BadgeListener scanListener) {
+        listener = scanListener;
     }
 
     public void convertUIToImage(ConstraintLayout badgeLayout, Context context) {
@@ -104,7 +120,7 @@ public class BadgeController {
         badgeState = BadgeState.WRITE_FIRMWARE;
     }
 
-    private void startScan() {
+    public void startScan() {
         bleScanProc.startScan(context, new BleScanCallback() {
             @Override
             public void onLeScan(BleDevice bleDevice, int rssi, byte[] scanRecord) {
@@ -141,8 +157,17 @@ public class BadgeController {
         });
     }
 
+    public void stopScan() {
+        bleScanProc.stopScan();
+    }
+
     private void connectDevice() {
         Log.d(TAG, "Badge connect ");
+        BLEManager.connect(badgeArg);
+    }
+
+    public void connectDevice(BluetoothDevice device) {
+        badgeArg.setDev(device);
         BLEManager.connect(badgeArg);
     }
 
@@ -157,6 +182,16 @@ public class BadgeController {
                 mBR.unRegister(context);
                 Log.d(TAG, "Firmware Device connected Write OTA");
                 BadgeFirmwareUpdate.INSTANCE.writeFirmwareOTA(context, badgeArg);
+            }
+            break;
+
+            case GET_BATTERY: {
+                Log.d(TAG, "Badge Battery");
+            }
+            break;
+
+            case GET_FIRMWARE_VERSION: {
+                //BLEManager.getFirmwareVersion();
             }
             break;
         }
@@ -184,18 +219,18 @@ public class BadgeController {
         }
     }
 
-    private void getBattery() {
-        Log.d(TAG, "Badge battery ");
-        BLEManager.disconnect();
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Badge battery connect ");
-                badgeArg.setAction(IntentsDefined.Badge_action.Bettary.getId());
-                BLEManager.connect(badgeArg);
-            }
-        }, 10 * 1000);
+    public void getBattery() {
+        Log.d(TAG, "Get Badge battery");
+        badgeState = BadgeState.GET_BATTERY;
+        startScan();
+        badgeArg.setAction(IntentsDefined.Badge_action.Bettary.getId());
+    }
+
+    public void getFirmwareVersion() {
+        Log.d(TAG, "Get Badge firmware version");
+        badgeState = BadgeState.GET_FIRMWARE_VERSION;
+        badgeArg.setAction(IntentsDefined.Badge_action.Bettary.getId());
+        startScan();
     }
 
     enum BondState {
@@ -366,9 +401,6 @@ public class BadgeController {
                     int err = intent.getIntExtra(IntentsDefined.ExtraName.ErrorCode.toString(), -1);
                     IntentsDefined.ErrorCode errCode = IntentsDefined.ErrorCode.getErrorCode(err);
                     Log.i(TAG, "onReceived : Response[" + errCode + "]");
-                    if (errCode == IntentsDefined.ErrorCode.Send_Success_NextOne) {
-                        //getBattery();
-                    }
                 } else if (action.equals(IntentsDefined.Action.ReportStatus.toString())) { //return the connectiong Status between app and device
                     int status = intent.getIntExtra(IntentsDefined.ExtraName.Status.toString(), -1);
                     Log.i(TAG, "onReceived : ReportStatus = " + status);
@@ -379,10 +411,8 @@ public class BadgeController {
                     String getData = intent.getStringExtra(IntentsDefined.ExtraName.GetData.toString());
                     String getCmdAction = intent.getStringExtra(IntentsDefined.ExtraName.GetCmdAction.toString());
                     String reportData = String.format(getCmdAction + ":" + getData);
-                    Log.i(TAG, "onReceived : ReportGetData getData = " + getData);
-                    //mH.sendMessageDelayed(mH.obtainMessage(MSG_bleGetData, reportData), 0);
-                /*badgeArg.setAction(IntentsDefined.Badge_action.Template_Image.getId());
-                setImage();*/
+                    Log.i(TAG, "onReceived : ReportGetData getData = " + reportData);
+                    processReportGetData(getCmdAction, getData);
                 } else if (action.equals(IntentsDefined.Action.ReportWriteProgress.toString())) {
                 /*precent = intent.getIntExtra(IntentsDefined.ExtraName.WriteProgress.toString(), -1);
                 mH.sendMessageDelayed(mH.obtainMessage(MSG_sendingPrecent), 0);*/
@@ -407,5 +437,25 @@ public class BadgeController {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void processReportGetData(String commandAction, String data) {
+        if (commandAction.equals("GetBattery") && (badgeState == BadgeState.GET_BATTERY)) {
+            onBatteryData(data);
+        } else if (commandAction.equals("GetFwVersion") && (badgeState == BadgeState.GET_FIRMWARE_VERSION)) {
+            onGetFirmwareVersion(data);
+        }
+    }
+
+    private void onBatteryData(String data) {
+        int batteryLevel = Integer.parseInt(data.substring(data.length()-1));
+        Log.d(TAG, "Battery Level " +batteryLevel);
+        if (listener != null) {
+            listener.onBadgeGetBattery(batteryLevel);
+        }
+    }
+
+    private void onGetFirmwareVersion(String data) {
+        Log.d(TAG, "Badge firmware version " +data);
     }
 }
