@@ -1,24 +1,27 @@
 package com.certify.vendor.activity
 
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.certify.vendor.R
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
+import com.certify.vendor.databinding.FragmentBadgeBinding
+import com.certify.vendor.model.BadgeViewModel
 
 class BadgeFragment : Fragment() {
 
     private val TAG = BadgeFragment::class.java.name
-    private lateinit var badgeView: View
-
+    private lateinit var badgeFragmentBinding : FragmentBadgeBinding
+    private var badgeViewModel : BadgeViewModel? = null
     private var sharedPreferences: SharedPreferences? = null
 
     override fun onCreateView(
@@ -26,75 +29,95 @@ class BadgeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        badgeView = inflater.inflate(R.layout.fragment_badge, container, false)
-        return badgeView
+        badgeFragmentBinding = FragmentBadgeBinding.inflate(inflater, container, false)
+        badgeFragmentBinding.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewmodel = badgeViewModel
+        }
+        badgeViewModel = ViewModelProvider(this).get(BadgeViewModel::class.java)
+        return badgeFragmentBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
             sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
-            val userImage: ImageView? = badgeView.findViewById(R.id.badge_user_image)
-            val userPicStr =
-                AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
-            if (userPicStr.isNotEmpty())
-                userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
-            val badgeId: TextView? = badgeView.findViewById(R.id.badge_id)
-            badgeId?.text = String.format(
-                "%s%s",
-                getString(R.string.id),
-                AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
-            )
-            val companyName: TextView? = badgeView.findViewById(R.id.badge_company_name)
-            companyName?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
-            val userName: TextView? = badgeView.findViewById(R.id.badge_user_name)
-            userName?.text = String.format(
-                getString(R.string.badge_user_name),
-                AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
-                AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
-            )
-
-            val validity: TextView? = badgeView.findViewById(R.id.badge_expires_date)
-            validity?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
-            val timeStamp: TextView? = badgeView.findViewById(R.id.badge_time)
-            timeStamp?.text =
-                AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_TIME)
-
-            val qrCodeImage: ImageView? = badgeView.findViewById(R.id.badge_qr_code)
-            qrCodeImage?.setImageBitmap(
-                Utils.QRCodeGenerator(
-                    AppSharedPreferences.readString(
-                        sharedPreferences,
-                        Constants.VENDOR_GUID
-                    ),280,280
-                )
-            )
-                timeStamp?.setTextColor(resources.getColor(R.color.green))
-                validity?.setTextColor(resources.getColor(R.color.green))
-
-           /* } else {
-                validity?.setTextColor(resources.getColor(R.color.red))
-                timeStamp?.setTextColor(resources.getColor(R.color.red))
-            }*/
-            val imgInactive: ImageView? = badgeView.findViewById(R.id.img_inactive)
-            val llView: LinearLayout? = badgeView.findViewById(R.id.ll_view)
-         //   if (Utils.getDateCompareEndDate(AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_END_TIME))) {
-//                imgInactive?.visibility = View.VISIBLE
-//                llView?.alpha = .2f
-//            } else
-                imgInactive?.visibility = View.GONE
+            setUserProfile()
+            setQrCodeImage()
+            setAppointmentStatus()
+            setBadgeStatus()
         } catch (e: Exception) {
-
+            Log.e(TAG, "Exception in setting the badge UI")
         }
-        //  BadgeController.getInstance().convertUIToImage(badgeUILayout)
     }
 
-    override fun onStart() {
-        super.onStart()
-        //BadgeController.getInstance().init(context)
+    private fun setUserProfile() {
+        val userPicStr =
+            AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
+        if (userPicStr.isNotEmpty())
+            badgeFragmentBinding.badgeUserImage.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
+
+        badgeFragmentBinding.badgeUserName.text = String.format(
+            getString(R.string.badge_user_name),
+            AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
+            AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
+        )
+
+        badgeFragmentBinding.badgeId.text = String.format(
+            "%s%s",
+            getString(R.string.id),
+            AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
+        )
+        badgeFragmentBinding.badgeStatus.text = getString(R.string.active)
+        badgeFragmentBinding.badgeCompanyName.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
+        badgeFragmentBinding.badgeExpires.text = AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
     }
 
+    private fun setQrCodeImage() {
+        badgeFragmentBinding.badgeQrCode.setImageBitmap(
+            Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_GUID),
+                340, 340))
+    }
 
+    private fun setAppointmentStatus() {
+        badgeFragmentBinding.badgeAppt.text =  String.format(getString(R.string.appt),
+            AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_TIME))
+    }
+
+    private fun setBadgeStatus() {
+        badgeViewModel?.init(context)
+        badgeViewModel?.getBattery()
+        badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
+            onGetBattery(it)
+        }
+    }
+
+    private fun onGetBattery(batteryLevel : Int) {
+        badgeFragmentBinding.batteryStatusLayout.visibility = View.VISIBLE
+        badgeFragmentBinding.badgeConnectStatusLayout.visibility = View.VISIBLE
+        badgeFragmentBinding.badgeConnectStatus.text =
+            String.format(getString(R.string.badge_status), getString(R.string.badge_connected))
+
+        when (batteryLevel) {
+            3 -> {
+                badgeFragmentBinding.batteryStatus.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.ic_battery_high))
+                badgeFragmentBinding.batteryPercent.text = "100%"
+            }
+            2 -> {
+                badgeFragmentBinding.batteryStatus.setImageResource(R.drawable.ic_battery_medium)
+                badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.light_green))
+                badgeFragmentBinding.batteryPercent.text = "70%"
+            }
+            1 -> {
+                badgeFragmentBinding.batteryStatus.setImageResource(R.drawable.ic_battery_low)
+                badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.orange))
+                badgeFragmentBinding.batteryPercent.text = "30%"
+            }
+            0 -> {
+                badgeFragmentBinding.batteryStatus.setImageResource(R.drawable.ic_battery_too_low)
+                badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.red))
+                badgeFragmentBinding.batteryPercent.text = "10%"
+            }
+        }
+    }
 }

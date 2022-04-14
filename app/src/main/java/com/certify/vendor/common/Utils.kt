@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.drawable.ColorDrawable
 import android.util.Base64
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Window
 import android.widget.TextView
@@ -273,6 +274,14 @@ class Utils {
         fun validateFacilityAddress(location : FacilityAddress?) : Boolean {
             return (location?.address1.isNullOrEmpty() && location?.city.isNullOrEmpty() && location?.state.isNullOrEmpty()
                     && location?.zip.isNullOrEmpty())
+        }
+
+        fun convertDpToPixel(dp: Float, context: Context?): Float {
+            return dp * (context?.resources?.displayMetrics?.densityDpi?.toFloat()!! / DisplayMetrics.DENSITY_DEFAULT)
+        }
+
+        fun convertPixelsToDp(px: Float, context: Context?): Float {
+            return px / (context?.resources?.displayMetrics?.densityDpi?.toFloat()!! / DisplayMetrics.DENSITY_DEFAULT)
         }
     }
 }

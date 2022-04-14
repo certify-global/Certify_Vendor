@@ -27,5 +27,9 @@
     <color name="checkout">#007bff</color>
     <color name="approved">#28a745</color>
     <color name="declined">#dc3545</color>
+    <color name="light_blue_1">#F1F7FC</color>
+    <color name="blue_1">#1651A9</color>
+    <color name="orange">#F5B32E</color>
+    <color name="light_green">#9BD646</color>
 
 </resources>

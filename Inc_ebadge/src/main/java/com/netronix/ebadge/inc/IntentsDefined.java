@@ -535,6 +535,10 @@ public class IntentsDefined {
          */
         GetBattery,
 
+        /**
+         * Get FwVersion
+         */
+        GetFwVersion,
 
 
         /**

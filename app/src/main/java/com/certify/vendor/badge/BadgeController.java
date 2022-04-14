@@ -63,7 +63,6 @@ public class BadgeController {
     }
 
     public interface BadgeListener {
-        void onBadgeScan(BluetoothDevice device);
         void onBadgeGetBattery(int batteryLevel);
     }
 
@@ -186,7 +185,7 @@ public class BadgeController {
             break;
 
             case GET_BATTERY: {
-                Log.d(TAG, "Badge Battery");
+                BLEManager.getBattery();
             }
             break;
 
@@ -222,8 +221,8 @@ public class BadgeController {
     public void getBattery() {
         Log.d(TAG, "Get Badge battery");
         badgeState = BadgeState.GET_BATTERY;
-        startScan();
         badgeArg.setAction(IntentsDefined.Badge_action.Bettary.getId());
+        startScan();
     }
 
     public void getFirmwareVersion() {

@@ -55,7 +55,7 @@
     <string name="active">Active</string>
     <string name="id">ID:&#160;</string>
     <string name="expires_on">Expires on:&#160;</string>
-    <string name="appt">Appt:&#160;</string>
+    <string name="appt">Appointment Status: %1$s</string>
     <string name="request_replacement_badge">Request replacement badge</string>
     <string name="select_date_time">Select Date and Time</string>
     <string name="to">to</string>
@@ -88,6 +88,11 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="email">Email</string>
+    <string name="badge_status">Badge status: %1$s</string>
+    <string name="manage_badge">Manage Badge</string>
+    <string name="badge_connected">Connected</string>
+    <string name="badge_disconnected">Disconnected</string>
+    <string name="badge_not_configured">Not configured</string>
 
     <!-- Badge firmware -->
     <string name="updating_firmware">Updating firmware, Please wait....</string>

@@ -52,8 +52,6 @@
         android:name="com.certify.vendor.activity.CredentialsFragment"
         android:label="CredentialsFragment"
         tools:layout="@layout/credentials_layout" />
-        tools:layout="@layout/fragment_badge"/>
-
     <fragment
         android:id="@+id/scheduleFragment"
         android:name="com.certify.vendor.activity.ScheduleAppoinmentFragment"
