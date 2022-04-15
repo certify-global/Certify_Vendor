@@ -41,7 +41,11 @@
         android:id="@+id/badgeFragment"
         android:name="com.certify.vendor.activity.BadgeFragment"
         android:label="BadgeFragment"
-        tools:layout="@layout/fragment_badge" />
+        tools:layout="@layout/fragment_badge" >
+        <action
+            android:id="@+id/action_badgeFragment_to_badgeManageFragment"
+            app:destination="@id/badgeManageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
         android:name="com.certify.vendor.activity.SettingsFragment"
@@ -63,4 +67,9 @@
         android:id="@+id/badgeFWUpdateFragment"
         android:name="com.certify.vendor.activity.BadgeFWUpdateFragment"
         android:label="BadgeFWUpdateFragment" />
+    <fragment
+        android:id="@+id/badgeManageFragment"
+        android:name="com.certify.vendor.activity.BadgeManageFragment"
+        android:label="BadgeManageFragment"
+        tools:layout="@layout/fragment_manage_badge"/>
 </navigation>

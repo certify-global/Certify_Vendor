@@ -16,7 +16,7 @@ object BadgeFirmwareUpdate {
 
     private val TAG = BadgeFirmwareUpdate::class.java.simpleName
     private var badgeArg : IntentsDefined.BadgeArgument ? = null
-    private const val FIRMWARE_VERSION = "0.4.01"
+    const val FIRMWARE_VERSION = "0.4.01"
     private const val FIRMWARE_FILE_NAME = "H40D01_OTA_NB_V0.4.01.img"
     private var mBroadcastReceiver : EBadgeBroadcastReceiver? = null
     var fwUpdateProgress = MutableLiveData<Int>()

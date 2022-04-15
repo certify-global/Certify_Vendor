@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.certify.vendor.R
 import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.common.Constants
@@ -96,6 +97,7 @@ class BadgeFragment : Fragment() {
         badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
             onGetBattery(it)
         }
+        onManageBadge()
     }
 
     private fun onBadgeConnectionStatus() {
@@ -145,6 +147,12 @@ class BadgeFragment : Fragment() {
                 badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.red))
                 badgeFragmentBinding.batteryPercent.text = getString(R.string.badge_percent_10)
             }
+        }
+    }
+
+    private fun onManageBadge() {
+        badgeFragmentBinding.manageBadge.setOnClickListener {
+            findNavController().navigate(R.id.badgeManageFragment)
         }
     }
 }
