@@ -1,7 +1,6 @@
 package com.certify.vendor.activity
 
 import android.content.SharedPreferences
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.certify.vendor.R
+import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
@@ -51,6 +51,11 @@ class BadgeFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        badgeViewModel?.onClose()
+    }
+
     private fun setUserProfile() {
         val userPicStr =
             AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
@@ -86,37 +91,59 @@ class BadgeFragment : Fragment() {
 
     private fun setBadgeStatus() {
         badgeViewModel?.init(context)
+        onBadgeConnectionStatus()
         badgeViewModel?.getBattery()
         badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
             onGetBattery(it)
         }
     }
 
+    private fun onBadgeConnectionStatus() {
+        onBadgeConnectionStatusUpdate(BadgeController.getInstance().connectionState.value)
+        badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
+            onBadgeConnectionStatusUpdate(it)
+        }
+    }
+
+    private fun onBadgeConnectionStatusUpdate(connectionStatus : Int) {
+        when (connectionStatus) {
+            BadgeController.BadgeConnectionState.CONNECTED.value -> {
+                badgeFragmentBinding.badgeConnectionImage.setImageResource(R.drawable.ic_badge_connected)
+                badgeFragmentBinding.badgeConnectionStatus.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.green_1))
+                badgeFragmentBinding.badgeConnectionStatus.text = getString(R.string.badge_connected)
+            }
+            BadgeController.BadgeConnectionState.DISCONNECTED.value -> {
+                badgeFragmentBinding.badgeConnectionImage.setImageResource(R.drawable.ic_badge_disconnected)
+                badgeFragmentBinding.badgeConnectionStatus.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.red))
+                badgeFragmentBinding.badgeConnectionStatus.text = getString(R.string.badge_disconnected)
+            }
+        }
+    }
+
     private fun onGetBattery(batteryLevel : Int) {
         badgeFragmentBinding.batteryStatusLayout.visibility = View.VISIBLE
-        badgeFragmentBinding.badgeConnectStatusLayout.visibility = View.VISIBLE
-        badgeFragmentBinding.badgeConnectStatus.text =
-            String.format(getString(R.string.badge_status), getString(R.string.badge_connected))
 
         when (batteryLevel) {
-            3 -> {
-                badgeFragmentBinding.batteryStatus.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.ic_battery_high))
-                badgeFragmentBinding.batteryPercent.text = "100%"
+            BadgeController.BatteryLevel.COMPLETE.value,
+            BadgeController.BatteryLevel.HIGH.value -> {
+                badgeFragmentBinding.batteryStatus.setImageResource(R.drawable.ic_battery_high)
+                badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.blue))
+                badgeFragmentBinding.batteryPercent.text = getString(R.string.badge_percent_100)
             }
-            2 -> {
+            BadgeController.BatteryLevel.MEDIUM.value -> {
                 badgeFragmentBinding.batteryStatus.setImageResource(R.drawable.ic_battery_medium)
                 badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.light_green))
-                badgeFragmentBinding.batteryPercent.text = "70%"
+                badgeFragmentBinding.batteryPercent.text = getString(R.string.badge_percent_70)
             }
-            1 -> {
+            BadgeController.BatteryLevel.LOW_POWER.value -> {
                 badgeFragmentBinding.batteryStatus.setImageResource(R.drawable.ic_battery_low)
                 badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.orange))
-                badgeFragmentBinding.batteryPercent.text = "30%"
+                badgeFragmentBinding.batteryPercent.text = getString(R.string.badge_percent_30)
             }
-            0 -> {
+            BadgeController.BatteryLevel.TOO_LOW.value -> {
                 badgeFragmentBinding.batteryStatus.setImageResource(R.drawable.ic_battery_too_low)
                 badgeFragmentBinding.batteryStatusLayout.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.red))
-                badgeFragmentBinding.batteryPercent.text = "10%"
+                badgeFragmentBinding.batteryPercent.text = getString(R.string.badge_percent_10)
             }
         }
     }

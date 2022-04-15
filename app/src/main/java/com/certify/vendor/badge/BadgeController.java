@@ -40,11 +40,13 @@ public class BadgeController {
     private Context context;
     private BleScanProc bleScanProc;
     private IntentsDefined.BadgeArgument badgeArg = new IntentsDefined.BadgeArgument();
-    EbadgeBroadcastReceiver mBR = new EbadgeBroadcastReceiver();
+    private EbadgeBroadcastReceiver mBR = new EbadgeBroadcastReceiver();
     private NtxBleReceiver ntxBleReceiver = new NtxBleReceiver();
     private ScanConfig mSC = new ScanConfig();
     private BadgeState badgeState = BadgeState.NONE;
     private BadgeListener listener = null;
+    private boolean isInited = false;
+    private BadgeConnectionState connectionState = BadgeConnectionState.NOT_CONNECTED;
 
     public enum BadgeState {
         NONE,
@@ -54,15 +56,35 @@ public class BadgeController {
         WRITE_FIRMWARE
     }
 
+    public enum BadgeConnectionState {
+        NOT_CONNECTED (0),
+        SCANNING (10),
+        CONNECTING (20),
+        CONNECTED (30),
+        DISCONNECTING (40),
+        DISCONNECTED (50);
+
+        private int value;
+        BadgeConnectionState(int value) {this.value = value;}
+        public int getValue() {return value;}
+    }
+
     public enum BatteryLevel {
-        TOO_LOW,
-        LOW_POWER,
-        MEDIUM,
-        HIGH,
-        COMPLETE
+        TOO_LOW(0),
+        LOW_POWER(1),
+        MEDIUM(2),
+        HIGH(3),
+        COMPLETE(4);
+
+        private int value;
+        BatteryLevel(final int value) {
+            this.value = value;
+        }
+        public int getValue() {return value;}
     }
 
     public interface BadgeListener {
+        void onBadgeConnectionStatus(int status);
         void onBadgeGetBattery(int batteryLevel);
     }
 
@@ -75,13 +97,16 @@ public class BadgeController {
 
     public void initBle(Context context) {
         try {
-            this.context = context;
-            BLEManager.start(context);
-            bleScanProc = new BleScanProc();
-            badgeArg.setFlavor(IntentsDefined.ProductFlavor.NB.getId());
-            BadgeFirmwareUpdate.INSTANCE.unregisterReceiver();
-            mBR.register(context);
-            ntxBleReceiver.register(context);
+            if (!isInited) {
+                this.context = context;
+                BLEManager.start(context);
+                bleScanProc = new BleScanProc();
+                badgeArg.setFlavor(IntentsDefined.ProductFlavor.NB.getId());
+                BadgeFirmwareUpdate.INSTANCE.unregisterReceiver();
+                mBR.register(context);
+                ntxBleReceiver.register(context);
+                isInited = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -170,6 +195,30 @@ public class BadgeController {
         BLEManager.connect(badgeArg);
     }
 
+    public BadgeConnectionState getConnectionState() {
+        return connectionState;
+    }
+
+    public void setConnectionState(BadgeConnectionState connectionState) {
+        this.connectionState = connectionState;
+    }
+
+    private void onBadgeConnectStatus(int status) {
+        switch (status) {
+            case 10: connectionState = BadgeConnectionState.SCANNING; break;
+            case 20: connectionState = BadgeConnectionState.CONNECTING; break;
+            case 30: connectionState = BadgeConnectionState.CONNECTED; break;
+            case 40: connectionState = BadgeConnectionState.DISCONNECTING; break;
+            case 50: connectionState = BadgeConnectionState.DISCONNECTED; break;
+        }
+        if (listener != null) {
+            listener.onBadgeConnectionStatus(status);
+        }
+        if (status == BadgeConnectionState.CONNECTED.value) {
+            onBadgeConnected();
+        }
+    }
+
     private void onBadgeConnected() {
         switch (badgeState) {
             case WRITE_DATA: {
@@ -185,7 +234,7 @@ public class BadgeController {
             break;
 
             case GET_BATTERY: {
-                BLEManager.getBattery();
+                //BLEManager.getBattery();
             }
             break;
 
@@ -229,7 +278,11 @@ public class BadgeController {
         Log.d(TAG, "Get Badge firmware version");
         badgeState = BadgeState.GET_FIRMWARE_VERSION;
         badgeArg.setAction(IntentsDefined.Badge_action.Bettary.getId());
-        startScan();
+        if (connectionState == BadgeConnectionState.CONNECTED) {
+            onBadgeConnected();
+        } else {
+            startScan();
+        }
     }
 
     enum BondState {
@@ -403,9 +456,7 @@ public class BadgeController {
                 } else if (action.equals(IntentsDefined.Action.ReportStatus.toString())) { //return the connectiong Status between app and device
                     int status = intent.getIntExtra(IntentsDefined.ExtraName.Status.toString(), -1);
                     Log.i(TAG, "onReceived : ReportStatus = " + status);
-                    if (status == 30) {
-                        onBadgeConnected();
-                    }
+                    onBadgeConnectStatus(status);
                 } else if (action.equals(IntentsDefined.Action.ReportGetData.toString())) {
                     String getData = intent.getStringExtra(IntentsDefined.ExtraName.GetData.toString());
                     String getCmdAction = intent.getStringExtra(IntentsDefined.ExtraName.GetCmdAction.toString());
@@ -447,8 +498,8 @@ public class BadgeController {
     }
 
     private void onBatteryData(String data) {
-        int batteryLevel = Integer.parseInt(data.substring(data.length()-1));
-        Log.d(TAG, "Battery Level " +batteryLevel);
+        int batteryLevel = Integer.parseInt(data.substring(data.length() - 1));
+        Log.d(TAG, "Battery Level " + batteryLevel);
         if (listener != null) {
             listener.onBadgeGetBattery(batteryLevel);
         }
@@ -456,5 +507,15 @@ public class BadgeController {
 
     private void onGetFirmwareVersion(String data) {
         Log.d(TAG, "Badge firmware version " +data);
+    }
+
+    public void disconnectDevice() {
+        BLEManager.disconnect();
+    }
+
+    public void onBadgeClose() {
+        disconnectDevice();
+        badgeState = BadgeState.NONE;
+        listener = null;
     }
 }

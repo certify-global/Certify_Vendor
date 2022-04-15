@@ -39,6 +39,7 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
+                        android:contentDescription="@string/badge_vendor_image"
                         android:src="@drawable/ic_c_logo" />
 
                     <TextView
@@ -78,6 +79,7 @@
                                 android:layout_width="@dimen/size_96"
                                 android:layout_height="@dimen/size_96"
                                 android:layout_gravity="center"
+                                android:contentDescription="@string/badge_user_image"
                                 android:src="@drawable/ic_user_pic" />
 
                             <LinearLayout
@@ -141,6 +143,7 @@
                                 android:layout_height="@dimen/size_340"
                                 android:layout_gravity="center"
                                 android:layout_margin="@dimen/size_14"
+                                android:contentDescription="@string/badge_qrcode_image"
                                 android:src="@drawable/qrcode" />
 
                         </androidx.cardview.widget.CardView>
@@ -190,6 +193,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/size_10"
+                            android:contentDescription="@string/badge_battery_image"
                             android:src="@drawable/ic_battery_high">
                         </ImageView>
 
@@ -213,14 +217,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:visibility="invisible">
+                            android:orientation="horizontal">
 
                             <ImageView
                                 android:id="@+id/badge_connection_image"
                                 android:layout_width="@dimen/size_14"
                                 android:layout_height="@dimen/size_14"
-                                android:src="@drawable/ic_badge_connected">
+                                android:contentDescription="@string/badge_connection_image">
                             </ImageView>
 
                             <TextView
@@ -228,6 +231,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/size_05"
+                                android:text="@string/badge_status"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_14" />
+
+                            <TextView
+                                android:id="@+id/badge_connection_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/size_05"
+                                android:text="@string/badge_not_connected"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14" />
 
@@ -239,6 +252,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/size_05"
                             android:background="@color/light_blue"
+                            android:layout_gravity="end"
                             android:paddingStart="@dimen/size_10"
                             android:paddingTop="@dimen/size_05"
                             android:paddingEnd="@dimen/size_10"

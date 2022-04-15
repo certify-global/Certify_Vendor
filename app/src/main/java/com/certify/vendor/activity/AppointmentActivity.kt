@@ -17,8 +17,8 @@ class AppointmentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_appointment)
-        initView();
-        setClickListener();
+        initView()
+        setClickListener()
     }
 
     private fun setClickListener() {
@@ -44,6 +44,7 @@ class AppointmentActivity : AppCompatActivity() {
         navigationView.setOnItemSelectedListener(object : NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 Log.d("AppointmentActivity", "Menu item ${item.title}")
+                findNavController(R.id.nav_host_appointment).popBackStack()
                 when (item.itemId) {
                     R.id.menu_badge -> {
                         findNavController(R.id.nav_host_appointment).navigate(R.id.badgeFragment)

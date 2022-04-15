@@ -88,11 +88,21 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="email">Email</string>
-    <string name="badge_status">Badge status: %1$s</string>
+    <string name="badge_status">Badge status: </string>
     <string name="manage_badge">Manage Badge</string>
+    <string name="badge_vendor_image">Badge vendor image</string>
+    <string name="badge_user_image">Badge user image</string>
+    <string name="badge_qrcode_image">Badge QrCode image</string>
+    <string name="badge_battery_image">Badge battery status image</string>
+    <string name="badge_connection_image">Badge connection image</string>
     <string name="badge_connected">Connected</string>
     <string name="badge_disconnected">Disconnected</string>
     <string name="badge_not_configured">Not configured</string>
+    <string name="badge_not_connected">Not connected</string>
+    <string name="badge_percent_100">100%</string>
+    <string name="badge_percent_70">70%</string>
+    <string name="badge_percent_30">30%</string>
+    <string name="badge_percent_10">10%</string>
 
     <!-- Badge firmware -->
     <string name="updating_firmware">Updating firmware, Please wait....</string>
