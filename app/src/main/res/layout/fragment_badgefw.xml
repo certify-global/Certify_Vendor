@@ -4,44 +4,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewmodel"
-            type="com.certify.vendor.model.BadgeFWUpdateViewModel" />
+            type="com.certify.vendor.model.BadgeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/welcome_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/updating_firmware"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_24"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/fw_update_status">
-        </TextView>
-
-        <ProgressBar
-            android:id="@+id/fw_update_status"
-            android:layout_width="@dimen/size_300"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_20"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/size_30"
+            android:paddingBottom="@dimen/size_30"
+            android:background="@color/white"
+            app:cardCornerRadius="@dimen/size_10"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:maxHeight="@dimen/size_05"
-            android:minHeight="@dimen/size_05"
-            android:max="100"
-            android:indeterminate="false"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal">
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        </ProgressBar>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/firmware_update_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/size_30"
+                    android:text="@string/updating_firmware"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_24">
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/badge_user_image"
+                    android:layout_width="@dimen/size_120"
+                    android:layout_height="@dimen/size_120"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/size_44"
+                    android:contentDescription="@string/firmware_update_image"
+                    android:src="@drawable/ic_firmware_update" />
+
+                <ProgressBar
+                    android:id="@+id/fw_update_status"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="@dimen/size_300"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/size_20"
+                    android:indeterminate="false"
+                    android:scaleY="4"
+                    android:max="100"
+                    android:maxHeight="@dimen/size_10"
+                    android:minHeight="@dimen/size_10"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </ProgressBar>
+
+                <TextView
+                    android:id="@+id/firmware_update_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/size_05"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_18">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/firmware_cancel_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="@dimen/size_42"
+                    android:layout_marginTop="@dimen/size_30"
+                    android:layout_marginEnd="@dimen/size_42"
+                    android:layout_marginBottom="@dimen/size_30"
+                    android:text="@string/firmware_cancel_msg"
+                    android:textAlignment="center"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_18">
+                </TextView>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

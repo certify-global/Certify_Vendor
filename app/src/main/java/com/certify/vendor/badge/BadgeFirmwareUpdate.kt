@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.certify.vendor.R
 import com.netronix.ble.connect.BLEManager
 import com.netronix.ble.connect.OTAManager.BluetoothGattSingleton
 import com.netronix.ble.connect.data.File
@@ -17,7 +18,7 @@ object BadgeFirmwareUpdate {
     private val TAG = BadgeFirmwareUpdate::class.java.simpleName
     private var badgeArg : IntentsDefined.BadgeArgument ? = null
     const val FIRMWARE_VERSION = "0.4.01"
-    private const val FIRMWARE_FILE_NAME = "H40D01_OTA_NB_V0.4.01.img"
+    private const val FIRMWARE_FILE_NAME = "h40d01_ota_nb_v0401.img"
     private var mBroadcastReceiver : EBadgeBroadcastReceiver? = null
     var fwUpdateProgress = MutableLiveData<Int>()
 
@@ -32,12 +33,12 @@ object BadgeFirmwareUpdate {
         mBroadcastReceiver?.register(context)
 
         BluetoothGattSingleton.setBluetoochManager(BLEManager.getOTAManager())
-        BLEManager.getOTAManager().fileName = FIRMWARE_FILE_NAME
         badgeArg?.fwVersion = FIRMWARE_VERSION
-        BLEManager.getOTAManager().file = File(context?.assets?.open(FIRMWARE_FILE_NAME))
+        //BLEManager.getOTAManager().file = File(context?.assets?.open(FIRMWARE_FILE_NAME))
+        BLEManager.getOTAManager().fileName = FIRMWARE_FILE_NAME
+        BLEManager.getOTAManager().file = File(context?.resources?.openRawResource(R.raw.h40d01_ota_nb_v0401))
         initOTAValue()
         BLEManager.getOTAManager().formatResult = true
-        startUpdate()
     }
 
     private fun initOTAValue() {
@@ -97,8 +98,8 @@ object BadgeFirmwareUpdate {
                         val err = intent.getIntExtra(IntentsDefined.ExtraName.ErrorCode.toString(), -1)
                         val errCode = IntentsDefined.ErrorCode.getErrorCode(err)
                         Log.i(TAG, "onReceived : Response[$errCode]")
-                        if (errCode == IntentsDefined.ErrorCode.Send_success) {
-                            onFirmwareUpdateComplete()
+                        if (errCode == IntentsDefined.ErrorCode.Start_ota_action) {
+                            startUpdate()
                         }
                     }
                     IntentsDefined.Action.ReportStatus.toString() -> { //return the connectiong Status between app and device
@@ -118,19 +119,23 @@ object BadgeFirmwareUpdate {
                     IntentsDefined.Action.ReportWriteProgress.toString() -> {
                         val percent = intent.getIntExtra(IntentsDefined.ExtraName.WriteProgress.toString(), -1);
                         Log.d(TAG, "Update percent $percent")
-                        fwUpdateProgress.value = percent
                     }
                     IntentsDefined.Action.ReportWriteOTAProgress.toString() -> {
                         val otaPercent = intent.getIntExtra(IntentsDefined.ExtraName.WriteOTAProgress.toString(), -1);
                         Log.d(TAG, "Update percent $otaPercent")
+                        fwUpdateProgress.value = otaPercent
                     }
                     IntentsDefined.Action.ReportOTAStep.toString() -> {
                         val otaResult = intent.getIntExtra(IntentsDefined.ExtraName.ReportOTAResult.toString(), -1);
                         Log.d(TAG, "Update percent $otaResult")
+                        if (otaResult == Statics.OTA_STEP_ON_SUCCESS) {
+                            onFirmwareUpdateComplete()
+                        }
                     }
                     Statics.BLUETOOTH_GATT_UPDATE -> {
                         val otaStep = intent.getIntExtra("step", -1)
                         Log.d(TAG, "Update percent $otaStep")
+                        BLEManager.getOTAManager().processStep(intent)
                     }
                 }
             } catch (e: Exception) {

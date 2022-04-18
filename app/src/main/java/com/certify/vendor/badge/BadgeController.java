@@ -140,8 +140,9 @@ public class BadgeController {
 
     public void writeFirmwareOTA() {
         Log.d(TAG, "Firmware Initiate ");
-        startScan();
         badgeState = BadgeState.WRITE_FIRMWARE;
+        badgeArg.setAction(IntentsDefined.Badge_action.OTA.getId());
+        startScan();
     }
 
     public void startScan() {
@@ -229,6 +230,7 @@ public class BadgeController {
             case WRITE_FIRMWARE:{
                 mBR.unRegister(context);
                 Log.d(TAG, "Firmware Device connected Write OTA");
+                isInited = false;
                 BadgeFirmwareUpdate.INSTANCE.writeFirmwareOTA(context, badgeArg);
             }
             break;

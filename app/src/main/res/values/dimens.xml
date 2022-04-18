@@ -22,6 +22,7 @@
     <dimen name="size_32">32dp</dimen>
     <dimen name="size_35">35dp</dimen>
     <dimen name="size_40">40dp</dimen>
+    <dimen name="size_42">42dp</dimen>
     <dimen name="size_44">44dp</dimen>
     <dimen name="size_47">47dp</dimen>
     <dimen name="size_48">48dp</dimen>

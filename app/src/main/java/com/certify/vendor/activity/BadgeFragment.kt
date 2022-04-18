@@ -152,6 +152,7 @@ class BadgeFragment : Fragment() {
 
     private fun onManageBadge() {
         badgeFragmentBinding.manageBadge.setOnClickListener {
+            badgeViewModel?.onClose()
             findNavController().navigate(R.id.badgeManageFragment)
         }
     }

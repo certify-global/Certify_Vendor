@@ -26,7 +26,7 @@ class BadgeFWUpdateFragment : Fragment() {
         fragmentBadgeFWBinding = FragmentBadgefwBinding.inflate(inflater, container, false)
         fragmentBadgeFWBinding.apply {
             lifecycleOwner = viewLifecycleOwner
-            viewmodel = badgeFWViewModel
+            //viewmodel = badgeFWViewModel
         }
         badgeFWViewModel = ViewModelProvider(this).get(BadgeFWUpdateViewModel::class.java)
         return fragmentBadgeFWBinding.root

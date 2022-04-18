@@ -112,5 +112,8 @@
     <string name="new_firmware_version">A new update is available</string>
     <string name="firmware_last_updated">Last updated: %1$s</string>
     <string name="firmware_upto_date">Your badge is up to date</string>
-    <string name="updating_firmware">Updating firmware, Please wait....</string>
+    <string name="updating_firmware">Firmware update</string>
+    <string name="firmware_update_image">Firmware update image</string>
+    <string name="firmware_cancel_msg">Don\'t cancel the update until the process is complete</string>
+
 </resources>

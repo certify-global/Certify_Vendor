@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.certify.vendor.R
@@ -13,6 +16,7 @@ import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.databinding.FragmentManageBadgeBinding
 import com.certify.vendor.model.BadgeViewModel
+
 
 class BadgeManageFragment : Fragment() {
 
@@ -68,5 +72,27 @@ class BadgeManageFragment : Fragment() {
                                                                         BadgeFirmwareUpdate.FIRMWARE_VERSION)
         badgeManageFragmentBinding.firmwareUpdateAvailable.text = getString(R.string.firmware_upto_date)
         badgeManageFragmentBinding.firmwareLastUpdated.text = String.format(getString(R.string.firmware_last_updated), "")
+        badgeManageFragmentBinding.firmwareUpdate.setOnClickListener {
+            showFirmwareUpdateDialog()
+        }
+    }
+
+    private fun showFirmwareUpdateDialog() {
+        val alertDialog = this.context?.let { AlertDialog.Builder(it) }
+        val view = layoutInflater.inflate(R.layout.fragment_badgefw, null)
+        alertDialog?.setView(view)
+        val progressBar = view.findViewById<ProgressBar>(R.id.fw_update_status)
+        val updatePercent = view.findViewById<TextView>(R.id.firmware_update_percent)
+        val dialog = alertDialog?.create()
+        dialog?.setCancelable(false)
+        badgeViewModel?.firmwareProgress?.observe(viewLifecycleOwner) {
+            progressBar.setProgress(it, true)
+            updatePercent.text = "$it%"
+            if (it == 101) {
+                dialog?.dismiss()
+            }
+        }
+        dialog?.show()
+        badgeViewModel?.writeBadgeFirmware(this)
     }
 }
