@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_05"
                 android:gravity="center"
-                android:text="@string/new_firmware_version"
+                android:text="@string/new_firmware_update_available"
                 android:textSize="@dimen/text_size_18"
                 android:textColor="@color/black"/>
 

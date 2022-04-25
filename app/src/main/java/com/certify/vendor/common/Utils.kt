@@ -202,6 +202,8 @@ class Utils {
             return currentDate;
         }
 
+        fun getCurrentDate(dateFormat: String): String = SimpleDateFormat(dateFormat, Locale.getDefault()).format(Date())
+
         fun isTimeBigger(startTime: String, endTime: String): Boolean {
             var result = false
             val simpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())

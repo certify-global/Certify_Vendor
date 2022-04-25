@@ -86,6 +86,7 @@ public class BadgeController {
     public interface BadgeListener {
         void onBadgeConnectionStatus(int status);
         void onBadgeGetBattery(int batteryLevel);
+        void onGetFirmwareVersion(String version);
     }
 
     public static BadgeController getInstance() {
@@ -494,7 +495,8 @@ public class BadgeController {
     private void processReportGetData(String commandAction, String data) {
         if (commandAction.equals("GetBattery") && (badgeState == BadgeState.GET_BATTERY)) {
             onBatteryData(data);
-        } else if (commandAction.equals("GetFwVersion") && (badgeState == BadgeState.GET_FIRMWARE_VERSION)) {
+        }
+        if (commandAction.equals("GetFwVersion")) {
             onGetFirmwareVersion(data);
         }
     }
@@ -509,6 +511,9 @@ public class BadgeController {
 
     private void onGetFirmwareVersion(String data) {
         Log.d(TAG, "Badge firmware version " +data);
+        if (listener != null) {
+            listener.onGetFirmwareVersion(data.substring(1));
+        }
     }
 
     public void disconnectDevice() {

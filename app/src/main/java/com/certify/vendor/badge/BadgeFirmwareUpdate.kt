@@ -17,7 +17,8 @@ object BadgeFirmwareUpdate {
 
     private val TAG = BadgeFirmwareUpdate::class.java.simpleName
     private var badgeArg : IntentsDefined.BadgeArgument ? = null
-    const val FIRMWARE_VERSION = "0.4.01"
+    const val FIRMWARE_VERSION1 = "0.3.23"
+    const val FIRMWARE_VERSION2 = "0.4.01"
     private const val FIRMWARE_FILE_NAME = "h40d01_ota_nb_v0401.img"
     private var mBroadcastReceiver : EBadgeBroadcastReceiver? = null
     var fwUpdateProgress = MutableLiveData<Int>()
@@ -33,7 +34,7 @@ object BadgeFirmwareUpdate {
         mBroadcastReceiver?.register(context)
 
         BluetoothGattSingleton.setBluetoochManager(BLEManager.getOTAManager())
-        badgeArg?.fwVersion = FIRMWARE_VERSION
+        badgeArg?.fwVersion = FIRMWARE_VERSION2
         //BLEManager.getOTAManager().file = File(context?.assets?.open(FIRMWARE_FILE_NAME))
         BLEManager.getOTAManager().fileName = FIRMWARE_FILE_NAME
         BLEManager.getOTAManager().file = File(context?.resources?.openRawResource(R.raw.h40d01_ota_nb_v0401))
@@ -51,9 +52,6 @@ object BadgeFirmwareUpdate {
             .setFileBlockSize(Integer.valueOf(Statics.DEFAULT_BLOCK_SIZE_VALUE))
         BLEManager.getOTAManager().setImageBank(Statics.DEFAULT_MEMORY_BANK)
     }
-
-    fun isBadgeFirmwareUpdateRequired() : Boolean = false
-        //!badgeArg?.fwVersion.equals(FIRMWARE_VERSION)
 
     private fun startUpdate() {
         Log.d(TAG, "Firmware Start update")

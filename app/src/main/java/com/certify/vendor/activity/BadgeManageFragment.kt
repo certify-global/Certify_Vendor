@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.certify.vendor.R
@@ -68,10 +69,23 @@ class BadgeManageFragment : Fragment() {
     }
 
     private fun setFirmwareInfo() {
+        badgeViewModel?.init(this.context)
+        val sharedPreferences = AppSharedPreferences.getSharedPreferences(this.context)
         badgeManageFragmentBinding.firmwareVersion.text = String.format(getString(R.string.firmware_version),
-                                                                        BadgeFirmwareUpdate.FIRMWARE_VERSION)
-        badgeManageFragmentBinding.firmwareUpdateAvailable.text = getString(R.string.firmware_upto_date)
-        badgeManageFragmentBinding.firmwareLastUpdated.text = String.format(getString(R.string.firmware_last_updated), "")
+                                                                        sharedPreferences?.getString(Constants.BADGE_FIRMWARE_VERSION,
+                                                                        BadgeFirmwareUpdate.FIRMWARE_VERSION1))
+        if (badgeViewModel?.isBadgeFirmwareUpdateToDate(this.context) == true) {
+            badgeManageFragmentBinding.firmwareUpdateAvailable.text =
+                getString(R.string.firmware_upto_date)
+            badgeManageFragmentBinding.firmwareUpdate.isEnabled = false
+            badgeManageFragmentBinding.firmwareUpdate.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.gray))
+        } else {
+            badgeManageFragmentBinding.firmwareUpdate.isEnabled = true
+            badgeManageFragmentBinding.firmwareUpdateAvailable.text =
+                getString(R.string.new_firmware_update_available)
+        }
+        badgeManageFragmentBinding.firmwareLastUpdated.text = String.format(getString(R.string.firmware_last_updated),
+                                                                            sharedPreferences?.getString(Constants.BADGE_FW_UPDATE_TIME, ""))
         badgeManageFragmentBinding.firmwareUpdate.setOnClickListener {
             showFirmwareUpdateDialog()
         }
@@ -90,6 +104,7 @@ class BadgeManageFragment : Fragment() {
             updatePercent.text = "$it%"
             if (it == 101) {
                 dialog?.dismiss()
+                setFirmwareInfo()
             }
         }
         dialog?.show()

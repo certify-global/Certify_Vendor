@@ -80,9 +80,10 @@ class BadgeFragment : Fragment() {
     }
 
     private fun setQrCodeImage() {
-        badgeFragmentBinding.badgeQrCode.setImageBitmap(
-            Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_GUID),
-                340, 340))
+        val qrCodeImage = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_GUID)
+        if (qrCodeImage.isNotEmpty()) {
+            badgeFragmentBinding.badgeQrCode.setImageBitmap(Utils.QRCodeGenerator(qrCodeImage, 340, 340))
+        }
     }
 
     private fun setAppointmentStatus() {
