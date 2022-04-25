@@ -55,7 +55,7 @@
             android:gravity="center"
             android:maxLines="3"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_12" />
+            android:textSize="@dimen/text_size_20" />
 
 
         <TextView
@@ -68,7 +68,7 @@
             android:maxLines="3"
             android:text="User Name"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_12"
+            android:textSize="@dimen/text_size_20"
             android:textStyle="bold" />
 
 
@@ -78,9 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/img_user_badge"
             android:gravity="center"
-            android:text="@string/appt"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_12" />
+            android:text="@string/appointment_status"
+            android:textColor="@color/black" />
         <TextView
             android:id="@+id/tv_active_badge"
             android:layout_width="90dp"
@@ -115,7 +114,6 @@
             android:layout_below="@+id/img_user_badge"
             android:layout_toRightOf="@+id/tv_appt_badge"
             android:textColor="@color/green"
-            android:textSize="@dimen/text_size_12"
             android:textStyle="bold" />
 
 
