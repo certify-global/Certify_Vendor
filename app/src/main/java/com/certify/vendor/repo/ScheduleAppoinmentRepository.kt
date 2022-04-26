@@ -2,13 +2,9 @@ package com.certify.vendor.repo
 
 import android.util.Log
 import com.certify.vendor.api.RetrofitInstance
-import com.certify.vendor.api.request.GetAppointmentRequest
 import com.certify.vendor.api.request.ScheduleAppointmentRequest
-import com.certify.vendor.api.response.GetAppointmentResponse
 import com.certify.vendor.api.response.ScheduleAppointmentResponse
 import com.certify.vendor.common.Constants
-import com.certify.vendor.data.AppointmentDataSource
-import com.certify.vendor.data.LoginDataSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,13 +14,11 @@ class ScheduleAppoinmentRepository {
         private val TAG = ScheduleAppoinmentRepository::class.java.name
     }
 
-    fun scheduleAppoinments(vendorId: Int, selectedDate: String,
+    fun scheduleAppoinments(selectedDate: String,
                             startTime: String, endTime: String, contactName: String,visitReason: String
                             ,facilityID:Int,onResult: (isSuccess: Boolean, scheduleAppointmentResponse: ScheduleAppointmentResponse?) -> Unit) {
 
-        val scheduleAppointmentRequest = ScheduleAppointmentRequest(
-            vendorId, 0, facilityID, 0,
-            Constants.VENDOR_APP, selectedDate, startTime, endTime, contactName,visitReason)
+        val scheduleAppointmentRequest = ScheduleAppointmentRequest(facilityID, Constants.VENDOR_APP, selectedDate, startTime, endTime, contactName,visitReason)
 
         RetrofitInstance.apiInterface.scheduleAppoinments(scheduleAppointmentRequest)
             .enqueue(object : Callback<ScheduleAppointmentResponse> {

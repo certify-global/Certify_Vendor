@@ -3,7 +3,8 @@ package com.certify.vendor.common
 class Constants {
 
     companion object {
-        val VENDOR_APP: String = "VENDOR_APP"
+        val VENDOR_APP: String = "MOBILE_APP"
+        val ACCESS_TOKEN = "AccessToken"
         val SHARED_PREFS = "vendorCertify"
         val IS_LOGGEDIN = "isLoggedIn"
         val FIRST_NAME = "firstName"

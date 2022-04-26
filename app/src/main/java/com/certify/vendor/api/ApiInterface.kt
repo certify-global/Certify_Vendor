@@ -10,19 +10,19 @@ import retrofit2.http.*
 
 interface ApiInterface {
 
-    @POST("Login/GetUserInfo")
+    @POST("GetUserInfo")
     fun loginUser(@Body loginRequest: LoginRequest) : Call<LoginResponse>
 
-    @POST("Appointment/Get")
+    @POST("GetAppointments")
     fun getAppointments(@Body appointmentRequest: GetAppointmentRequest) : Call<GetAppointmentResponse>
 
-    @GET("Facility/VendorFacilitiesWithDetails")
+    @GET("GetVendorFacilitiesWithDetails")
     fun getFacilityList(@Query("vendorId") vendorId: Int): Call<FacilityResponse>
 
-    @POST("Appointment/Schedule")
+    @POST("ScheduleAppointment")
     fun scheduleAppoinments(@Body scheduleAppointmentRequest: ScheduleAppointmentRequest) : Call<ScheduleAppointmentResponse>
 
-    @POST("Appointment/Update")
+    @POST("UpdateAppointment")
     fun updateAppointment(@Body updateAppointmentRequest: UpdateAppointmentRequest) : Call<UpdateAppointmentResponse>
 
 }

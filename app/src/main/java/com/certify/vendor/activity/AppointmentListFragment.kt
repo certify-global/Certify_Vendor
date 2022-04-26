@@ -222,10 +222,6 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         pDialog?.show()
         updateAppointmentViewModel.init(context)
         updateAppointmentViewModel.updateAppointments(
-            AppSharedPreferences.readInt(
-                sharedPreferences,
-                Constants.VENDOR_ID
-            ),
             "",
             "",
             "",
@@ -252,24 +248,33 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         val lm = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val criteria = Criteria()
         val bestProvider = lm.getBestProvider(criteria, false)
-        val location = lm.getLastKnownLocation(bestProvider!!)
-        if (location == null) {
-         //   Toast.makeText(activity, "Location Not found", Toast.LENGTH_LONG).show()
-        } else {
-            val geocoder = Geocoder(activity)
-            try {
-                val user =
-                    geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                userLocation?.latitude = user.get(0).latitude;
-                userLocation?.longitude = user.get(0).longitude;
-                Log.i("getUserLocation", "" + user.get(0).latitude + "," + user.get(0).longitude)
-                userLocation?.let { it1 ->
-                    AppointmentController.getInstance()?.setAppointmentLocation(
-                        it1
+        if (bestProvider != null) {
+            val location = lm.getLastKnownLocation(bestProvider!!)
+            if (location == null) {
+                //   Toast.makeText(activity, "Location Not found", Toast.LENGTH_LONG).show()
+            } else {
+                val geocoder = Geocoder(activity)
+                try {
+                    val user =
+                        geocoder.getFromLocation(
+                            location.getLatitude(),
+                            location.getLongitude(),
+                            1
+                        );
+                    userLocation?.latitude = user.get(0).latitude;
+                    userLocation?.longitude = user.get(0).longitude;
+                    Log.i(
+                        "getUserLocation",
+                        "" + user.get(0).latitude + "," + user.get(0).longitude
                     )
+                    userLocation?.let { it1 ->
+                        AppointmentController.getInstance()?.setAppointmentLocation(
+                            it1
+                        )
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }

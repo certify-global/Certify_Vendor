@@ -14,13 +14,12 @@ class UpdateAppointmentRepository {
         private val TAG = UpdateAppointmentRepository::class.java.name
     }
 
-    fun updateAppointment(vendorId: Int, selectedDate: String,
+    fun updateAppointment(selectedDate: String,
                             startTime: String, endTime: String,visitReason: String,appointmentId: Int,action: Int
                             ,facilityID:Int,onResult: (isSuccess: Boolean, updateAppointmentResponse: UpdateAppointmentResponse?) -> Unit) {
 
         val updateAppointmentRequest = UpdateAppointmentRequest(
-            vendorId, 0, facilityID, 0,
-            Constants.VENDOR_APP,  startTime, endTime, visitReason, appointmentId, action)
+            facilityID, Constants.VENDOR_APP,  selectedDate, startTime, endTime, visitReason, appointmentId, action)
         Log.d(TAG, "update Appointments request " + updateAppointmentRequest)
 
         RetrofitInstance.apiInterface.updateAppointment(updateAppointmentRequest)

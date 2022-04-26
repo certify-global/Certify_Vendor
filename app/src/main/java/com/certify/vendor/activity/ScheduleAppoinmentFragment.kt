@@ -158,7 +158,6 @@ class ScheduleAppoinmentFragment : BaseFragment() {
             if(validateVisitPersonName()) {
                 pDialog?.show()
                 scheduleAppointmentViewModel?.scheduleAppointments(
-                    AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID),
                     selectedDate,
                     startTime,
                     endTime,

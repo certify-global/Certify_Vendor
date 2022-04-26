@@ -16,10 +16,10 @@ class ScheduleAppointmentViewModel : BaseViewModel() {
         RetrofitInstance.init(context)
     }
 
-    fun scheduleAppointments(vendorId: Int,selectedDate: String,
+    fun scheduleAppointments(selectedDate: String,
                              startTime: String, endTime: String, contactName: String,visitReason: String,facilityID: Int) {
         loading.value = true
-        appointmentRepository.scheduleAppoinments(vendorId,selectedDate,startTime,endTime,contactName,visitReason,facilityID) { isSuccess, appointmentResponse ->
+        appointmentRepository.scheduleAppoinments(selectedDate,startTime,endTime,contactName,visitReason,facilityID) { isSuccess, appointmentResponse ->
             loading.value = false
             scheduleAppointmentLiveData.value = isSuccess
         }

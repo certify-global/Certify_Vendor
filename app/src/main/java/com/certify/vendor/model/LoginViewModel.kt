@@ -5,15 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.certify.vendor.VendorApplication
 import com.certify.vendor.api.RetrofitInstance
+import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
+import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.repo.LoginRepository
 
 class LoginViewModel : BaseViewModel() {
 
     val signInLiveData = MutableLiveData<Boolean>()
     private var loginRepository : LoginRepository = LoginRepository()
+    private var context : Context? = null
 
     fun init(context: Context?) {
+        this.context = context
         RetrofitInstance.init(context)
     }
 
@@ -24,6 +28,8 @@ class LoginViewModel : BaseViewModel() {
             if (isSuccess) {
                 VendorApplication.isLoggedIn = true
             }
+            val sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
+            AppSharedPreferences.writeSp(sharedPreferences, Constants.ACCESS_TOKEN, response?.responseData?.token)
             signInLiveData.value = isSuccess
         }
     }

@@ -14,9 +14,9 @@ class UpdateAppointmentViewModel : BaseViewModel() {
         RetrofitInstance.init(context)
     }
 
-    fun updateAppointments(vendorId: Int,date: String, startTime: String, endTime: String, visitReason : String, appointmentId : Int, action: Int, facilityID: Int) {
+    fun updateAppointments(date: String, startTime: String, endTime: String, visitReason : String, appointmentId : Int, action: Int, facilityID: Int) {
         loading.value = true
-        appointmentRepository.updateAppointment(vendorId,"null",startTime,endTime,visitReason,appointmentId,action,facilityID) { isSuccess, appointmentResponse ->
+        appointmentRepository.updateAppointment("null",startTime,endTime,visitReason,appointmentId,action,facilityID) { isSuccess, appointmentResponse ->
             loading.value = false
             updateAppointmentLiveData.value = isSuccess
         }

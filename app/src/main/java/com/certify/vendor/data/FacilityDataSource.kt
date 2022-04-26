@@ -8,7 +8,8 @@ object FacilityDataSource {
 
     fun addFacilityList(facilityData:  List<FacilityData>) {
         facilitytList.clear()
-        val user0 = FacilityData(0, "Select Facility","","","","","","",false,0)
+        val user0 = FacilityData(0, "Select Facility","","","","","","","","",
+                                0, false, 0, "", 0)
         facilitytList.add(user0)
         facilitytList.addAll(facilityData)
     }
