@@ -4,7 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.certify.vendor.R
 import com.certify.vendor.callback.SettingCallback
@@ -21,19 +22,21 @@ class SettingsAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.cardViewMyaccount.setOnClickListener {
+        holder.myAccount.setOnClickListener {
             settingListener.onSettingCallBack(0)
         }
-        holder.cardViewPrivacy.setOnClickListener {
+        holder.eBadge.setOnClickListener {
             settingListener.onSettingCallBack(1)
         }
-        holder.cardViewTerms.setOnClickListener {
+        holder.privacyPolicy.setOnClickListener {
             settingListener.onSettingCallBack(2)
         }
-        holder.cardViewLogout.setOnClickListener {
+        holder.terms.setOnClickListener {
             settingListener.onSettingCallBack(3)
         }
-
+        holder.logOut.setOnClickListener {
+            settingListener.onSettingCallBack(4)
+        }
 
     }
 
@@ -43,11 +46,11 @@ class SettingsAdapter(
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var cardViewMyaccount = view.findViewById<CardView>(R.id.cardView_myaccount)
-        var cardViewPrivacy = view.findViewById<CardView>(R.id.cardView_privacy)
-        var cardViewTerms = view.findViewById<CardView>(R.id.cardView_terms)
-        var cardViewLogout = view.findViewById<CardView>(R.id.cardView_logout)
-
+        var myAccount = view.findViewById<LinearLayout>(R.id.myaccount)
+        var eBadge = view.findViewById<LinearLayout>(R.id.ebadge)
+        var privacyPolicy = view.findViewById<TextView>(R.id.privacy_policy)
+        var terms = view.findViewById<TextView>(R.id.terms)
+        var logOut = view.findViewById<TextView>(R.id.log_out)
 
     }
 

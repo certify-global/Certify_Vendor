@@ -76,7 +76,8 @@ class BadgeFragment : Fragment() {
         )
         badgeFragmentBinding.badgeStatus.text = getString(R.string.active)
         badgeFragmentBinding.badgeCompanyName.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
-        badgeFragmentBinding.badgeExpires.text = AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE)
+        badgeFragmentBinding.badgeExpires.text =
+            String.format(getString(R.string.expires_on), AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE))
     }
 
     private fun setQrCodeImage() {

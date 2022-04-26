@@ -66,9 +66,4 @@ class AppointmentActivity : AppCompatActivity() {
             }
         })
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finishAffinity()
-    }
 }

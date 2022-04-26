@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginMobileFragment">
+    app:startDestination="@id/loginMainFragment">
     <fragment
         android:id="@+id/loginMainFragment"
         android:name="com.certify.vendor.activity.LoginMainFragment"
@@ -50,7 +50,12 @@
         android:id="@+id/SettingsFragment"
         android:name="com.certify.vendor.activity.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/settings_layout" />
+        tools:layout="@layout/settings_layout" >
+        <action
+            android:id="@+id/action_SettingsFragment_to_badgeManageFragment"
+            app:destination="@id/badgeManageFragment"
+            app:popUpTo="@id/SettingsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/CredentialsFragment"
         android:name="com.certify.vendor.activity.CredentialsFragment"

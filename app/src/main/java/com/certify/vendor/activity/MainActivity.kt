@@ -17,15 +17,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    override fun onStart() {
-        super.onStart()
-        startActivity(Intent(this, LoginActivity::class.java))
-    }
-
     override fun onResume() {
         super.onResume()
         if (AppSharedPreferences.readSp(AppSharedPreferences.getSharedPreferences(this), Constants.IS_LOGGEDIN)) {
+            finish()
             launchAppointmentActivity()
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 

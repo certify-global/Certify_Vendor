@@ -84,11 +84,10 @@
 
         <TextView
             android:id="@+id/forgot_pass_word"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/size_313"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_238"
             android:layout_marginTop="@dimen/size_09"
-            android:layout_marginEnd="@dimen/size_31"
+            android:gravity="end"
             android:text="@string/forgot_pass_word_text"
             android:textColor="@color/red"
             android:textSize="@dimen/text_size_20"

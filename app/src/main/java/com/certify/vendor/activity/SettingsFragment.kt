@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,14 +64,19 @@ class SettingsFragment : Fragment(),SettingCallback {
     override fun onSettingCallBack(position: Int) {
         when(position){
             0 -> launchMyAccount()
-            1 -> launchWebView("https://www.certify.me/legal/privacy-policy/")
-            2 -> launchWebView("https://www.certify.me/legal/terms-of-use/")
-            3 -> Utils.logOutDialog(requireContext())
+            1 -> launchBadgeManageFragment()
+            2 -> launchWebView("https://www.certify.me/legal/privacy-policy/")
+            3 -> launchWebView("https://www.certify.me/legal/terms-of-use/")
+            4 -> Utils.logOutDialog(requireContext())
         }
     }
 
     private fun launchMyAccount() {
         startActivity(Intent(requireContext(), MyAccountActivity::class.java))
+    }
+
+    private fun launchBadgeManageFragment() {
+        findNavController().navigate(R.id.badgeManageFragment)
     }
 
     private fun launchWebView(urlValue:String) {
