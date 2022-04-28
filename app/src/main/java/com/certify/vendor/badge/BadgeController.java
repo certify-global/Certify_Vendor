@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,7 +20,9 @@ import android.view.View;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.certify.vendor.common.Constants;
 import com.certify.vendor.common.Utils;
+import com.certify.vendor.data.AppSharedPreferences;
 import com.netronix.ble.connect.BLEManager;
 import com.netronix.ble.connect.data.Statics;
 import com.netronix.ble.connect.dither.Common;
@@ -84,9 +87,10 @@ public class BadgeController {
     }
 
     public interface BadgeListener {
-        void onBadgeConnectionStatus(int status);
+        void onBadgeConnectionStatus(int status, BluetoothDevice bleDevice);
         void onBadgeGetBattery(int batteryLevel);
         void onGetFirmwareVersion(String version);
+        void onBadgeUnavailable();
     }
 
     public static BadgeController getInstance() {
@@ -189,7 +193,15 @@ public class BadgeController {
 
     private void connectDevice() {
         Log.d(TAG, "Badge connect ");
-        BLEManager.connect(badgeArg);
+        SharedPreferences sharedPreferences = AppSharedPreferences.Companion.getSharedPreferences(context);
+        String badgeMacAddress = sharedPreferences.getString(Constants.Companion.getBADGE_MAC_ADDRESS(), "");
+        if (badgeMacAddress.isEmpty() || badgeMacAddress.equals(badgeArg.getDev().getAddress())) {
+            BLEManager.connect(badgeArg);
+        } else {
+            if (listener != null) {
+                listener.onBadgeUnavailable();
+            }
+        }
     }
 
     public void connectDevice(BluetoothDevice device) {
@@ -214,7 +226,7 @@ public class BadgeController {
             case 50: connectionState = BadgeConnectionState.DISCONNECTED; break;
         }
         if (listener != null) {
-            listener.onBadgeConnectionStatus(status);
+            listener.onBadgeConnectionStatus(status, badgeArg.getDev());
         }
         if (status == BadgeConnectionState.CONNECTED.value) {
             onBadgeConnected();

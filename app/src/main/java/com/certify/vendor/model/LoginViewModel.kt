@@ -30,6 +30,8 @@ class LoginViewModel : BaseViewModel() {
             }
             val sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
             AppSharedPreferences.writeSp(sharedPreferences, Constants.ACCESS_TOKEN, response?.responseData?.token)
+            AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_MAC_ADDRESS,
+                                             response?.responseData?.badgeMacAddress)
             signInLiveData.value = isSuccess
         }
     }

@@ -153,27 +153,26 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
     private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int,vendorGuid: String) = try {
         val badgeUILayout: ConstraintLayout = appointView.findViewById(R.id.badge_screen)
-        val rlBadge: RelativeLayout = appointView.findViewById(R.id.rl_badge_status);
         val userImage: ImageView? = appointView.findViewById(R.id.img_user_badge)
         val QRCodeImage: ImageView? = appointView.findViewById(R.id.img_qa_badge)
-        val companyName: TextView? = appointView.findViewById(R.id.tv_company_name_badge)
+        val companyName: TextView? = appointView.findViewById(R.id.tv_company_name)
         val badgeId: TextView? = appointView.findViewById(R.id.tv_id_badge)
         val userName: TextView? = appointView.findViewById(R.id.tv_user_name_badge)
         val validity: TextView? = appointView.findViewById(R.id.tv_expires_date_badge)
-        val timeStamp: TextView? = appointView.findViewById(R.id.tv_time_badge)
-        val inactive: ImageView? = appointView.findViewById(R.id.img_inactive_badge)
+        val timeStamp: TextView? = appointView.findViewById(R.id.tv_appt_badge)
+        //val inactive: ImageView? = appointView.findViewById(R.id.img_inactive_badge)
         if (appointmentStatus == 3) {
-            inactive?.visibility = View.VISIBLE
+            //inactive?.visibility = View.VISIBLE
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, "")
 
         } else {
-            inactive?.visibility = View.GONE
+            //inactive?.visibility = View.GONE
             val userPicStr = AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
             if (userPicStr.isNotEmpty()) userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
             badgeId?.text = String.format(
                 "%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
-            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(vendorGuid, 60, 60))
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(vendorGuid, 150, 150))
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.VENDOR_GUID, vendorGuid)
 
             companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
@@ -182,26 +181,14 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
                 AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
             )
-            var dateStr = endDate.let { Utils.getDate(it, "dd-MM-yyyy") }
+            val dateStr = endDate.let { Utils.getDate(it, "MM/dd/yyyy") }
             validity?.text = dateStr
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_DATE, dateStr)
-            var timeStampStr = context?.getString(R.string.appointment_time)?.let {
-                String.format(
-                    it,
-                    Utils.getTime(statDate),
-                    Utils.getTime(endDate)
-                )
+            val timeStampStr = context?.getString(R.string.appointment_status)?.let {
+                String.format(it, Utils.getTime(statDate) + "-" + Utils.getTime(endDate))
             }
             timeStamp?.text = timeStampStr
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_TIME, timeStampStr)
-
-                timeStamp?.setTextColor(resources.getColor(R.color.green))
-                validity?.setTextColor(resources.getColor(R.color.green))
-
-            /*} else {
-                validity?.setTextColor(resources.getColor(R.color.red))
-                timeStamp?.setTextColor(resources.getColor(R.color.red))
-            }*/
         }
         BadgeController.getInstance().convertUIToImage(badgeUILayout, context)
     } catch (e: Exception) {

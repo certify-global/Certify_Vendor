@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -98,6 +99,11 @@ class BadgeFragment : Fragment() {
         badgeViewModel?.getBattery()
         badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
             onGetBattery(it)
+        }
+        badgeViewModel?.badgeAvailable?.observe(viewLifecycleOwner) {
+            if (it) {
+                Toast.makeText(context, getString(R.string.badge_unavailable), Toast.LENGTH_SHORT).show()
+            }
         }
         onManageBadge()
     }

@@ -11,6 +11,7 @@ import com.certify.vendor.badge.BadgeFirmwareUpdate
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
+import com.certify.vendor.repo.UserInfoRepository
 
 class BadgeViewModel : ViewModel(), BadgeController.BadgeListener {
 
@@ -18,6 +19,7 @@ class BadgeViewModel : ViewModel(), BadgeController.BadgeListener {
     var badgeConnectionStatus = MutableLiveData<Int>()
     var batteryLevel = MutableLiveData<Int>()
     val firmwareProgress = MutableLiveData<Int>()
+    var badgeAvailable = MutableLiveData<Boolean>()
     var context : Context? = null
 
     fun init (context: Context?) {
@@ -56,9 +58,26 @@ class BadgeViewModel : ViewModel(), BadgeController.BadgeListener {
         return (firmwareVersion.equals(BadgeFirmwareUpdate.FIRMWARE_VERSION2))
     }
 
-    override fun onBadgeConnectionStatus(status: Int) {
+    override fun onBadgeConnectionStatus(status: Int, bleDevice: BluetoothDevice) {
         Log.d(TAG, "Badge Connection status $status")
         badgeConnectionStatus.value = status
+        if (status == BadgeController.BadgeConnectionState.CONNECTED.value) {
+            val sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
+            var badgeMacAddress = sharedPreferences?.getString(Constants.BADGE_MAC_ADDRESS, "")
+            if (badgeMacAddress.isNullOrEmpty()) {
+                badgeMacAddress = bleDevice.address
+                val userInfoRepository = UserInfoRepository()
+                userInfoRepository.updateUserInfo(badgeMacAddress) { response ->
+                    if (response) {
+                        AppSharedPreferences.writeSp(
+                            sharedPreferences,
+                            Constants.BADGE_MAC_ADDRESS,
+                            badgeMacAddress
+                        )
+                    }
+                }
+            }
+        }
     }
 
     override fun onBadgeGetBattery(bLevel: Int) {
@@ -68,6 +87,10 @@ class BadgeViewModel : ViewModel(), BadgeController.BadgeListener {
     override fun onGetFirmwareVersion(version: String?) {
         val sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_FIRMWARE_VERSION, version)
+    }
+
+    override fun onBadgeUnavailable() {
+        badgeAvailable.value = true
     }
 
     fun onClose() {

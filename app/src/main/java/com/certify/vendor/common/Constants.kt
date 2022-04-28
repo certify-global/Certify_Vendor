@@ -21,6 +21,7 @@ class Constants {
         val BADGE_EXPIRY = "BadgeExpiry"
         val BADGE_FIRMWARE_VERSION = "BadgeFirmwareVersion"
         val BADGE_FW_UPDATE_TIME = "BadgeFWUpdateTime"
+        val BADGE_MAC_ADDRESS = "BadgeMacAddress"
 
     }
 }
