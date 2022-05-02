@@ -171,6 +171,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
+                android:id="@+id/badge_connection"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_50"
                 android:text="@string/disconnect_badge"
@@ -178,6 +179,7 @@
             </Button>
 
             <Button
+                android:id="@+id/badge_replace"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_50"
                 android:layout_marginTop="@dimen/size_35"

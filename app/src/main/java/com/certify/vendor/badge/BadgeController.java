@@ -50,6 +50,7 @@ public class BadgeController {
     private BadgeListener listener = null;
     private boolean isInited = false;
     private BadgeConnectionState connectionState = BadgeConnectionState.NOT_CONNECTED;
+    private boolean isBadgeDisconnected = false;
 
     public enum BadgeState {
         NONE,
@@ -102,16 +103,16 @@ public class BadgeController {
 
     public void initBle(Context context) {
         try {
+            this.context = context;
             if (!isInited) {
-                this.context = context;
                 BLEManager.start(context);
                 bleScanProc = new BleScanProc();
                 badgeArg.setFlavor(IntentsDefined.ProductFlavor.NB.getId());
                 BadgeFirmwareUpdate.INSTANCE.unregisterReceiver();
-                mBR.register(context);
-                ntxBleReceiver.register(context);
                 isInited = true;
             }
+            mBR.register(context);
+            ntxBleReceiver.register(context);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -300,6 +301,14 @@ public class BadgeController {
         }
     }
 
+    public boolean isBadgeDisconnected() {
+        return isBadgeDisconnected;
+    }
+
+    public void setBadgeDisconnected(boolean badgeDisconnected) {
+        isBadgeDisconnected = badgeDisconnected;
+    }
+
     enum BondState {
         none(BOND_NONE),
         bonding(BOND_BONDING),
@@ -345,13 +354,13 @@ public class BadgeController {
             iF.addAction(IntentsDefined.INTENT_action_name.ToApp_Progress.toString());
             iF.addAction(IntentsDefined.INTENT_action_name.ToApp_ReportStatus.toString());
 
-            context.registerReceiver(mBR, iF);
+            context.registerReceiver(ntxBleReceiver, iF);
             mIsRegistered = true;
             Log.i(TAG, "BleReceiver - registered !");
         }
 
         void unRegister(Context context) {
-            context.unregisterReceiver(mBR);
+            context.unregisterReceiver(ntxBleReceiver);
             mIsRegistered = false;
             Log.i(TAG, "BleReceiver - unregistered !");
         }
@@ -532,9 +541,15 @@ public class BadgeController {
         BLEManager.disconnect();
     }
 
+    public void unRegisterReceiver() {
+        //mBR.unRegister(context);
+        //ntxBleReceiver.unRegister(context);
+    }
+
     public void onBadgeClose() {
         disconnectDevice();
+        SharedPreferences sharedPreferences = AppSharedPreferences.Companion.getSharedPreferences(context);
+        AppSharedPreferences.Companion.writeSp(sharedPreferences, Constants.Companion.getBADGE_BATTERY_STATUS(), -1);
         badgeState = BadgeState.NONE;
-        listener = null;
     }
 }

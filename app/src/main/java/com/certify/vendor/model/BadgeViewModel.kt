@@ -82,6 +82,8 @@ class BadgeViewModel : ViewModel(), BadgeController.BadgeListener {
 
     override fun onBadgeGetBattery(bLevel: Int) {
         batteryLevel.value = bLevel
+        val sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
+        AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_BATTERY_STATUS, bLevel)
     }
 
     override fun onGetFirmwareVersion(version: String?) {

@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.certify.vendor.R
+import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.badge.BadgeFirmwareUpdate
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
@@ -43,6 +45,7 @@ class BadgeManageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUserProfile()
         setFirmwareInfo()
+        setBadgeDeviceListener()
     }
 
     private fun setUserProfile() {
@@ -85,8 +88,15 @@ class BadgeManageFragment : Fragment() {
             badgeManageFragmentBinding.firmwareUpdateAvailable.text =
                 getString(R.string.new_firmware_update_available)
         }
-        badgeManageFragmentBinding.firmwareLastUpdated.text = String.format(getString(R.string.firmware_last_updated),
-                                                                            sharedPreferences?.getString(Constants.BADGE_FW_UPDATE_TIME, ""))
+        val lastUpdated = sharedPreferences?.getString(Constants.BADGE_FW_UPDATE_TIME, "")
+        if (!lastUpdated.isNullOrEmpty()) {
+            badgeManageFragmentBinding.firmwareLastUpdated.text = String.format(
+                getString(R.string.firmware_last_updated),
+                sharedPreferences?.getString(Constants.BADGE_FW_UPDATE_TIME, "")
+            )
+        } else {
+            badgeManageFragmentBinding.firmwareLastUpdated.visibility = View.GONE
+        }
         badgeManageFragmentBinding.firmwareUpdate.setOnClickListener {
             showFirmwareUpdateDialog()
         }
@@ -110,5 +120,30 @@ class BadgeManageFragment : Fragment() {
         }
         dialog?.show()
         badgeViewModel?.writeBadgeFirmware(this)
+    }
+
+    private fun setBadgeDeviceListener() {
+        if (BadgeController.getInstance().isBadgeDisconnected) {
+            badgeManageFragmentBinding.badgeConnection.setText(R.string.reconnect_badge)
+        }
+        badgeManageFragmentBinding.badgeConnection.setOnClickListener {
+            if (BadgeController.getInstance().connectionState == BadgeController.BadgeConnectionState.CONNECTED) {
+                badgeManageFragmentBinding.badgeConnection.setText(R.string.disconnect_badge)
+                BadgeController.getInstance().disconnectDevice()
+                BadgeController.getInstance().isBadgeDisconnected = true
+            } else {
+                badgeManageFragmentBinding.badgeConnection.setText(R.string.reconnect_badge)
+                badgeViewModel?.getBattery()
+            }
+        }
+        badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
+            if (it == BadgeController.BadgeConnectionState.CONNECTED.value) {
+                badgeManageFragmentBinding.badgeConnection.setText(R.string.disconnect_badge)
+                Toast.makeText(this.context, getString(R.string.badge_connected_msg), Toast.LENGTH_SHORT).show()
+            } else if (it == BadgeController.BadgeConnectionState.DISCONNECTED.value) {
+                badgeManageFragmentBinding.badgeConnection.setText(R.string.reconnect_badge)
+                Toast.makeText(this.context, getString(R.string.badge_disconnected_msg), Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

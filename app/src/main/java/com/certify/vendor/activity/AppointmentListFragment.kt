@@ -158,7 +158,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         val companyName: TextView? = appointView.findViewById(R.id.tv_company_name)
         val badgeId: TextView? = appointView.findViewById(R.id.tv_id_badge)
         val userName: TextView? = appointView.findViewById(R.id.tv_user_name_badge)
-        val validity: TextView? = appointView.findViewById(R.id.tv_expires_date_badge)
+        val validity: TextView? = appointView.findViewById(R.id.tv_expires_badge)
         val timeStamp: TextView? = appointView.findViewById(R.id.tv_appt_badge)
         //val inactive: ImageView? = appointView.findViewById(R.id.img_inactive_badge)
         if (appointmentStatus == 3) {
@@ -182,13 +182,14 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
             )
             val dateStr = endDate.let { Utils.getDate(it, "MM/dd/yyyy") }
-            validity?.text = dateStr
+            validity?.text = String.format(getString(R.string.expires), dateStr)
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_DATE, dateStr)
+            val apptTime = Utils.getTime(statDate) + "-" + Utils.getTime(endDate)
             val timeStampStr = context?.getString(R.string.appointment_status)?.let {
-                String.format(it, Utils.getTime(statDate) + "-" + Utils.getTime(endDate))
+                String.format(it, apptTime)
             }
             timeStamp?.text = timeStampStr
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_TIME, timeStampStr)
+            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_TIME, apptTime)
         }
         BadgeController.getInstance().convertUIToImage(badgeUILayout, context)
     } catch (e: Exception) {

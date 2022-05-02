@@ -6,7 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +28,7 @@ class BadgeFragment : Fragment() {
     private lateinit var badgeFragmentBinding : FragmentBadgeBinding
     private var badgeViewModel : BadgeViewModel? = null
     private var sharedPreferences: SharedPreferences? = null
+    private var container : ViewGroup? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +41,7 @@ class BadgeFragment : Fragment() {
             viewmodel = badgeViewModel
         }
         badgeViewModel = ViewModelProvider(this).get(BadgeViewModel::class.java)
+        this.container = container
         return badgeFragmentBinding.root
     }
 
@@ -48,14 +53,21 @@ class BadgeFragment : Fragment() {
             setQrCodeImage()
             setAppointmentStatus()
             setBadgeStatus()
+            setOnBackPress()
         } catch (e: Exception) {
             Log.e(TAG, "Exception in setting the badge UI")
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d (TAG, "onResume ")
+        onBadgeConnectionStatus()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        badgeViewModel?.onClose()
+        //badgeViewModel?.onClose()
     }
 
     private fun setUserProfile() {
@@ -96,10 +108,7 @@ class BadgeFragment : Fragment() {
     private fun setBadgeStatus() {
         badgeViewModel?.init(context)
         onBadgeConnectionStatus()
-        badgeViewModel?.getBattery()
-        badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
-            onGetBattery(it)
-        }
+        setBadgeBattery()
         badgeViewModel?.badgeAvailable?.observe(viewLifecycleOwner) {
             if (it) {
                 Toast.makeText(context, getString(R.string.badge_unavailable), Toast.LENGTH_SHORT).show()
@@ -110,6 +119,7 @@ class BadgeFragment : Fragment() {
 
     private fun onBadgeConnectionStatus() {
         onBadgeConnectionStatusUpdate(BadgeController.getInstance().connectionState.value)
+        badgeViewModel?.badgeConnectionStatus?.value = BadgeController.BadgeConnectionState.NOT_CONNECTED.value
         badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
             onBadgeConnectionStatusUpdate(it)
         }
@@ -126,6 +136,7 @@ class BadgeFragment : Fragment() {
                 badgeFragmentBinding.badgeConnectionImage.setImageResource(R.drawable.ic_badge_disconnected)
                 badgeFragmentBinding.badgeConnectionStatus.setTextColor(ContextCompat.getColor(this.requireContext(), R.color.red))
                 badgeFragmentBinding.badgeConnectionStatus.text = getString(R.string.badge_disconnected)
+                setBadgeDeviceUI()
             }
         }
     }
@@ -160,8 +171,67 @@ class BadgeFragment : Fragment() {
 
     private fun onManageBadge() {
         badgeFragmentBinding.manageBadge.setOnClickListener {
-            badgeViewModel?.onClose()
+            //badgeViewModel?.onClose()
             findNavController().navigate(R.id.badgeManageFragment)
         }
+    }
+
+    private fun setBadgeBattery() {
+        val batteryLevel = sharedPreferences?.getInt(Constants.BADGE_BATTERY_STATUS, -1)
+        if (batteryLevel == -1) {
+            badgeViewModel?.getBattery()
+            badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
+                onGetBattery(it)
+            }
+        } else {
+            if (!BadgeController.getInstance().isBadgeDisconnected) {
+                batteryLevel?.let { onGetBattery(it) }
+            } else {
+                onGetBattery(batteryLevel!!)
+            }
+        }
+
+    }
+
+    private fun setBadgeDeviceUI() {
+        val view = layoutInflater.inflate(R.layout.badge_device_layout, container, false)
+        val userImage: ImageView? = view?.findViewById(R.id.img_user_badge)
+        val QRCodeImage: ImageView? = view?.findViewById(R.id.img_qa_badge)
+        val companyName: TextView? = view?.findViewById(R.id.tv_company_name)
+        val badgeId: TextView? = view?.findViewById(R.id.tv_id_badge)
+        val userName: TextView? = view?.findViewById(R.id.tv_user_name_badge)
+        val validity: TextView? = view?.findViewById(R.id.tv_expires_badge)
+        val apptTime: TextView? = view?.findViewById(R.id.tv_appt_badge)
+
+        apptTime?.visibility = View.GONE
+        validity?.visibility = View.GONE
+        val userPicStr = AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
+        if (userPicStr.isNotEmpty()) userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
+        badgeId?.text = String.format(
+            "%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
+
+        val vendorGuid = sharedPreferences?.getString(Constants.VENDOR_GUID, "")
+        if (vendorGuid?.isNotEmpty() == true) {
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(vendorGuid, 150, 150))
+        }
+
+        companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
+        userName?.text = String.format(
+            getString(R.string.badge_user_name),
+            AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
+            AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
+        )
+    }
+
+    private fun setOnBackPress() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override
+            fun handleOnBackPressed() {
+                badgeViewModel?.onClose()
+                BadgeController.getInstance().isBadgeDisconnected = false
+                BadgeController.getInstance().unRegisterReceiver()
+                activity?.finish()
+            }
+        })
     }
 }

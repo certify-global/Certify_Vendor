@@ -32,6 +32,8 @@ class LoginViewModel : BaseViewModel() {
             AppSharedPreferences.writeSp(sharedPreferences, Constants.ACCESS_TOKEN, response?.responseData?.token)
             AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_MAC_ADDRESS,
                                              response?.responseData?.badgeMacAddress)
+            AppSharedPreferences.writeSp(AppSharedPreferences.getSharedPreferences(context), Constants.VENDOR_GUID,
+                                           response?.responseData?.vendorGuid)
             signInLiveData.value = isSuccess
         }
     }

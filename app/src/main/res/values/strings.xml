@@ -55,6 +55,7 @@
     <string name="active">Active</string>
     <string name="id">ID:&#160;</string>
     <string name="expires_on">Expires on:&#160;</string>
+    <string name="expires">Expires on: %1$s</string>
     <string name="appt">Appointment Status: %1$s</string>
     <string name="appointment_status">Appt: %1$s</string>
     <string name="request_replacement_badge">Request replacement badge</string>
@@ -106,7 +107,10 @@
     <string name="badge_percent_10">10%</string>
     <string name="ebadge">e-Badge</string>
     <string name="disconnect_badge">Disconnect Badge</string>
+    <string name="reconnect_badge">Reconnect Badge</string>
     <string name="badge_unavailable">Badge unavailable</string>
+    <string name="badge_connected_msg">Badge connected</string>
+    <string name="badge_disconnected_msg">Badge disconnected</string>
 
     <!-- Badge firmware -->
     <string name="firmware_update">Firmware update</string>
