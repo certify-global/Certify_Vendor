@@ -1,24 +1,23 @@
 package com.certify.vendor.activity
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.certify.vendor.R
-import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.adapter.SettingsAdapter
+import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.callback.SettingCallback
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
-import com.certify.vendor.data.AppointmentDataSource
 
 class SettingsFragment : Fragment(),SettingCallback {
 
@@ -27,8 +26,6 @@ class SettingsFragment : Fragment(),SettingCallback {
     private var sharedPreferences: SharedPreferences? = null
     private var recyclerView: RecyclerView? = null
     private var adapter: SettingsAdapter? = null
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +41,7 @@ class SettingsFragment : Fragment(),SettingCallback {
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         initView();
         initRecyclerView()
-
+        setOnBackPress()
     }
 
     private fun initRecyclerView() {
@@ -72,7 +69,7 @@ class SettingsFragment : Fragment(),SettingCallback {
     }
 
     private fun launchMyAccount() {
-        startActivity(Intent(requireContext(), MyAccountActivity::class.java))
+        findNavController().navigate(R.id.myAccountFragment)
     }
 
     private fun launchBadgeManageFragment() {
@@ -85,4 +82,15 @@ class SettingsFragment : Fragment(),SettingCallback {
         startActivity(intent)
     }
 
+    private fun setOnBackPress() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override
+            fun handleOnBackPressed() {
+                BadgeController.getInstance().onBadgeClose()
+                BadgeController.getInstance().isBadgeDisconnected = false
+                BadgeController.getInstance().unRegisterReceiver()
+                activity?.finish()
+            }
+        })
+    }
 }

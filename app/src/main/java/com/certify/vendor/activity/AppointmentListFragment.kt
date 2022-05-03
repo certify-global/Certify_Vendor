@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -88,6 +89,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         setAppointmentListener()
         updateAppointmentListener()
         Utils.enableBluetooth()
+        setOnBackPress()
     }
 
     private fun setOnClickListener() {
@@ -267,4 +269,15 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         }
     }
 
+    private fun setOnBackPress() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override
+            fun handleOnBackPressed() {
+                BadgeController.getInstance().onBadgeClose()
+                BadgeController.getInstance().isBadgeDisconnected = false
+                BadgeController.getInstance().unRegisterReceiver()
+                activity?.finish()
+            }
+        })
+    }
 }

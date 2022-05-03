@@ -109,6 +109,7 @@ public class BadgeController {
                 bleScanProc = new BleScanProc();
                 badgeArg.setFlavor(IntentsDefined.ProductFlavor.NB.getId());
                 BadgeFirmwareUpdate.INSTANCE.unregisterReceiver();
+                resetBatteryStatus();
                 isInited = true;
             }
             mBR.register(context);
@@ -546,10 +547,14 @@ public class BadgeController {
         //ntxBleReceiver.unRegister(context);
     }
 
-    public void onBadgeClose() {
-        disconnectDevice();
+    private void resetBatteryStatus() {
         SharedPreferences sharedPreferences = AppSharedPreferences.Companion.getSharedPreferences(context);
         AppSharedPreferences.Companion.writeSp(sharedPreferences, Constants.Companion.getBADGE_BATTERY_STATUS(), -1);
+    }
+
+    public void onBadgeClose() {
+        disconnectDevice();
+        resetBatteryStatus();
         badgeState = BadgeState.NONE;
     }
 }
