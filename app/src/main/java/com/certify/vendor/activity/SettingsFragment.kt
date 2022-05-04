@@ -16,6 +16,7 @@ import com.certify.vendor.R
 import com.certify.vendor.adapter.SettingsAdapter
 import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.callback.SettingCallback
+import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 
@@ -88,6 +89,8 @@ class SettingsFragment : Fragment(),SettingCallback {
             fun handleOnBackPressed() {
                 BadgeController.getInstance().onBadgeClose()
                 BadgeController.getInstance().isBadgeDisconnected = false
+                val sharedPreferences = AppSharedPreferences.getSharedPreferences(activity)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_DEVICE_UPDATED, false)
                 BadgeController.getInstance().unRegisterReceiver()
                 activity?.finish()
             }

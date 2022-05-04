@@ -275,6 +275,8 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             fun handleOnBackPressed() {
                 BadgeController.getInstance().onBadgeClose()
                 BadgeController.getInstance().isBadgeDisconnected = false
+                val sharedPreferences = AppSharedPreferences.getSharedPreferences(activity)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_DEVICE_UPDATED, false)
                 BadgeController.getInstance().unRegisterReceiver()
                 activity?.finish()
             }

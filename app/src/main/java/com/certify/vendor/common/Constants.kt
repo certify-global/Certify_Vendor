@@ -23,6 +23,6 @@ class Constants {
         val BADGE_FW_UPDATE_TIME = "BadgeFWUpdateTime"
         val BADGE_MAC_ADDRESS = "BadgeMacAddress"
         val BADGE_BATTERY_STATUS = "BadgeBattery"
-
+        val BADGE_DEVICE_UPDATED = "BadgeDeviceUpdated"
     }
 }

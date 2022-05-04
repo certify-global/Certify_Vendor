@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -167,6 +168,7 @@ class BadgeFragment : Fragment() {
                 badgeFragmentBinding.batteryPercent.text = getString(R.string.badge_percent_10)
             }
         }
+        updateBadgeDeviceUI()
     }
 
     private fun onManageBadge() {
@@ -221,6 +223,15 @@ class BadgeFragment : Fragment() {
             AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
             AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
         )
+        BadgeController.getInstance().convertUIToImage(view as ConstraintLayout?, context)
+        AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_DEVICE_UPDATED, true)
+    }
+
+    private fun updateBadgeDeviceUI() {
+        val badgeDeviceUpdated = sharedPreferences?.getBoolean(Constants.BADGE_DEVICE_UPDATED, false)
+        if (!badgeDeviceUpdated!!) {
+            BadgeController.getInstance().disconnectDevice()
+        }
     }
 
     private fun setOnBackPress() {
@@ -229,6 +240,8 @@ class BadgeFragment : Fragment() {
             fun handleOnBackPressed() {
                 badgeViewModel?.onClose()
                 BadgeController.getInstance().isBadgeDisconnected = false
+                val sharedPreferences = AppSharedPreferences.getSharedPreferences(activity)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_DEVICE_UPDATED, false)
                 BadgeController.getInstance().unRegisterReceiver()
                 activity?.finish()
             }
