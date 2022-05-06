@@ -123,7 +123,7 @@ class BadgeManageFragment : Fragment() {
     }
 
     private fun setBadgeDeviceListener() {
-        if (BadgeController.getInstance().isBadgeDisconnected) {
+        if (BadgeController.getInstance().connectionState == BadgeController.BadgeConnectionState.DISCONNECTED) {
             badgeManageFragmentBinding.badgeConnection.setText(R.string.reconnect_badge)
         }
         badgeManageFragmentBinding.badgeConnection.setOnClickListener {

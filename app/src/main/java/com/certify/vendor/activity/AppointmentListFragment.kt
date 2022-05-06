@@ -31,12 +31,14 @@ import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
 import com.certify.vendor.model.AppointmentViewModel
+import com.certify.vendor.model.BadgeViewModel
 import com.certify.vendor.model.UpdateAppointmentViewModel
 
 class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
     private lateinit var appointmentViewModel: AppointmentViewModel
     private lateinit var updateAppointmentViewModel: UpdateAppointmentViewModel
+    private var badgeViewModel: BadgeViewModel? = null
 
     private var recyclerView: RecyclerView? = null
     private var llNoAppointment: LinearLayout? = null
@@ -72,6 +74,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             .get(AppointmentViewModel::class.java)
         updateAppointmentViewModel = ViewModelProvider(this)
             .get(UpdateAppointmentViewModel::class.java)
+        badgeViewModel = ViewModelProvider(this).get(BadgeViewModel::class.java)
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         baseViewModel = appointmentViewModel
         baseViewModel = updateAppointmentViewModel
@@ -89,6 +92,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         setAppointmentListener()
         updateAppointmentListener()
         Utils.enableBluetooth()
+        setBadgeListener()
         setOnBackPress()
     }
 
@@ -199,7 +203,11 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     }
 
     override fun onAppointmentCheckIn(appoinmentValue: AppointmentData) {
-
+        if (BadgeController.getInstance().connectionState == BadgeController.BadgeConnectionState.CONNECTED) {
+            AppointmentDataSource.setAppointmentData(appoinmentValue)
+            BadgeController.getInstance().disconnectDevice()
+            return
+        }
         var appointment: Int
         if (appoinmentValue.statusFlag != 1) {
             appointment = 2
@@ -265,6 +273,15 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+            }
+        }
+    }
+
+    private fun setBadgeListener() {
+        badgeViewModel?.init(this.context)
+        badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
+            if (it == BadgeController.BadgeConnectionState.DISCONNECTED.value) {
+                onAppointmentCheckIn(AppointmentDataSource.getAppointmentData())
             }
         }
     }

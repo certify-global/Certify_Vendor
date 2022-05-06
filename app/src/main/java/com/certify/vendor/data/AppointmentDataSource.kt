@@ -8,7 +8,7 @@ object AppointmentDataSource {
     private var appointmentList = arrayListOf<AppointmentData>()
     private var isupcoming = true
     private var pastAppointPosition = -1
-
+    private lateinit var appointmentData : AppointmentData
 
     fun addAppointmentList(apptmentList: List<AppointmentData>) {
         appointmentList.clear()
@@ -25,4 +25,10 @@ object AppointmentDataSource {
         isupcoming = status;
     }
     fun getPastAppointPosition() = pastAppointPosition
+
+    fun getAppointmentData() : AppointmentData = appointmentData
+
+    fun setAppointmentData(appointmentData: AppointmentData) {
+        this.appointmentData = appointmentData
+    }
 }
