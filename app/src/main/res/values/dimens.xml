@@ -62,6 +62,7 @@
     <dimen name="size_400">400dp</dimen>
     <dimen name="size_485">485dp</dimen>
 
+    <dimen name="text_size_10">10sp</dimen>
     <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_20">20sp</dimen>
     <dimen name="text_size_14">14sp</dimen>

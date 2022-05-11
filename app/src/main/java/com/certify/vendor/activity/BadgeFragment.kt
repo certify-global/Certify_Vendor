@@ -214,7 +214,7 @@ class BadgeFragment : Fragment() {
 
         val vendorGuid = sharedPreferences?.getString(Constants.VENDOR_GUID, "")
         if (vendorGuid?.isNotEmpty() == true) {
-            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(vendorGuid, 150, 150))
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(vendorGuid, 163, 163))
         }
 
         companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
