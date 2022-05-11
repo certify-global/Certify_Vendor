@@ -96,10 +96,9 @@
 
             <ImageView
                 android:id="@+id/img_qa_badge"
-                android:layout_width="163dp"
-                android:layout_height="163dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/qrcode"/>
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:scaleType="fitXY" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,13 +112,12 @@
                     android:text="@string/app_name"
                     android:textAlignment="center"
                     android:layout_gravity="center_horizontal"
-                    android:textSize="@dimen/text_size_10"
                     android:textColor="@color/black" />
 
                 <ImageView
                     android:id="@+id/img_logo_badge"
                     android:layout_width="40dp"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_c_logo" />
 
             </LinearLayout>
