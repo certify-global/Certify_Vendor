@@ -141,7 +141,6 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 recyclerView?.adapter?.notifyDataSetChanged()
                 llNoAppointment?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
-                AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.VENDOR_GUID, AppointmentDataSource.getAppointmentList()[0].vendorGuid)
 
                 if (Utils.getDateValidation(
                         AppointmentDataSource.getAppointmentList()[0].start,
@@ -178,8 +177,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             badgeId?.text = String.format(
                 "%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
-            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(vendorGuid, 150, 150))
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.VENDOR_GUID, vendorGuid)
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator( AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_GUID), 150, 150))
 
             companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
             userName?.text = String.format(
