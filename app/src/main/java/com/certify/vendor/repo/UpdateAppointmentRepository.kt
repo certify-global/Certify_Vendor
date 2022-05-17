@@ -19,7 +19,7 @@ class UpdateAppointmentRepository {
                             ,facilityID:Int,onResult: (isSuccess: Boolean, updateAppointmentResponse: UpdateAppointmentResponse?) -> Unit) {
 
         val updateAppointmentRequest = UpdateAppointmentRequest(
-            facilityID, Constants.VENDOR_APP,  selectedDate, startTime, endTime, visitReason, appointmentId, action)
+            facilityID, Constants.VENDOR_APP,  startTime, endTime, visitReason, appointmentId, action)
         Log.d(TAG, "update Appointments request " + updateAppointmentRequest)
 
         RetrofitInstance.apiInterface.updateAppointment(updateAppointmentRequest)

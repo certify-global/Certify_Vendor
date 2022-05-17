@@ -221,7 +221,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             "",
             "",
             "",
-            "",
+            appoinmentValue.visitReason,
             appoinmentValue.appointmentId,
             appointment,
             appoinmentValue.facilityId

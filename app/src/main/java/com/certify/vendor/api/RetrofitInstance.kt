@@ -2,7 +2,6 @@ package com.certify.vendor.api
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import com.certify.vendor.common.Constants
 import com.certify.vendor.data.AppSharedPreferences
 import okhttp3.OkHttpClient
@@ -39,7 +38,7 @@ object RetrofitInstance {
                     header("Content-Type", "application/json")
                     header("grant_type", "password")
                     header("Authorization", "Bearer " + sharedPreferences?.getString(Constants.ACCESS_TOKEN, ""))
-                    method(requestOriginal.method(), requestOriginal.body())
+                    method(requestOriginal.method, requestOriginal.body)
                 }
                 chain.proceed(requestBuilder.build())
             }
