@@ -38,7 +38,6 @@ object RetrofitInstance {
                     header("Content-Type", "application/json")
                     header("grant_type", "password")
                     header("Authorization", "Bearer " + sharedPreferences?.getString(Constants.ACCESS_TOKEN, ""))
-                    method(requestOriginal.method, requestOriginal.body)
                 }
                 chain.proceed(requestBuilder.build())
             }

@@ -158,6 +158,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
     private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int,vendorGuid: String) = try {
         val badgeUILayout: ConstraintLayout = appointView.findViewById(R.id.badge_screen)
+        val badgeLayout = appointView.findViewById<LinearLayout>(R.id.rl_badge_status)
         val userImage: ImageView? = appointView.findViewById(R.id.img_user_badge)
         val QRCodeImage: ImageView? = appointView.findViewById(R.id.img_qa_badge)
         val companyName: TextView? = appointView.findViewById(R.id.tv_company_name)
@@ -168,10 +169,12 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         //val inactive: ImageView? = appointView.findViewById(R.id.img_inactive_badge)
         if (appointmentStatus == 3) {
             //inactive?.visibility = View.VISIBLE
+            badgeLayout.visibility = View.GONE
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, "")
 
         } else {
             //inactive?.visibility = View.GONE
+            badgeLayout.visibility = View.VISIBLE
             val userPicStr = AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
             if (userPicStr.isNotEmpty()) userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
             badgeId?.text = String.format(
