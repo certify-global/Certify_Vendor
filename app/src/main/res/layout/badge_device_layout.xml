@@ -96,8 +96,8 @@
 
             <ImageView
                 android:id="@+id/img_qa_badge"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:scaleType="fitXY" />
 
             <LinearLayout
