@@ -136,7 +136,11 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     private fun setAppointmentListener() {
         appointmentViewModel.appointmentLiveData.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
-            if (it && AppointmentDataSource.getAppointmentList().isNotEmpty()) {
+            if(AppointmentDataSource.getUnauthorized() == 401){
+                Toast.makeText(context, context?.getString(R.string.session_timeout), Toast.LENGTH_LONG)
+                    .show()
+                Utils.logOut(context)
+            } else if (it && AppointmentDataSource.getAppointmentList().isNotEmpty()) {
                 adapter?.updateAppointmentList(AppointmentDataSource.getAppointmentList())
                 recyclerView?.adapter?.notifyDataSetChanged()
                 llNoAppointment?.visibility = View.GONE

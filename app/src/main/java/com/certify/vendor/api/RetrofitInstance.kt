@@ -5,6 +5,7 @@ import android.content.Context
 import com.certify.vendor.common.Constants
 import com.certify.vendor.data.AppSharedPreferences
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -42,6 +43,11 @@ object RetrofitInstance {
                 chain.proceed(requestBuilder.build())
             }
         }
+
+        val logsHttp = HttpLoggingInterceptor()
+        logsHttp.level = HttpLoggingInterceptor.Level.BODY
+        okHttpClient.addInterceptor(logsHttp)
         return okHttpClient.build()
     }
+
 }

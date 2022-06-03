@@ -25,4 +25,7 @@ interface ApiInterface {
     @POST("UpdateUserInfo")
     fun updateUserInfo(@Body updateUserRequest: UpdateUserRequest) : Call<UpdateUserResponse>
 
+    @POST("GetDeparmentLocationWithFacilityId")
+    fun getDepartmentLocationWith(@Body departmentLocationRequest: DepartmentLocationRequest): Call<DepartmentLocationResponse>
+
 }

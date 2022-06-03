@@ -1,6 +1,7 @@
 package com.certify.vendor.common
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
@@ -272,7 +273,16 @@ class Utils {
             tv_cancel.setOnClickListener { d.dismiss() }
             d.show()
         }
-
+        fun basicAlert(context: Context?,str:String) {
+            val dialogBuilder = AlertDialog.Builder(context)
+            dialogBuilder.setMessage(str)
+                .setCancelable(false)
+                .setPositiveButton("Ok") { dialog, id ->
+                    dialog.cancel()
+                }
+            val alert = dialogBuilder.create()
+            alert.show()
+        }
         fun validateFacilityAddress(location : FacilityAddress?) : Boolean {
             return (location?.address1.isNullOrEmpty() && location?.city.isNullOrEmpty() && location?.state.isNullOrEmpty()
                     && location?.zip.isNullOrEmpty())

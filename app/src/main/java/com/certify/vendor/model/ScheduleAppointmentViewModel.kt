@@ -2,9 +2,7 @@ package com.certify.vendor.model
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.certify.vendor.api.RetrofitInstance
-import com.certify.vendor.repo.AppointmentRepository
 import com.certify.vendor.repo.ScheduleAppoinmentRepository
 
 class ScheduleAppointmentViewModel : BaseViewModel() {
@@ -17,9 +15,9 @@ class ScheduleAppointmentViewModel : BaseViewModel() {
     }
 
     fun scheduleAppointments(selectedDate: String,
-                             startTime: String, endTime: String, contactName: String,visitReason: String,facilityID: Int) {
+                             startTime: String, endTime: String, contactName: String,visitReason: String,facilityID: Int,locationId:Int, departmentId:Int) {
         loading.value = true
-        appointmentRepository.scheduleAppoinments(selectedDate,startTime,endTime,contactName,visitReason,facilityID) { isSuccess, appointmentResponse ->
+        appointmentRepository.scheduleAppoinments(selectedDate,startTime,endTime,contactName,visitReason,facilityID,locationId,departmentId) { isSuccess, appointmentResponse ->
             loading.value = false
             scheduleAppointmentLiveData.value = isSuccess
         }

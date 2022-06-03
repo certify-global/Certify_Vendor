@@ -121,5 +121,5 @@
     <string name="updating_firmware">Firmware update</string>
     <string name="firmware_update_image">Firmware update image</string>
     <string name="firmware_cancel_msg">Don\'t cancel the update until the process is complete</string>
-
+    <string name="session_timeout">Session Timeout</string>
 </resources>

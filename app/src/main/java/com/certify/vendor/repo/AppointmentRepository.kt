@@ -16,19 +16,15 @@ class AppointmentRepository {
         private val TAG = AppointmentRepository::class.java.name
     }
 
-    fun getAppointments(vendorId: Int,onResult: (isSuccess: Boolean, appointmentResponse: GetAppointmentResponse?) -> Unit) {
-
-
+    fun getAppointments(vendorId: Int, onResult: (isSuccess: Boolean, appointmentResponse: GetAppointmentResponse?) -> Unit) {
         val appointmentRequest = GetAppointmentRequest(
-            Constants.VENDOR_APP, 0, true)
+            Constants.VENDOR_APP, 0,true)
         Log.d(TAG, "appointmentRequest $appointmentRequest")
         RetrofitInstance.apiInterface.getAppointments(appointmentRequest)
             .enqueue(object : Callback<GetAppointmentResponse> {
-                override fun onResponse(
-                    call: Call<GetAppointmentResponse>,
-                    response: Response<GetAppointmentResponse>
-                ) {
-                    Log.d(TAG, "Get Appointments responseCode " + response.body())
+                override fun onResponse(call: Call<GetAppointmentResponse>, response: Response<GetAppointmentResponse>) {
+                    Log.d(TAG, "Get Appointments responseCode " + response.body() + " response.code() =" + response.code())
+                    AppointmentDataSource.setUnauthorized(response.code())
                     if (response.body()?.responseCode == 1) {
                         if (response.body()?.responseData?.isNotEmpty() == true) {
                             AppointmentDataSource.addAppointmentList(response.body()?.responseData!!)

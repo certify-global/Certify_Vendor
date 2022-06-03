@@ -9,6 +9,8 @@ object AppointmentDataSource {
     private var isupcoming = true
     private var pastAppointPosition = -1
     private lateinit var appointmentData : AppointmentData
+    private var unauthorized = 0
+
 
     fun addAppointmentList(apptmentList: List<AppointmentData>) {
         appointmentList.clear()
@@ -31,4 +33,8 @@ object AppointmentDataSource {
     fun setAppointmentData(appointmentData: AppointmentData) {
         this.appointmentData = appointmentData
     }
+    fun setUnauthorized(unauthorized:Int){
+        this.unauthorized = unauthorized
+    }
+    fun getUnauthorized() = unauthorized
 }
