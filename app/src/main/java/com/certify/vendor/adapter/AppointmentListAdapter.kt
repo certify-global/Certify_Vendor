@@ -53,23 +53,11 @@ class AppointmentListAdapter(
             } else {
                 holder.checkInOut.visibility = View.GONE
             }
-            if (isUpcoming) {
-                holder.appointmentStatus.text = context?.getString(R.string.upcoming_appointment)
-                isUpcoming = false;
-            }
-            if (position == 0) holder.appointmentLayout.visibility = View.VISIBLE
-            else holder.appointmentLayout.visibility = View.GONE
+
+
         } else {
             holder.checkInOut.visibility = View.GONE
-            if (ispast) {
-                holder.appointmentStatus.text = context?.getString(R.string.past_appointment)
-                pastAppointPosition = position
-                holder.appointmentLayout.visibility = View.VISIBLE
-                ispast = false
-            }
-            if (pastAppointPosition == position)
-                holder.appointmentLayout.visibility = View.VISIBLE
-            else holder.appointmentLayout.visibility = View.GONE
+
         }
         holder.appointmentDate.text =
             Utils.getDate(appointmentList[position].start, "dd MMM yyyy")
@@ -118,14 +106,7 @@ class AppointmentListAdapter(
         var appointmentLocationLayout = view.findViewById<LinearLayout>(R.id.appointment_location_layout)
         var appointmentLocation = view.findViewById<TextView>(R.id.appointment_location)
         var checkInOut = view.findViewById<TextView>(R.id.check_in)
-        var appointmentStatus = view.findViewById<TextView>(R.id.appointment_status)
-        var appointmentLayout = view.findViewById<LinearLayout>(R.id.appointment_layout)
         var viewColor = view.findViewById<View>(R.id.view_type)
 
     }
-
-    var isUpcoming: Boolean = true
-    var ispast: Boolean = true
-    var pastAppointPosition = -1
-
 }

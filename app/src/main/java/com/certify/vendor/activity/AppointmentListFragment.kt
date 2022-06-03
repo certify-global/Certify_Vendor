@@ -43,11 +43,16 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     private var recyclerView: RecyclerView? = null
     private var llNoAppointment: LinearLayout? = null
     private var adapter: AppointmentListAdapter? = null
+    private var pastAdapter: AppointmentListAdapter? = null
+
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
     private var userLocation: Location? = Location("")
     private var textviewscheduleAppoinment: TextView? = null
 
+    private var pastRecyclerView: RecyclerView? = null
+    private var pastLlAppoints: LinearLayout? = null
+    private var llAppoints: LinearLayout? = null
 
     //private lateinit var badgeViewDevice: View
     private lateinit var appointView: View
@@ -82,12 +87,8 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         setOnClickListener()
         pDialog?.show()
         appointmentViewModel.init(context)
-        appointmentViewModel.getAppointments(
-            AppSharedPreferences.readInt(
-                sharedPreferences,
-                Constants.VENDOR_ID
-            )
-        )
+        appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
+
         initRecyclerView()
         setAppointmentListener()
         updateAppointmentListener()
@@ -107,15 +108,13 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         progressIndicator = appointView.findViewById(R.id.progress_indicator)
         val userName: TextView? = appointView.findViewById(R.id.appt_user_name)
         textviewscheduleAppoinment = appointView.findViewById(R.id.textview_scheduleAppoinment)
-        userName?.text =
-            String.format(
-                getString(R.string.appt_user_name),
-                AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME)
-            )
-        String.format(
-            getString(R.string.appt_user_name),
-            AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME)
-        )
+        recyclerView = appointView.findViewById(R.id.appt_recycler_view)
+        pastLlAppoints = appointView.findViewById(R.id.ll_past)
+        pastRecyclerView = appointView.findViewById(R.id.past_recycler_view)
+        llAppoints = appointView.findViewById(R.id.appointment_layout)
+        llNoAppointment = appointView.findViewById(R.id.ll_no_appointment)
+        userName?.text = String.format(getString(R.string.appt_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
+        String.format(getString(R.string.appt_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
         val userPic: ImageView? = appointView.findViewById(R.id.user_profile_pic)
         val userPicStr =
             AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
@@ -125,42 +124,54 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     }
 
     private fun initRecyclerView() {
-        recyclerView = appointView.findViewById(R.id.appt_recycler_view)
-        llNoAppointment = appointView.findViewById(R.id.ll_no_appointment)
+
         // llUpcomingAppointment = appointView.findViewById(R.id.upcoming_appointment_layout)
         recyclerView?.layoutManager = LinearLayoutManager(context)
+        pastRecyclerView?.layoutManager = LinearLayoutManager(context)
+
         adapter = AppointmentListAdapter(context, this, AppointmentDataSource.getAppointmentList())
         recyclerView?.adapter = adapter
+        pastAdapter = AppointmentListAdapter(context, this, ArrayList<AppointmentData>())
+        pastRecyclerView?.adapter = pastAdapter
     }
 
     private fun setAppointmentListener() {
         appointmentViewModel.appointmentLiveData.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
-            if(AppointmentDataSource.getUnauthorized() == 401){
-                Toast.makeText(context, context?.getString(R.string.session_timeout), Toast.LENGTH_LONG)
-                    .show()
+            if (AppointmentDataSource.getUnauthorized() == 401) {
+                Toast.makeText(context, context?.getString(R.string.session_timeout), Toast.LENGTH_LONG).show()
                 Utils.logOut(context)
-            } else if (it && AppointmentDataSource.getAppointmentList().isNotEmpty()) {
+                return@observe
+            }
+            appointmentViewModel.getPastAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
+            if (it && AppointmentDataSource.getAppointmentList().isNotEmpty()) {
                 adapter?.updateAppointmentList(AppointmentDataSource.getAppointmentList())
                 recyclerView?.adapter?.notifyDataSetChanged()
                 llNoAppointment?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
-
-                if (Utils.getDateValidation(
-                        AppointmentDataSource.getAppointmentList()[0].start,
-                        AppointmentDataSource.getAppointmentList()[0].end
-                    )
-                )
-                    llNoAppointment?.visibility = View.GONE
-                else llNoAppointment?.visibility = View.VISIBLE
+                llAppoints?.visibility = View.VISIBLE
             } else {
                 recyclerView?.visibility = View.GONE
                 llNoAppointment?.visibility = View.VISIBLE
+                llAppoints?.visibility = View.GONE
+
+            }
+        }
+        appointmentViewModel.pastAppointmentLiveData.observe(viewLifecycleOwner) {
+            if (it.size > 0) {
+                pastAdapter?.updateAppointmentList(it)
+                pastRecyclerView?.adapter?.notifyDataSetChanged()
+                pastRecyclerView?.visibility = View.VISIBLE
+                pastLlAppoints?.visibility = View.VISIBLE
+            } else {
+                pastRecyclerView?.visibility = View.GONE
+                pastLlAppoints?.visibility = View.GONE
+
             }
         }
     }
 
-    private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int,vendorGuid: String) = try {
+    private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int, vendorGuid: String) = try {
         val badgeUILayout: ConstraintLayout = appointView.findViewById(R.id.badge_screen)
         val badgeLayout = appointView.findViewById<LinearLayout>(R.id.rl_badge_status)
         val userImage: ImageView? = appointView.findViewById(R.id.img_user_badge)
@@ -181,10 +192,9 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             badgeLayout.visibility = View.VISIBLE
             val userPicStr = AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
             if (userPicStr.isNotEmpty()) userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
-            badgeId?.text = String.format(
-                "%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
+            badgeId?.text = String.format("%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
             AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
-            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator( AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_GUID), 150, 150))
+            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_GUID), 150, 150))
 
             companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
             userName?.text = String.format(
@@ -237,11 +247,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
     fun updateAppointmentListener() {
         updateAppointmentViewModel.updateAppointmentLiveData.observe(viewLifecycleOwner) {
-            appointmentViewModel.getAppointments(AppSharedPreferences.readInt(
-                    sharedPreferences,
-                    Constants.VENDOR_ID
-                )
-            )
+            appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
 
         }
     }

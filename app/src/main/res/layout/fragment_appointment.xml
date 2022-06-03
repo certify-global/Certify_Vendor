@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginStart="@dimen/size_32"
-    android:layout_marginEnd="@dimen/size_32">
+    android:layout_marginEnd="@dimen/size_32"
+    android:orientation="vertical">
 
     <include
         layout="@layout/badge_device_layout"
@@ -72,57 +72,140 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/ll_no_appointment"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_30"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/welcome_home_layout">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/serch_appoint" />
-
-        <TextView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/no_appointment"
-            android:textColor="@color/black" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/consectetur_adipiscing_elit"
-            android:textColor="@color/gray" />
+            <LinearLayout
+                android:id="@+id/schedule_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textview_scheduleAppoinment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/size_10"
-            android:background="@color/green"
-            android:padding="@dimen/size_10"
-            android:text="@string/schedule_appointment"
-            android:textColor="@color/white" />
-    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/appointment_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_15"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <TextView
+                        android:id="@+id/appointment_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/upcoming_appointment"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/appt_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_15"
-        android:layout_marginBottom="@dimen/size_10"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_no_appointment" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
+                    <TextView
+                        android:id="@+id/view_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/view_all"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/text_size_14" />
 
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/appt_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/size_10" />
+
+                <LinearLayout
+                    android:id="@+id/ll_no_appointment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_30"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/serch_appoint" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/no_appointment"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/consectetur_adipiscing_elit"
+                        android:textColor="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/textview_scheduleAppoinment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:background="@color/green"
+                        android:padding="@dimen/size_10"
+                        android:text="@string/schedule_appointment"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_past"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/schedule_ll"
+                android:layout_marginTop="@dimen/size_10"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/size_05"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/past_appointment"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/view_all_past"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_all"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_14" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/past_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/ll_past"
+                android:layout_marginBottom="@dimen/size_10"
+                app:layout_constraintLeft_toLeftOf="parent" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
