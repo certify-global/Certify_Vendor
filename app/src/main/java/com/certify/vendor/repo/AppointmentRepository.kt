@@ -16,7 +16,7 @@ class AppointmentRepository {
 
     fun getAppointments(vendorId: Int, onResult: (isSuccess: Boolean, appointmentResponse: GetAppointmentResponse?) -> Unit) {
         val appointmentRequest = GetAppointmentRequest(
-            Constants.VENDOR_APP, 0,true)
+            Constants.VENDOR_APP, 0,1)
         RetrofitInstance.apiInterface.getAppointments(appointmentRequest)
             .enqueue(object : Callback<GetAppointmentResponse> {
                 override fun onResponse(call: Call<GetAppointmentResponse>, response: Response<GetAppointmentResponse>) {
@@ -39,7 +39,7 @@ class AppointmentRepository {
     }
     fun getPastAppointments(vendorId: Int, onResult: ( appointmentResponse: GetAppointmentResponse?) -> Unit) {
         val appointmentRequest = GetAppointmentRequest(
-            Constants.VENDOR_APP, 0,false)
+            Constants.VENDOR_APP, 0,2)
         RetrofitInstance.apiInterface.getAppointments(appointmentRequest)
             .enqueue(object : Callback<GetAppointmentResponse> {
                 override fun onResponse(call: Call<GetAppointmentResponse>, response: Response<GetAppointmentResponse>) {

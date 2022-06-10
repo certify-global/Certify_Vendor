@@ -13,26 +13,32 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.certify.vendor.controller.AppointmentController
+import androidx.viewpager2.widget.ViewPager2
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
+import com.certify.vendor.adapter.AppointmentTypeAdapter
 import com.certify.vendor.api.response.AppointmentData
 import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.callback.AppointmentCheckIn
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
+import com.certify.vendor.controller.AppointmentController
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
 import com.certify.vendor.model.AppointmentViewModel
 import com.certify.vendor.model.BadgeViewModel
 import com.certify.vendor.model.UpdateAppointmentViewModel
+import com.google.android.material.tabs.TabLayout
 
 class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
@@ -42,6 +48,10 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
 
     private var recyclerView: RecyclerView? = null
     private var llNoAppointment: LinearLayout? = null
+    private var appointTab: TabLayout? = null
+    private var viewPager: ViewPager2? = null
+
+
     private var adapter: AppointmentListAdapter? = null
     private var pastAdapter: AppointmentListAdapter? = null
 
@@ -85,12 +95,12 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         baseViewModel = updateAppointmentViewModel
         initView()
         setOnClickListener()
-        pDialog?.show()
-        appointmentViewModel.init(context)
-        appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
+        //pDialog?.show()
+        //appointmentViewModel.init(context)
+        //appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
 
-        initRecyclerView()
-        setAppointmentListener()
+        //initRecyclerView()
+       // setAppointmentListener()
         updateAppointmentListener()
         Utils.enableBluetooth()
         setBadgeListener()
@@ -108,9 +118,7 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         progressIndicator = appointView.findViewById(R.id.progress_indicator)
         val userName: TextView? = appointView.findViewById(R.id.appt_user_name)
         textviewscheduleAppoinment = appointView.findViewById(R.id.textview_scheduleAppoinment)
-        recyclerView = appointView.findViewById(R.id.appt_recycler_view)
         pastLlAppoints = appointView.findViewById(R.id.ll_past)
-        pastRecyclerView = appointView.findViewById(R.id.past_recycler_view)
         llAppoints = appointView.findViewById(R.id.appointment_layout)
         llNoAppointment = appointView.findViewById(R.id.ll_no_appointment)
         userName?.text = String.format(getString(R.string.appt_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
@@ -121,6 +129,15 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         if (userPicStr.isNotEmpty()) {
             userPic?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
         }
+        appointTab = appointView.findViewById(R.id.appointment_tab)
+        viewPager = appointView.findViewById(R.id.appointment_viewPager)
+        appointTab?.newTab()?.let { appointTab?.addTab(it.setText(getString(R.string.upcoming))) }
+        appointTab?.newTab()?.let { appointTab?.addTab(it.setText(getString(R.string.past))) }
+        appointTab?.newTab()?.let { appointTab?.addTab(it.setText(getString(R.string.expired))) }
+        appointTab?.setTabGravity(TabLayout.GRAVITY_FILL);
+        val appointmentTypeAdapter = AppointmentTypeAdapter(childFragmentManager, lifecycle)
+        viewPager?.adapter = appointmentTypeAdapter
+
     }
 
     private fun initRecyclerView() {
