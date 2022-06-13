@@ -6,35 +6,47 @@ import com.certify.vendor.common.Utils
 object AppointmentDataSource {
 
     private var appointmentList = arrayListOf<AppointmentData>()
-    private var isupcoming = true
-    private var pastAppointPosition = -1
-    private lateinit var appointmentData : AppointmentData
+    private var postAppointmentList = arrayListOf<AppointmentData>()
+    private var expiredAppointmentList = arrayListOf<AppointmentData>()
+    private lateinit var appointmentData: AppointmentData
     private var unauthorized = 0
 
 
     fun addAppointmentList(apptmentList: List<AppointmentData>) {
         appointmentList.clear()
-        appointmentList.addAll(apptmentList.sortedByDescending {it.start })
+        appointmentList.addAll(apptmentList.sortedByDescending { it.start })
     }
 
+    fun addPostAppointmentList(apptmentList: List<AppointmentData>) {
+        postAppointmentList.clear()
+        postAppointmentList.addAll(apptmentList.sortedByDescending { it.start })
+    }
+
+    fun addExpiredAppointmentList(apptmentList: List<AppointmentData>) {
+        expiredAppointmentList.clear()
+        expiredAppointmentList.addAll(apptmentList.sortedByDescending { it.start })
+    }
 
     fun getAppointmentList() = appointmentList
+    fun getPostAppointmentList() = postAppointmentList
+    fun getExpiredAppointmentList() = expiredAppointmentList
+
     fun clearAppointment() {
         appointmentList.clear()
+        postAppointmentList.clear()
+        expiredAppointmentList.clear()
     }
-    fun getAppointmentIsUpcoming() = isupcoming
-    fun setAppointmentIsUpcoming(status: Boolean) {
-        isupcoming = status;
-    }
-    fun getPastAppointPosition() = pastAppointPosition
 
-    fun getAppointmentData() : AppointmentData = appointmentData
+
+    fun getAppointmentData(): AppointmentData = appointmentData
 
     fun setAppointmentData(appointmentData: AppointmentData) {
         this.appointmentData = appointmentData
     }
-    fun setUnauthorized(unauthorized:Int){
+
+    fun setUnauthorized(unauthorized: Int) {
         this.unauthorized = unauthorized
     }
+
     fun getUnauthorized() = unauthorized
 }

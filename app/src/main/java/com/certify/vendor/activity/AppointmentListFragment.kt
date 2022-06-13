@@ -1,7 +1,6 @@
 package com.certify.vendor.activity
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.location.Criteria
@@ -16,54 +15,29 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.certify.vendor.R
-import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.adapter.AppointmentTypeAdapter
-import com.certify.vendor.api.response.AppointmentData
 import com.certify.vendor.badge.BadgeController
-import com.certify.vendor.callback.AppointmentCheckIn
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.controller.AppointmentController
 import com.certify.vendor.data.AppSharedPreferences
-import com.certify.vendor.data.AppointmentDataSource
-import com.certify.vendor.model.AppointmentViewModel
-import com.certify.vendor.model.BadgeViewModel
-import com.certify.vendor.model.UpdateAppointmentViewModel
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
-class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
+class AppointmentListFragment : BaseFragment() {
 
-    private lateinit var appointmentViewModel: AppointmentViewModel
-    private lateinit var updateAppointmentViewModel: UpdateAppointmentViewModel
-    private var badgeViewModel: BadgeViewModel? = null
 
-    private var recyclerView: RecyclerView? = null
-    private var llNoAppointment: LinearLayout? = null
     private var appointTab: TabLayout? = null
     private var viewPager: ViewPager2? = null
 
-
-    private var adapter: AppointmentListAdapter? = null
-    private var pastAdapter: AppointmentListAdapter? = null
-
     private var sharedPreferences: SharedPreferences? = null
-    private var pDialog: Dialog? = null
     private var userLocation: Location? = Location("")
     private var textviewscheduleAppoinment: TextView? = null
-
-    private var pastRecyclerView: RecyclerView? = null
-    private var pastLlAppoints: LinearLayout? = null
-    private var llAppoints: LinearLayout? = null
-
     //private lateinit var badgeViewDevice: View
     private lateinit var appointView: View
 
@@ -83,27 +57,11 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
                 it
             )
         }
-        getUserLocation()
-
-        appointmentViewModel = ViewModelProvider(this)
-            .get(AppointmentViewModel::class.java)
-        updateAppointmentViewModel = ViewModelProvider(this)
-            .get(UpdateAppointmentViewModel::class.java)
-        badgeViewModel = ViewModelProvider(this).get(BadgeViewModel::class.java)
+      //  getUserLocation()
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
-        baseViewModel = appointmentViewModel
-        baseViewModel = updateAppointmentViewModel
         initView()
         setOnClickListener()
-        //pDialog?.show()
-        //appointmentViewModel.init(context)
-        //appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
-
-        //initRecyclerView()
-       // setAppointmentListener()
-        updateAppointmentListener()
         Utils.enableBluetooth()
-        setBadgeListener()
         setOnBackPress()
     }
 
@@ -114,13 +72,9 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
     }
 
     private fun initView() {
-        pDialog = Utils.ShowProgressDialog(requireContext())
         progressIndicator = appointView.findViewById(R.id.progress_indicator)
         val userName: TextView? = appointView.findViewById(R.id.appt_user_name)
         textviewscheduleAppoinment = appointView.findViewById(R.id.textview_scheduleAppoinment)
-        pastLlAppoints = appointView.findViewById(R.id.ll_past)
-        llAppoints = appointView.findViewById(R.id.appointment_layout)
-        llNoAppointment = appointView.findViewById(R.id.ll_no_appointment)
         userName?.text = String.format(getString(R.string.appt_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
         String.format(getString(R.string.appt_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
         val userPic: ImageView? = appointView.findViewById(R.id.user_profile_pic)
@@ -129,6 +83,11 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         if (userPicStr.isNotEmpty()) {
             userPic?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
         }
+        val appointment = arrayOf(
+            getString(R.string.upcoming),
+            getString(R.string.past),
+            getString(R.string.expired)
+        )
         appointTab = appointView.findViewById(R.id.appointment_tab)
         viewPager = appointView.findViewById(R.id.appointment_viewPager)
         appointTab?.newTab()?.let { appointTab?.addTab(it.setText(getString(R.string.upcoming))) }
@@ -137,58 +96,16 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         appointTab?.setTabGravity(TabLayout.GRAVITY_FILL);
         val appointmentTypeAdapter = AppointmentTypeAdapter(childFragmentManager, lifecycle)
         viewPager?.adapter = appointmentTypeAdapter
+        TabLayoutMediator(appointTab!!, viewPager!!) { tab, position ->
+            tab.text = appointment[position]
+        }.attach()
+
 
     }
 
-    private fun initRecyclerView() {
 
-        // llUpcomingAppointment = appointView.findViewById(R.id.upcoming_appointment_layout)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        pastRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        adapter = AppointmentListAdapter(context, this, AppointmentDataSource.getAppointmentList())
-        recyclerView?.adapter = adapter
-        pastAdapter = AppointmentListAdapter(context, this, ArrayList<AppointmentData>())
-        pastRecyclerView?.adapter = pastAdapter
-    }
-
-    private fun setAppointmentListener() {
-        appointmentViewModel.appointmentLiveData.observe(viewLifecycleOwner) {
-            pDialog?.dismiss()
-            if (AppointmentDataSource.getUnauthorized() == 401) {
-                Toast.makeText(context, context?.getString(R.string.session_timeout), Toast.LENGTH_LONG).show()
-                Utils.logOut(context)
-                return@observe
-            }
-            appointmentViewModel.getPastAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
-            if (it && AppointmentDataSource.getAppointmentList().isNotEmpty()) {
-                adapter?.updateAppointmentList(AppointmentDataSource.getAppointmentList())
-                recyclerView?.adapter?.notifyDataSetChanged()
-                llNoAppointment?.visibility = View.GONE
-                recyclerView?.visibility = View.VISIBLE
-                llAppoints?.visibility = View.VISIBLE
-            } else {
-                recyclerView?.visibility = View.GONE
-                llNoAppointment?.visibility = View.VISIBLE
-                llAppoints?.visibility = View.GONE
-
-            }
-        }
-        appointmentViewModel.pastAppointmentLiveData.observe(viewLifecycleOwner) {
-            if (it.size > 0) {
-                pastAdapter?.updateAppointmentList(it)
-                pastRecyclerView?.adapter?.notifyDataSetChanged()
-                pastRecyclerView?.visibility = View.VISIBLE
-                pastLlAppoints?.visibility = View.VISIBLE
-            } else {
-                pastRecyclerView?.visibility = View.GONE
-                pastLlAppoints?.visibility = View.GONE
-
-            }
-        }
-    }
-
-    private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int, vendorGuid: String) = try {
+        private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int, vendorGuid: String) = try {
         val badgeUILayout: ConstraintLayout = appointView.findViewById(R.id.badge_screen)
         val badgeLayout = appointView.findViewById<LinearLayout>(R.id.rl_badge_status)
         val userImage: ImageView? = appointView.findViewById(R.id.img_user_badge)
@@ -234,40 +151,6 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
         e.printStackTrace()
     }
 
-    override fun onAppointmentCheckIn(appoinmentValue: AppointmentData) {
-        if (BadgeController.getInstance().connectionState == BadgeController.BadgeConnectionState.CONNECTED) {
-            AppointmentDataSource.setAppointmentData(appoinmentValue)
-            BadgeController.getInstance().disconnectDevice()
-            return
-        }
-        var appointment: Int
-        if (appoinmentValue.statusFlag != 1) {
-            appointment = 2
-        } else {
-            appointment = 3
-        }
-
-        setBadgeUI(appoinmentValue.start, appoinmentValue.end, appointment, appoinmentValue.vendorGuid)
-
-        pDialog?.show()
-        updateAppointmentViewModel.init(context)
-        updateAppointmentViewModel.updateAppointments(
-            "",
-            "",
-            "",
-            appoinmentValue.visitReason,
-            appoinmentValue.appointmentId,
-            appointment,
-            appoinmentValue.facilityId
-        )
-    }
-
-    fun updateAppointmentListener() {
-        updateAppointmentViewModel.updateAppointmentLiveData.observe(viewLifecycleOwner) {
-            appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
-
-        }
-    }
 
     @SuppressLint("MissingPermission")
     fun getUserLocation() {
@@ -281,35 +164,15 @@ class AppointmentListFragment : BaseFragment(), AppointmentCheckIn {
             } else {
                 val geocoder = Geocoder(activity)
                 try {
-                    val user =
-                        geocoder.getFromLocation(
-                            location.getLatitude(),
-                            location.getLongitude(),
-                            1
-                        );
+                    val user = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     userLocation?.latitude = user.get(0).latitude;
                     userLocation?.longitude = user.get(0).longitude;
-                    Log.i(
-                        "getUserLocation",
-                        "" + user.get(0).latitude + "," + user.get(0).longitude
-                    )
-                    userLocation?.let { it1 ->
-                        AppointmentController.getInstance()?.setAppointmentLocation(
-                            it1
-                        )
+                    Log.i("getUserLocation", "" + user.get(0).latitude + "," + user.get(0).longitude)
+                    userLocation?.let { it1 -> AppointmentController.getInstance()?.setAppointmentLocation(it1)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-            }
-        }
-    }
-
-    private fun setBadgeListener() {
-        badgeViewModel?.init(this.context)
-        badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
-            if (it == BadgeController.BadgeConnectionState.DISCONNECTED.value) {
-                onAppointmentCheckIn(AppointmentDataSource.getAppointmentData())
             }
         }
     }

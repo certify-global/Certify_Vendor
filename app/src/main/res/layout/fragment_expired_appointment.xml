@@ -13,12 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <include
-                layout="@layout/badge_device_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
             <LinearLayout
                 android:id="@+id/schedule_ll"
                 android:layout_width="match_parent"
@@ -87,6 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:text="@string/consectetur_adipiscing_elit"
                         android:textColor="@color/gray" />
 
@@ -109,9 +104,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/schedule_ll"
                 android:layout_marginTop="@dimen/size_10"
+                android:visibility="gone"
                 android:layout_marginBottom="@dimen/size_05"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"

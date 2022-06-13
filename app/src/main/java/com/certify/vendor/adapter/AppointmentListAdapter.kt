@@ -17,7 +17,8 @@ import com.certify.vendor.common.Utils.Companion.getDateValidation
 class AppointmentListAdapter(
     var context: Context?,
     var appointmentLagenar: AppointmentCheckIn,
-    var appointmentList: List<AppointmentData>
+    var appointmentList: List<AppointmentData>,
+    var selectionType: String
 ) : RecyclerView.Adapter<AppointmentListAdapter.AppointmentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
@@ -40,16 +41,18 @@ class AppointmentListAdapter(
         } else {
             holder.appointmentLocation.text = context?.getString(R.string.no_location)
         }
-        if (getDateValidation( appointmentList[position].start, appointmentList[position].end)) {
+        if (getDateValidation(appointmentList[position].start, appointmentList[position].end)) {
             if (appointmentList[position].mobileCheckinAllowed == 1 && Utils.getDateCompare(
-                appointmentList[position].start, appointmentList[position].end) ){
+                    appointmentList[position].start, appointmentList[position].end
+                )
+            ) {
 
                 if ((appointmentList[position].statusFlag == 12 || appointmentList[position].statusFlag == 1))
                     holder.checkInOut.visibility = View.VISIBLE
                 else holder.checkInOut.visibility = View.GONE
                 if (appointmentList[position].statusFlag == 1) holder.checkInOut.text =
                     context?.getString(R.string.check_out)
-                else  holder.checkInOut.text = context?.getString(R.string.check_in)
+                else holder.checkInOut.text = context?.getString(R.string.check_in)
             } else {
                 holder.checkInOut.visibility = View.GONE
             }
@@ -72,41 +75,50 @@ class AppointmentListAdapter(
             appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
         }
 
-        when (appointmentList.get(position).statusFlag) {
-            1 -> context?.getColor(R.color.check_in)
+        if (selectionType.equals("Expired")) {
+            context?.getColor(R.color.cancelled)
                 ?.let { holder.viewColor.setBackgroundColor(it) }
-            5 -> context?.getColor(R.color.cancelled)
+        } else if (selectionType.equals("Past")) {
+            context?.getColor(R.color.checkout)
                 ?.let { holder.viewColor.setBackgroundColor(it) }
-            7 -> context?.getColor(R.color.pending)?.let { holder.viewColor.setBackgroundColor(it) }
-            10 -> context?.getColor(R.color.checkout)
-                ?.let { holder.viewColor.setBackgroundColor(it) }
-            12 -> context?.getColor(R.color.approved)
-                ?.let { holder.viewColor.setBackgroundColor(it) }
-            13 -> context?.getColor(R.color.declined)
-                ?.let { holder.viewColor.setBackgroundColor(it) }
-            0 -> context?.getColor(R.color.white)?.let { holder.viewColor.setBackgroundColor(it) }
+        } else {
+            when (appointmentList.get(position).statusFlag) {
+                1 -> context?.getColor(R.color.check_in)
+                    ?.let { holder.viewColor.setBackgroundColor(it) }
+                5 -> context?.getColor(R.color.cancelled)
+                    ?.let { holder.viewColor.setBackgroundColor(it) }
+                7 -> context?.getColor(R.color.pending)?.let { holder.viewColor.setBackgroundColor(it) }
+                10 -> context?.getColor(R.color.checkout)
+                    ?.let { holder.viewColor.setBackgroundColor(it) }
+                12 -> context?.getColor(R.color.approved)
+                    ?.let { holder.viewColor.setBackgroundColor(it) }
+                13 -> context?.getColor(R.color.declined)
+                    ?.let { holder.viewColor.setBackgroundColor(it) }
+                0 -> context?.getColor(R.color.white)?.let { holder.viewColor.setBackgroundColor(it) }
 
+            }
         }
 
-    }
 
-    override fun getItemCount() = appointmentList.size
+}
 
-    fun updateAppointmentList(appmentList: List<AppointmentData>) {
-        Log.i(
-            "updateAppointmentList ",
-            "" + appointmentList?.size + "appmentList" + appmentList.size
-        )
-        appointmentList = appmentList
-    }
+override fun getItemCount() = appointmentList.size
 
-    class AppointmentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var appointmentDate = view.findViewById<TextView>(R.id.appointment_date)
-        var appointmentTime = view.findViewById<TextView>(R.id.appointment_time)
-        var appointmentLocationLayout = view.findViewById<LinearLayout>(R.id.appointment_location_layout)
-        var appointmentLocation = view.findViewById<TextView>(R.id.appointment_location)
-        var checkInOut = view.findViewById<TextView>(R.id.check_in)
-        var viewColor = view.findViewById<View>(R.id.view_type)
+fun updateAppointmentList(appmentList: List<AppointmentData>) {
+    Log.i(
+        "updateAppointmentList ",
+        "" + appointmentList?.size + "appmentList" + appmentList.size
+    )
+    appointmentList = appmentList
+}
 
-    }
+class AppointmentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    var appointmentDate = view.findViewById<TextView>(R.id.appointment_date)
+    var appointmentTime = view.findViewById<TextView>(R.id.appointment_time)
+    var appointmentLocationLayout = view.findViewById<LinearLayout>(R.id.appointment_location_layout)
+    var appointmentLocation = view.findViewById<TextView>(R.id.appointment_location)
+    var checkInOut = view.findViewById<TextView>(R.id.check_in)
+    var viewColor = view.findViewById<View>(R.id.view_type)
+
+}
 }

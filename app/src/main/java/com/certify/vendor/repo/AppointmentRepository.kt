@@ -16,7 +16,8 @@ class AppointmentRepository {
 
     fun getAppointments(vendorId: Int, onResult: (isSuccess: Boolean, appointmentResponse: GetAppointmentResponse?) -> Unit) {
         val appointmentRequest = GetAppointmentRequest(
-            Constants.VENDOR_APP, 0,1)
+            Constants.VENDOR_APP, 0, 1
+        )
         RetrofitInstance.apiInterface.getAppointments(appointmentRequest)
             .enqueue(object : Callback<GetAppointmentResponse> {
                 override fun onResponse(call: Call<GetAppointmentResponse>, response: Response<GetAppointmentResponse>) {
@@ -37,17 +38,32 @@ class AppointmentRepository {
 
             })
     }
-    fun getPastAppointments(vendorId: Int, onResult: ( appointmentResponse: GetAppointmentResponse?) -> Unit) {
-        val appointmentRequest = GetAppointmentRequest(
-            Constants.VENDOR_APP, 0,2)
+
+    fun getPastAppointments(onResult: (appointmentResponse: GetAppointmentResponse?) -> Unit) {
+        val appointmentRequest = GetAppointmentRequest(Constants.VENDOR_APP, 0, 2)
         RetrofitInstance.apiInterface.getAppointments(appointmentRequest)
             .enqueue(object : Callback<GetAppointmentResponse> {
                 override fun onResponse(call: Call<GetAppointmentResponse>, response: Response<GetAppointmentResponse>) {
-                        onResult( response.body())
+                    onResult(response.body())
                 }
 
                 override fun onFailure(call: Call<GetAppointmentResponse>, t: Throwable) {
-                    onResult( null)
+                    onResult(null)
+                }
+
+            })
+    }
+
+    fun getExpiredAppointments(onResult: (appointmentResponse: GetAppointmentResponse?) -> Unit) {
+        val appointmentRequest = GetAppointmentRequest(Constants.VENDOR_APP, 0, 3)
+        RetrofitInstance.apiInterface.getAppointments(appointmentRequest)
+            .enqueue(object : Callback<GetAppointmentResponse> {
+                override fun onResponse(call: Call<GetAppointmentResponse>, response: Response<GetAppointmentResponse>) {
+                    onResult(response.body())
+                }
+
+                override fun onFailure(call: Call<GetAppointmentResponse>, t: Throwable) {
+                    onResult(null)
                 }
 
             })

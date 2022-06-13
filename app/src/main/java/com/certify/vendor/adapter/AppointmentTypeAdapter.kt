@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.certify.vendor.activity.ExpiredAppointmentFragment
+import com.certify.vendor.activity.PastAppointmentFragment
 import com.certify.vendor.activity.UpComingAppointmentFragment
 
 class AppointmentTypeAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
@@ -16,7 +18,8 @@ class AppointmentTypeAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
     override fun createFragment(position: Int): Fragment {
         when (position) {
             0 -> return UpComingAppointmentFragment()
-            1 -> return UpComingAppointmentFragment()
+            1 -> return PastAppointmentFragment()
+            2 -> return ExpiredAppointmentFragment()
         }
         return UpComingAppointmentFragment()
     }
