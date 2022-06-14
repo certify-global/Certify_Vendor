@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,6 @@ import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.api.response.AppointmentData
 import com.certify.vendor.callback.AppointmentCheckIn
-import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
@@ -25,7 +25,7 @@ import com.certify.vendor.model.AppointmentViewModel
 class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
     private lateinit var appointmentViewModel: AppointmentViewModel
     private var recyclerView: RecyclerView? = null
-    private var llNoAppointment: LinearLayout? = null
+    private var tvNoOAppointment: TextView? = null
     private var adapter: AppointmentListAdapter? = null
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
@@ -41,7 +41,7 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        expiredAppointmentView = inflater.inflate(R.layout.fragment_expired_appointment, container, false)
+        expiredAppointmentView = inflater.inflate(R.layout.fragment_post_expired_appointment, container, false)
         return expiredAppointmentView
     }
 
@@ -59,9 +59,10 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
     }
     private fun initView() {
        pDialog = Utils.ShowProgressDialog(requireContext())
-        recyclerView = expiredAppointmentView.findViewById(R.id.upcoming_recycler_view)
+        recyclerView = expiredAppointmentView.findViewById(R.id.post_expired_recycler_view)
+        tvNoOAppointment = expiredAppointmentView.findViewById(R.id.tv_no_appointment)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(context, this, AppointmentDataSource.getExpiredAppointmentList(),"Expired")
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getExpiredAppointmentList(),"Expired")
         recyclerView?.adapter = adapter
     }
 
@@ -77,11 +78,11 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
             if (it.isNotEmpty()) {
                 adapter?.updateAppointmentList(it)
                 recyclerView?.adapter?.notifyDataSetChanged()
-                llNoAppointment?.visibility = View.GONE
+                tvNoOAppointment?.visibility = View.GONE
                 recyclerView?.visibility = View.VISIBLE
             } else {
                 recyclerView?.visibility = View.GONE
-                llNoAppointment?.visibility = View.VISIBLE
+                tvNoOAppointment?.visibility = View.VISIBLE
 
             }
         }

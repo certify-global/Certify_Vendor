@@ -34,10 +34,8 @@ class AppointmentListFragment : BaseFragment() {
 
     private var appointTab: TabLayout? = null
     private var viewPager: ViewPager2? = null
-
     private var sharedPreferences: SharedPreferences? = null
     private var userLocation: Location? = Location("")
-    private var textviewscheduleAppoinment: TextView? = null
     //private lateinit var badgeViewDevice: View
     private lateinit var appointView: View
 
@@ -60,21 +58,13 @@ class AppointmentListFragment : BaseFragment() {
       //  getUserLocation()
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         initView()
-        setOnClickListener()
         Utils.enableBluetooth()
         setOnBackPress()
-    }
-
-    private fun setOnClickListener() {
-        textviewscheduleAppoinment?.setOnClickListener {
-            findNavController().navigate(R.id.scheduleFragment)
-        }
     }
 
     private fun initView() {
         progressIndicator = appointView.findViewById(R.id.progress_indicator)
         val userName: TextView? = appointView.findViewById(R.id.appt_user_name)
-        textviewscheduleAppoinment = appointView.findViewById(R.id.textview_scheduleAppoinment)
         userName?.text = String.format(getString(R.string.appt_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
         String.format(getString(R.string.appt_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME))
         val userPic: ImageView? = appointView.findViewById(R.id.user_profile_pic)

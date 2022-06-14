@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.certify.vendor.R
@@ -39,6 +40,7 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
     private lateinit var upcomingAppointView: View
+    private var textviewscheduleAppoinment: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,24 +64,28 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
         updateAppointmentViewModel = ViewModelProvider(this)
             .get(UpdateAppointmentViewModel::class.java)
         badgeViewModel = ViewModelProvider(this).get(BadgeViewModel::class.java)
-        pDialog?.show()
+        if (!pDialog!!.isShowing)
+            pDialog?.show()
         appointmentViewModel.init(context)
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
         setAppointmentListener()
         setBadgeListener()
         updateAppointmentListener()
-
-
     }
 
     private fun initView() {
         pDialog = Utils.ShowProgressDialog(requireContext())
         recyclerView = upcomingAppointView.findViewById(R.id.upcoming_recycler_view)
         llNoAppointment = upcomingAppointView.findViewById(R.id.ll_no_appointment)
+        textviewscheduleAppoinment = upcomingAppointView.findViewById(R.id.textview_scheduleAppoinment)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(context, this, AppointmentDataSource.getAppointmentList(),"UpComing")
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getAppointmentList(), "UpComing")
         recyclerView?.adapter = adapter
+        textviewscheduleAppoinment?.setOnClickListener {
+            findNavController().navigate(R.id.scheduleFragment)
+        }
+
     }
 
 
@@ -157,6 +163,7 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
             BadgeController.getInstance().disconnectDevice()
             return
         }
+        pDialog?.show()
         var appointment: Int
         if (appoinmentValue.statusFlag != 1) {
             appointment = 2
@@ -179,6 +186,7 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
 
     fun updateAppointmentListener() {
         updateAppointmentViewModel.updateAppointmentLiveData.observe(viewLifecycleOwner) {
+            pDialog?.dismiss()
             appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
 
         }
