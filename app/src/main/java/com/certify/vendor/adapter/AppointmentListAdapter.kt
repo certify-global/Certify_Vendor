@@ -29,14 +29,14 @@ class AppointmentListAdapter(
     }
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
-        val facilityAddress = appointmentList.get(position).facilityAddress
-        if (!Utils.validateFacilityAddress(appointmentList[position].facilityAddress)) {
-            val address = context.getString(R.string.appointment_location).let {
-                String.format(it, facilityAddress.address1, facilityAddress.address2, facilityAddress.city, facilityAddress.state, facilityAddress.zip)
-            }
-            holder.appointmentLocation.text = address
+
+        if (appointmentList.get(position).locationName.isNotEmpty()) {
+//            val address = context.getString(R.string.appointment_location).let {
+//                String.format(it, facilityAddress.address1, facilityAddress.address2, facilityAddress.city, facilityAddress.state, facilityAddress.zip)
+//            }
+            holder.appointmentLocation.text = appointmentList.get(position).locationName
         } else {
-            holder.appointmentLocation.text = context?.getString(R.string.no_location)
+            holder.appointmentLocation.text = ""
         }
         if (getDateValidation(appointmentList[position].start, appointmentList[position].end)) {
             if (appointmentList[position].mobileCheckinAllowed == 1 && Utils.getDateCompare(
@@ -47,8 +47,7 @@ class AppointmentListAdapter(
                 if ((appointmentList[position].statusFlag == 12 || appointmentList[position].statusFlag == 1))
                     holder.checkInOut.visibility = View.VISIBLE
                 else holder.checkInOut.visibility = View.GONE
-                if (appointmentList[position].statusFlag == 1) holder.checkInOut.text =
-                    context?.getString(R.string.check_out)
+                if (appointmentList[position].statusFlag == 1) holder.checkInOut.text = context?.getString(R.string.check_out)
                 else holder.checkInOut.text = context?.getString(R.string.check_in)
             } else {
                 holder.checkInOut.visibility = View.GONE
@@ -59,10 +58,9 @@ class AppointmentListAdapter(
             holder.checkInOut.visibility = View.GONE
 
         }
-        holder.appointmentDate.text =
-            Utils.getDate(appointmentList[position].start, "dd MMM yyyy")
+        holder.appointmentDate.text = appointmentList[position].facilityName
         holder.appointmentTime.text = context.getString(R.string.appointment_time).let {
-            String.format(it, Utils.getTime(appointmentList[position].start), Utils.getTime(appointmentList[position].end))
+            String.format(it, Utils.getTime(appointmentList[position].start), Utils.getTime(appointmentList[position].end), Utils.getDate(appointmentList[position].start, "dd MMM yyyy"))
         }
         holder.checkInOut.setOnClickListener {
             appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
@@ -81,7 +79,6 @@ class AppointmentListAdapter(
                 12 -> greenColor(holder)
                 13 -> readColor(holder)
                 0 -> yellowColor(holder)
-
             }
         }
 

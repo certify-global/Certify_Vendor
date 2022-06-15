@@ -5,192 +5,195 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.certify.vendor.model.BadgeViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingStart="@dimen/size_24"
-        android:paddingEnd="@dimen/size_24"
         android:background="@color/light_blue_1">
 
-        <TextView
-            android:id="@+id/ebadge_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_50"
-            android:text="@string/ebadge"
-            android:textColor="@color/blue_1"
-            android:textSize="@dimen/text_size_24"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/badge_user_info"/>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/badge_user_info"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:cardCornerRadius="10dp"
-            android:layout_marginTop="@dimen/size_56"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ebadge_tv">
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/size_24"
+            android:paddingEnd="@dimen/size_24">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/ebadge_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_50"
+                android:text="@string/ebadge"
+                android:textColor="@color/blue_1"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintBottom_toTopOf="@id/badge_user_info"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/badge_user_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_20"
-                android:layout_marginBottom="@dimen/size_20"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/badge_user_image"
-                    android:layout_width="@dimen/size_96"
-                    android:layout_height="@dimen/size_96"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/badge_user_image"
-                    android:src="@drawable/ic_user_pic" />
+                android:layout_marginTop="@dimen/size_56"
+                android:background="@color/white"
+                app:cardCornerRadius="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ebadge_tv">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/size_10"
-                    android:orientation="vertical">
+                    android:layout_marginTop="@dimen/size_20"
+                    android:layout_marginBottom="@dimen/size_20"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/badge_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/status"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/text_size_14" />
+                    <ImageView
+                        android:id="@+id/badge_user_image"
+                        android:layout_width="@dimen/size_96"
+                        android:layout_height="@dimen/size_96"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/badge_user_image"
+                        android:src="@drawable/ic_user_pic" />
 
-                    <TextView
-                        android:id="@+id/badge_user_name"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18"
-                        android:textStyle="bold" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/size_10"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/badge_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/id"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/text_size_14" />
+                        <TextView
+                            android:id="@+id/badge_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/status"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/text_size_14" />
 
-                    <TextView
-                        android:id="@+id/badge_company_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18" />
+                        <TextView
+                            android:id="@+id/badge_user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_18"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/badge_expires"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/expires_on"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/text_size_14" />
+                        <TextView
+                            android:id="@+id/badge_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/id"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/text_size_14" />
+
+                        <TextView
+                            android:id="@+id/badge_company_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_18" />
+
+                        <TextView
+                            android:id="@+id/badge_expires"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/expires_on"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/text_size_14" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/firmware_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_60"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/badge_user_info">
+
+                <TextView
+                    android:id="@+id/firmware_update"
+                    android:layout_width="@dimen/size_177"
+                    android:layout_height="@dimen/size_50"
+                    android:background="@color/green_1"
+                    android:gravity="center"
+                    android:text="@string/firmware_update"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/firmware_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_11"
+                    android:gravity="center"
+                    android:text="@string/firmware_version"
+                    android:textColor="@color/blue_1"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/firmware_update_available"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_05"
+                    android:gravity="center"
+                    android:text="@string/new_firmware_update_available"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_18" />
+
+                <TextView
+                    android:id="@+id/firmware_last_updated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_05"
+                    android:gravity="center"
+                    android:text="@string/firmware_last_updated"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14" />
+
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:id="@+id/firmware_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/size_60"
-            app:layout_constraintTop_toBottomOf="@id/badge_user_info"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
-
-            <TextView
-                android:id="@+id/firmware_update"
-                android:layout_width="@dimen/size_177"
-                android:layout_height="@dimen/size_50"
-                android:gravity="center"
-                android:text="@string/firmware_update"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_14"
-                android:background="@color/green_1"/>
-
-            <TextView
-                android:id="@+id/firmware_version"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="@dimen/size_300"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_11"
-                android:gravity="center"
-                android:text="@string/firmware_version"
-                android:textColor="@color/blue_1"
-                android:textSize="@dimen/text_size_18" />
+                android:layout_marginBottom="@dimen/size_10"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/firmware_info">
 
-            <TextView
-                android:id="@+id/firmware_update_available"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_05"
-                android:gravity="center"
-                android:text="@string/new_firmware_update_available"
-                android:textSize="@dimen/text_size_18"
-                android:textColor="@color/black"/>
+                <Button
+                    android:id="@+id/badge_connection"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_50"
+                    android:background="@color/red_1"
+                    android:text="@string/disconnect_badge" />
 
-            <TextView
-                android:id="@+id/firmware_last_updated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_05"
-                android:gravity="center"
-                android:text="@string/firmware_last_updated"
-                android:textSize="@dimen/text_size_14"
-                android:textColor="@color/black"/>
+                <Button
+                    android:id="@+id/badge_replace"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_50"
+                    android:layout_marginTop="@dimen/size_35"
+                    android:background="@drawable/border_black"
+                    android:text="@string/request_replacement_badge"
+                    android:textColor="@color/black" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="@dimen/size_300"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="@dimen/size_10"
-            app:layout_constraintTop_toBottomOf="@+id/firmware_info"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <Button
-                android:id="@+id/badge_connection"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_50"
-                android:text="@string/disconnect_badge"
-                android:background="@color/red_1">
-            </Button>
-
-            <Button
-                android:id="@+id/badge_replace"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/size_50"
-                android:layout_marginTop="@dimen/size_35"
-                android:text="@string/request_replacement_badge"
-                android:textColor="@color/black"
-                android:background="@drawable/border_black">
-            </Button>
-
-        </LinearLayout>
+            </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

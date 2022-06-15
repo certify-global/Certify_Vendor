@@ -36,22 +36,20 @@
                     android:id="@+id/appointment_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginStart="@dimen/size_17"
                     android:layout_marginEnd="@dimen/size_17"
                     android:textColor="@color/brown"
                     android:textSize="@dimen/text_size_18"
-                    android:textStyle="bold">
-                </TextView>
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/appointment_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/size_51"
+                    android:layout_marginStart="@dimen/size_17"
                     android:layout_marginEnd="@dimen/size_17"
                     android:textColor="@color/brown"
-                    android:textSize="@dimen/text_size_18">
-                </TextView>
+                    android:textSize="@dimen/text_size_18"/>
 
                 <LinearLayout
                     android:id="@+id/appointment_location_layout"
