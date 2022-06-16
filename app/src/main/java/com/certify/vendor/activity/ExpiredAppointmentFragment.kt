@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.api.response.AppointmentData
@@ -29,7 +30,9 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
     private var adapter: AppointmentListAdapter? = null
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
-    private lateinit var expiredAppointmentView:  View
+    private lateinit var expiredAppointmentView: View
+    private var swipeRefreshLayoutExpired: SwipeRefreshLayout? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,19 +60,23 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
         setAppointmentListener()
 
     }
+
     private fun initView() {
-       pDialog = Utils.ShowProgressDialog(requireContext())
+        pDialog = Utils.ShowProgressDialog(requireContext())
         recyclerView = expiredAppointmentView.findViewById(R.id.post_expired_recycler_view)
+        swipeRefreshLayoutExpired = expiredAppointmentView.findViewById(R.id.swipeContainer_post)
         tvNoOAppointment = expiredAppointmentView.findViewById(R.id.tv_no_appointment)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getExpiredAppointmentList(),"Expired")
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getExpiredAppointmentList(), "Expired")
         recyclerView?.adapter = adapter
+        swipeRefreshLayoutExpired?.setOnRefreshListener { appointmentViewModel.getExpiredAppointments() }
     }
 
 
     private fun setAppointmentListener() {
         appointmentViewModel.expiredAppointmentLiveData.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
+            swipeRefreshLayoutExpired?.isRefreshing = false
             if (AppointmentDataSource.getUnauthorized() == 401) {
                 Toast.makeText(context, context?.getString(R.string.session_timeout), Toast.LENGTH_LONG).show()
                 Utils.logOut(context)

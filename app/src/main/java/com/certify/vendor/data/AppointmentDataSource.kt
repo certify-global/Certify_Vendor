@@ -14,7 +14,7 @@ object AppointmentDataSource {
 
     fun addAppointmentList(apptmentList: List<AppointmentData>) {
         appointmentList.clear()
-        appointmentList.addAll(apptmentList.sortedByDescending { it.start })
+        appointmentList.addAll(apptmentList.sortedBy { it.start })
     }
 
     fun addPostAppointmentList(apptmentList: List<AppointmentData>) {

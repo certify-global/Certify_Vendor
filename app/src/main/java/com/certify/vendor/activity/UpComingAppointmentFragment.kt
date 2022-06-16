@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.api.response.AppointmentData
@@ -41,6 +42,7 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
     private var pDialog: Dialog? = null
     private lateinit var upcomingAppointView: View
     private var textviewscheduleAppoinment: TextView? = null
+    private var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,19 +81,24 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
         recyclerView = upcomingAppointView.findViewById(R.id.upcoming_recycler_view)
         llNoAppointment = upcomingAppointView.findViewById(R.id.ll_no_appointment)
         textviewscheduleAppoinment = upcomingAppointView.findViewById(R.id.textview_scheduleAppoinment)
+        swipeRefreshLayout = upcomingAppointView.findViewById(R.id.swipeContainer)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getAppointmentList(), "UpComing")
         recyclerView?.adapter = adapter
         textviewscheduleAppoinment?.setOnClickListener {
             findNavController().navigate(R.id.scheduleFragment)
         }
+        swipeRefreshLayout?.setOnRefreshListener {
+            appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
 
+        }
     }
 
 
     private fun setAppointmentListener() {
         appointmentViewModel.appointmentLiveData.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
+            swipeRefreshLayout?.isRefreshing = false
             if (AppointmentDataSource.getUnauthorized() == 401) {
                 Toast.makeText(context, context?.getString(R.string.session_timeout), Toast.LENGTH_LONG).show()
                 Utils.logOut(context)
@@ -173,15 +180,7 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
 
         setBadgeUI(appoinmentValue.start, appoinmentValue.end, appointment, appoinmentValue.vendorGuid)
         updateAppointmentViewModel.init(context)
-        updateAppointmentViewModel.updateAppointments(
-            "",
-            "",
-            "",
-            appoinmentValue.visitReason,
-            appoinmentValue.appointmentId,
-            appointment,
-            appoinmentValue.facilityId
-        )
+        updateAppointmentViewModel.updateAppointments("", "", "", appoinmentValue.visitReason, appoinmentValue.appointmentId, appointment, appoinmentValue.facilityId)
     }
 
     fun updateAppointmentListener() {

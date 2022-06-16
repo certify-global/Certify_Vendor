@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.api.response.AppointmentData
@@ -29,6 +30,7 @@ class PastAppointmentFragment : Fragment(), AppointmentCheckIn {
     private var sharedPreferences: SharedPreferences? = null
     private var pDialog: Dialog? = null
     private lateinit var upcomingAppointView: View
+    private var swipeRefreshLayoutPost: SwipeRefreshLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,19 +58,25 @@ class PastAppointmentFragment : Fragment(), AppointmentCheckIn {
         setAppointmentListener()
 
     }
+
     private fun initView() {
-       pDialog = Utils.ShowProgressDialog(requireContext())
+        pDialog = Utils.ShowProgressDialog(requireContext())
         recyclerView = upcomingAppointView.findViewById(R.id.post_expired_recycler_view)
+        swipeRefreshLayoutPost = upcomingAppointView.findViewById(R.id.swipeContainer_post)
         tvNoOAppointment = upcomingAppointView.findViewById(R.id.tv_no_appointment)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getPostAppointmentList(),"Past")
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getPostAppointmentList(), "Past")
         recyclerView?.adapter = adapter
+        swipeRefreshLayoutPost?.setOnRefreshListener {
+            appointmentViewModel.getPastAppointments()
+        }
     }
 
 
     private fun setAppointmentListener() {
         appointmentViewModel.pastAppointmentLiveData.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
+            swipeRefreshLayoutPost?.isRefreshing = false
             if (AppointmentDataSource.getUnauthorized() == 401) {
                 Toast.makeText(context, context?.getString(R.string.session_timeout), Toast.LENGTH_LONG).show()
                 Utils.logOut(context)

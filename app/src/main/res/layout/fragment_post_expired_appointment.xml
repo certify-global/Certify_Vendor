@@ -9,13 +9,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/post_expired_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/size_10" />
-
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         <TextView android:id="@+id/tv_no_appointment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
