@@ -13,6 +13,7 @@ import com.certify.vendor.repo.LoginRepository
 class LoginViewModel : BaseViewModel() {
 
     val signInLiveData = MutableLiveData<Boolean>()
+    val responseMessage = MutableLiveData<String>()
     private var loginRepository : LoginRepository = LoginRepository()
     private var context : Context? = null
 
@@ -27,13 +28,20 @@ class LoginViewModel : BaseViewModel() {
             loading.value = false
             if (isSuccess) {
                 VendorApplication.isLoggedIn = true
+
+                val sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.ACCESS_TOKEN, response?.responseData?.token)
+                AppSharedPreferences.writeSp(
+                    sharedPreferences, Constants.BADGE_MAC_ADDRESS,
+                    response?.responseData?.badgeMacAddress
+                )
+                AppSharedPreferences.writeSp(
+                    AppSharedPreferences.getSharedPreferences(context), Constants.VENDOR_GUID,
+                    response?.responseData?.vendorGuid
+                )
+            }else{
+                responseMessage.value = response?.responseMessage!!
             }
-            val sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
-            AppSharedPreferences.writeSp(sharedPreferences, Constants.ACCESS_TOKEN, response?.responseData?.token)
-            AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_MAC_ADDRESS,
-                                             response?.responseData?.badgeMacAddress)
-            AppSharedPreferences.writeSp(AppSharedPreferences.getSharedPreferences(context), Constants.VENDOR_GUID,
-                                           response?.responseData?.vendorGuid)
             signInLiveData.value = isSuccess
         }
     }

@@ -65,7 +65,10 @@ class AppointmentListAdapter(
         holder.checkInOut.setOnClickListener {
             appointmentLagenar.onAppointmentCheckIn(appointmentList.get(position))
         }
+        holder.llBackGround.setOnClickListener {
 
+            appointmentLagenar.onAppointmentDetails(appointmentList.get(position))
+        }
         if (selectionType.equals("Expired")) {
             readColor(holder)
         } else if (selectionType.equals("Past")) {

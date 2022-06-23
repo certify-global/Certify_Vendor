@@ -24,5 +24,17 @@ class Constants {
         val BADGE_MAC_ADDRESS = "BadgeMacAddress"
         val BADGE_BATTERY_STATUS = "BadgeBattery"
         val BADGE_DEVICE_UPDATED = "BadgeDeviceUpdated"
+
+
+    }
+    enum class AppointmentStatus {
+        PENDING ,
+        APPROVED ,
+        DECLINED ,
+        CANCELLED,
+        CHECKEDIN,
+        CHECKEDOUT,
+        EXPIRED
+
     }
 }

@@ -31,7 +31,7 @@
     <string name="check_in">Check-in</string>
     <string name="check_out">Check-out</string>
     <string name="no_appointments">No Appointments</string>
-    <string name="appointment_location">%1$s \n%2$s%3$s, %4$s %5$s</string>
+    <string name="appointment_location">%1$s \n%2$s %3$s, %4$s %5$s</string>
     <string name="appointment_time">%3$s %1$s - %2$s</string>
     <string name="no_location">No Location</string>
 
@@ -127,4 +127,13 @@
     <string name="upcoming">Upcoming</string>
     <string name="past">Past</string>
     <string name="expired">Expired</string>
+    <string name="view_appointment">View Appointment</string>
+    <string name="facility">Facility:</string>
+    <string name="location">Location:</string>
+    <string name="department">Department:</string>
+    <string name="appointment_time_str">Appointment Time:</string>
+    <string name="appointment_status_str">Appointment Status:</string>
+    <string name="approved_by">Approved By:</string>
+    <string name="purpose_of_visit">Purpose of visit:</string>
+    <string name="address">Address:</string>
 </resources>

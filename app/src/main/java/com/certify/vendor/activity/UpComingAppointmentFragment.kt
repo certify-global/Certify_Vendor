@@ -183,6 +183,11 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
         updateAppointmentViewModel.updateAppointments("", "", "", appoinmentValue.visitReason, appoinmentValue.appointmentId, appointment, appoinmentValue.facilityId)
     }
 
+    override fun onAppointmentDetails(value: AppointmentData) {
+     //   AppointmentDataSource.setAppointmentData(value)
+     //   findNavController().navigate(R.id.appointmentViewFragment)
+    }
+
     fun updateAppointmentListener() {
         updateAppointmentViewModel.updateAppointmentLiveData.observe(viewLifecycleOwner) {
             pDialog?.dismiss()

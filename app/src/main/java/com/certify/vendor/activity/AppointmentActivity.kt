@@ -21,14 +21,14 @@ class AppointmentActivity : AppCompatActivity() {
     }
 
     private fun setClickListener() {
-     floatingActionButton?.setOnClickListener {
-         findNavController(R.id.nav_host_appointment).navigate(R.id.scheduleFragment)
+        floatingActionButton?.setOnClickListener {
+            findNavController(R.id.nav_host_appointment).navigate(R.id.scheduleFragment)
 
-     }
+        }
     }
 
     private fun initView() {
-      floatingActionButton=findViewById(R.id.floatingActionButton)
+        floatingActionButton = findViewById(R.id.floatingActionButton)
     }
 
     override fun onStart() {

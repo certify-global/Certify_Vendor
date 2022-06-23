@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -98,5 +99,10 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
 
     override fun onAppointmentCheckIn(value: AppointmentData) {
         TODO("Not yet implemented")
+    }
+
+    override fun onAppointmentDetails(value: AppointmentData) {
+       // AppointmentDataSource.setAppointmentData(value)
+       // findNavController().navigate(R.id.appointmentViewFragment)
     }
 }

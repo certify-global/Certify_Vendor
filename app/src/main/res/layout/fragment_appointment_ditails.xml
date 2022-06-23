@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_50"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/size_30"
+                android:layout_height="@dimen/size_30"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/size_10"
+                android:src="@drawable/ic_arrow_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/view_appointment"
+                android:textColor="@color/header_color"
+                android:textSize="@dimen/size_20"
+                android:textStyle="bold"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_20"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:id="@+id/tv_facility_view"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facility" />
+
+            <TextView
+                android:id="@+id/tv_facility_view_value"
+                style="@style/textValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facility" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:id="@+id/tv_location_view"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location" />
+
+            <TextView
+                android:id="@+id/tv_location_view_value"
+                style="@style/textValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:id="@+id/tv_department_view"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/department" />
+
+            <TextView
+                android:id="@+id/tv_department_view_value"
+                style="@style/textValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/department" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:id="@+id/tv_appointment_time_view"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appointment_time_str" />
+
+            <TextView
+                android:id="@+id/tv_appointment_time_view_value"
+                style="@style/textValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appointment_time_str" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:id="@+id/tv_appointment_status_view"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appointment_status_str" />
+
+            <TextView
+                android:id="@+id/tv_appointment_status_view_value"
+                style="@style/textValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/appointment_status_str" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:id="@+id/tv_purpose_of_view"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/purpose_of_visit" />
+
+            <TextView
+                android:id="@+id/tv_purpose_of_view_value"
+                style="@style/textValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/purpose_of_visit" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10">
+
+            <TextView
+                android:id="@+id/tv_address_view"
+                style="@style/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address" />
+
+            <TextView
+                android:id="@+id/tv_address_view_value"
+                style="@style/textValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

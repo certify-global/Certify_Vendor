@@ -17,8 +17,8 @@ import com.certify.vendor.model.LoginViewModel
 
 class LoginMainFragment : BaseFragment() {
 
-    private lateinit var fragmentLoginBinding : FragmentLoginBinding
-    private var loginViewModel : LoginViewModel? = null
+    private lateinit var fragmentLoginBinding: FragmentLoginBinding
+    private var loginViewModel: LoginViewModel? = null
     private var pDialog: Dialog? = null
 
     override fun onCreateView(
@@ -43,7 +43,7 @@ class LoginMainFragment : BaseFragment() {
         loginViewModel?.init(context)
     }
 
-    private fun initView () {
+    private fun initView() {
         pDialog = Utils.ShowProgressDialog(requireContext())
     }
 
@@ -51,8 +51,10 @@ class LoginMainFragment : BaseFragment() {
         fragmentLoginBinding.signIn.setOnClickListener {
             if (fragmentLoginBinding.userName.text.toString().isNotEmpty() && fragmentLoginBinding.passWord.text.toString().isNotEmpty()) {
                 pDialog?.show()
-                loginViewModel?.login(fragmentLoginBinding.userName.text.toString(),
-                    fragmentLoginBinding.passWord.text.toString())
+                loginViewModel?.login(
+                    fragmentLoginBinding.userName.text.toString(),
+                    fragmentLoginBinding.passWord.text.toString()
+                )
             }
             if (fragmentLoginBinding.userName.text.toString().isEmpty()) {
                 fragmentLoginBinding.userName.error = getString(R.string.user_name_error)
@@ -112,7 +114,10 @@ class LoginMainFragment : BaseFragment() {
                 )
                 activity?.finish()
             } else {
-                Toast.makeText(context, getString(R.string.login_error), Toast.LENGTH_LONG).show()
+                if (loginViewModel?.responseMessage?.value!!.isNotEmpty()) {
+                    Toast.makeText(context, loginViewModel?.responseMessage?.value, Toast.LENGTH_LONG).show()
+                } else
+                    Toast.makeText(context, getString(R.string.login_error), Toast.LENGTH_LONG).show()
             }
         }
     }
