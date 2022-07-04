@@ -7,16 +7,35 @@
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/border_grey.xml" value="0.1765" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/border_header_color.xml" value="0.1765" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/edit_text_border.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/hide_password_icon.xml" value="0.1125" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_appoinment_icon.xml" value="0.1765" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_arrow_back.xml" value="0.1765" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_badge.xml" value="0.1765" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_credential.xml" value="0.1765" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_home.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_location_green.xml" value="0.2195" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_location_past_appt.xml" value="0.2195" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_location_today_appt.xml" value="0.2195" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/ic_location_upcoming_appt.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/show_password_icon.xml" value="0.275" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/drawable/wight_view.xml" value="0.1765" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/activity_appointment.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/appointment_row.xml" value="0.2790328973444312" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/badge_device_layout.xml" value="0.176" />
-        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_appointment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/calendar_layout.xml" value="0.18159327065809006" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_account.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_appointment.xml" value="0.176" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_appointment_ditails.xml" value="0.2790328973444312" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_badge.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_expired_appointment.xml" value="0.2" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_login.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_manage_badge.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_post_expired_appointment.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/fragment_up_coming.xml" value="0.19342053111375346" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/layout_password.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/main_layout.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/schedule_appoinment_layout.xml" value="0.2790328973444312" />
+        <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/BNR/Certify_Vendor/app/src/main/res/layout/show_password_icon.xml" value="0.2790328973444312" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/Certify_Vendor/app/src/main/res/drawable-anydpi/ic_action_add.xml" value="0.287109375" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/Certify_Vendor/app/src/main/res/drawable/edit_text_border.xml" value="0.287109375" />
         <entry key="..\:/Users/nbijivemula/AndroidStudioProjects/Certify_Vendor/app/src/main/res/drawable/ic_home.xml" value="0.287109375" />

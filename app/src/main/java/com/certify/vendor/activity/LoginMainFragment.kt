@@ -2,6 +2,10 @@ package com.certify.vendor.activity
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,21 +49,52 @@ class LoginMainFragment : BaseFragment() {
 
     private fun initView() {
         pDialog = Utils.ShowProgressDialog(requireContext())
+        fragmentLoginBinding.userName.addTextChangedListener(loginTextWatcher)
+        fragmentLoginBinding.incPassword.etPassword.addTextChangedListener(loginTextWatcher)
+    }
+
+    private val loginTextWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            if (validateEmptyFields()) {
+                fragmentLoginBinding.signIn.isEnabled = true
+                fragmentLoginBinding.signIn.alpha = 1f
+            } else {
+                fragmentLoginBinding.signIn.isEnabled = false
+                fragmentLoginBinding.signIn.alpha = .5f
+            }
+        }
+
+        override fun afterTextChanged(s: Editable) {}
+    }
+
+    private fun validateEmptyFields(): Boolean {
+        if (fragmentLoginBinding.userName.text.isNullOrEmpty() || fragmentLoginBinding.incPassword.etPassword.text.isNullOrEmpty())
+            return false
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(fragmentLoginBinding.userName.text).matches())
+            return false
+        return true
     }
 
     private fun setClickListener() {
+        fragmentLoginBinding.incPassword.icPasswordShow.setOnClickListener(View.OnClickListener {
+            showPass()
+        })
+        fragmentLoginBinding.incPassword.icPasswordHide.setOnClickListener(View.OnClickListener {
+            hidePass()
+        })
         fragmentLoginBinding.signIn.setOnClickListener {
-            if (fragmentLoginBinding.userName.text.toString().isNotEmpty() && fragmentLoginBinding.passWord.text.toString().isNotEmpty()) {
+            if (fragmentLoginBinding.userName.text.toString().isNotEmpty() && fragmentLoginBinding.incPassword.etPassword.text.toString().isNotEmpty()) {
                 pDialog?.show()
                 loginViewModel?.login(
                     fragmentLoginBinding.userName.text.toString(),
-                    fragmentLoginBinding.passWord.text.toString()
+                    fragmentLoginBinding.incPassword.etPassword.text.toString()
                 )
             }
             if (fragmentLoginBinding.userName.text.toString().isEmpty()) {
                 fragmentLoginBinding.userName.error = getString(R.string.user_name_error)
-            } else if (fragmentLoginBinding.passWord.text.toString().isEmpty()) {
-                fragmentLoginBinding.passWord.error = getString(R.string.pass_word_error)
+            } else if (fragmentLoginBinding.incPassword.etPassword.text.toString().isEmpty()) {
+                fragmentLoginBinding.incPassword.etPassword.error = getString(R.string.pass_word_error)
             }
         }
         /*fragmentLoginBinding.signInMobile.setOnClickListener {
@@ -70,6 +105,18 @@ class LoginMainFragment : BaseFragment() {
             loginViewModel?.login(fragmentLoginBinding.userName.text.toString(),
                                     fragmentLoginBinding.passWord.text.toString())
         }*/
+    }
+
+    private fun showPass() {
+        fragmentLoginBinding.incPassword.icPasswordShow.setVisibility(View.GONE)
+        fragmentLoginBinding.incPassword.icPasswordHide.setVisibility(View.VISIBLE)
+        fragmentLoginBinding.incPassword.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
+    }
+
+    private fun hidePass() {
+        fragmentLoginBinding.incPassword.icPasswordShow.setVisibility(View.VISIBLE)
+        fragmentLoginBinding.incPassword.icPasswordHide.setVisibility(View.GONE)
+        fragmentLoginBinding.incPassword.etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
     }
 
     private fun setLoginDataListener() {

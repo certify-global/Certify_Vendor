@@ -5,6 +5,7 @@ import com.certify.vendor.VendorApplication
 import com.certify.vendor.api.RetrofitInstance
 import com.certify.vendor.api.request.LoginRequest
 import com.certify.vendor.api.response.LoginResponse
+import com.certify.vendor.api.response.LoginResponseData
 import com.certify.vendor.common.Constants
 import com.certify.vendor.data.LoginDataSource
 import retrofit2.Call
@@ -12,9 +13,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginRepository {
-    private val TAG : String = LoginRepository::class.java.name
+    private val TAG: String = LoginRepository::class.java.name
 
-    fun signIn(userName : String, passwd : String, onResult: (isSuccess: Boolean, response: LoginResponse?) -> Unit) {
+    fun signIn(userName: String, passwd: String, onResult: (isSuccess: Boolean, response: LoginResponse?) -> Unit) {
         val loginRequest = LoginRequest(Constants.VENDOR_APP, userName, passwd, 2)
         Log.d(TAG, "Login loginRequest $loginRequest")
         RetrofitInstance.apiInterface.loginUser(loginRequest).enqueue(object : Callback<LoginResponse> {
@@ -32,8 +33,9 @@ class LoginRepository {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e(TAG, "Error in login"+t.message)
-                onResult(false, null)
+                Log.e(TAG, "Error in login" + t.message)
+                val temp = LoginResponse(101, 101, t.message, null, t.message)
+                onResult(false, temp)
             }
         })
     }
