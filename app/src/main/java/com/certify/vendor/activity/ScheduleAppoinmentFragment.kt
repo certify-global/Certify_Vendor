@@ -13,12 +13,21 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.certify.vendor.R
+import com.certify.vendor.adapter.MemberListAdapter
 import com.certify.vendor.api.response.DepartmentforfacilityList
 import com.certify.vendor.api.response.FacilityData
 import com.certify.vendor.api.response.LocationforfacilityList
+import com.certify.vendor.api.response.ResponseDataMember
+import com.certify.vendor.badge.BadgeController
+import com.certify.vendor.callback.ItemOnClickCallback
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
@@ -30,7 +39,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ScheduleAppoinmentFragment : BaseFragment() {
+class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
     private val TAG = ScheduleAppoinmentFragment::class.java.name
     private var sharedPreferences: SharedPreferences? = null
     private var scheduleAppointmentViewModel: ScheduleAppointmentViewModel? = null
@@ -50,18 +59,19 @@ class ScheduleAppoinmentFragment : BaseFragment() {
     var endTime: String = ""
     var locationId: Int = 0
     var departmentId: Int = 0
+    var contactMemberId: Int = 0
+
     var facilityData: FacilityData? = null
     private var pDialog: Dialog? = null
+    private var memberList: List<ResponseDataMember>? = ArrayList()
+    private var adapterMemberList: MemberListAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.schedule_appoinment_layout, container, false
-        )
+        fragmentBinding = DataBindingUtil.inflate(inflater, R.layout.schedule_appoinment_layout, container, false)
         fragmentMainLayoutBinding = fragmentBinding?.facilityLayout
         calendarLayoutBinding = fragmentBinding?.facilityCalendarLayout
         submitLayoutBinding = fragmentBinding?.appoinmentSubmitLayout
@@ -70,8 +80,8 @@ class ScheduleAppoinmentFragment : BaseFragment() {
             .get(FacilityViewModel::class.java)
         scheduleAppointmentViewModel = ViewModelProvider(this)
             .get(ScheduleAppointmentViewModel::class.java)
-        baseViewModel = facilityViewModel
-        baseViewModel = scheduleAppointmentViewModel
+        // baseViewModel = facilityViewModel
+        //   baseViewModel = scheduleAppointmentViewModel
         return fragmentBinding?.root?.rootView
     }
 
@@ -83,6 +93,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         facilityViewModel?.facility(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
         setOnClickListener()
         setFacilityListener()
+        setOnBackPress()
     }
 
     private fun initView() {
@@ -94,6 +105,10 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         startTime = Utils.getCurrentTime24()
         endTime = Utils.getCurrentTime24()
         pDialog = Utils.ShowProgressDialog(requireContext())
+        submitLayoutBinding?.recMemberList?.layoutManager = LinearLayoutManager(context)
+        submitLayoutBinding?.recMemberList?.addItemDecoration(DividerItemDecoration(submitLayoutBinding?.recMemberList?.context, DividerItemDecoration.VERTICAL))
+        adapterMemberList = MemberListAdapter(requireContext(), this, memberList!!)
+        submitLayoutBinding?.recMemberList?.adapter = adapterMemberList
 //        var mBottomNavigationView:BottomNavigationView = (requireActivity().findViewById<View>(R.id.navigation_menu_view) as BottomNavigationView)
 //        mBottomNavigationView.getMenu().findItem(R.id.menu_home).setChecked()
 
@@ -156,9 +171,18 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         submitLayoutBinding?.reSchedule?.setOnClickListener {
             launchCalendarLayout()
         }
-
+        submitLayoutBinding?.editTextTextPersonName?.addTextChangedListener {
+            if (it.toString().length > 2 ) {
+                facilityViewModel?.getOnSiteContact(facilityData?.facilityId!!, it.toString())
+            } else {
+                validationSubmitButton()
+            }
+        }
+        submitLayoutBinding?.editTextVisit?.addTextChangedListener {
+            validationSubmitButton()
+        }
+        submitLayoutBinding?.buttonCancel?.setOnClickListener { activity?.finish() }
         submitLayoutBinding?.buttonSubmit?.setOnClickListener {
-            var contactName: String = submitLayoutBinding?.editTextTextPersonName?.text.toString()
             var visitReason = submitLayoutBinding?.editTextVisit?.text.toString()
             if (validateVisitPersonName()) {
                 pDialog?.show()
@@ -166,7 +190,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                     selectedDate,
                     startTime,
                     endTime,
-                    contactName,
+                    contactMemberId,
                     visitReason,
                     facilityData!!.facilityId,
                     locationId,
@@ -180,7 +204,6 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         val customObjects = FacilityDataSource.getFacilityList()
         adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
         fragmentMainLayoutBinding?.spinnerFacility?.adapter = adapter
-
         fragmentMainLayoutBinding?.spinnerFacility?.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -189,6 +212,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                 facilityData = parent.getSelectedItem() as FacilityData
                 departmentId = 0
                 locationId = 0
+                contactMemberId = 0;
                 if (position == 0) return
                 if (pDialog != null && pDialog?.isShowing == false)
                     pDialog?.show()
@@ -205,7 +229,6 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         val customObjects = FacilityDataSource.getLocationForFacilityList()
         val adapterLoc = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
         fragmentMainLayoutBinding?.spinnerLocation?.adapter = adapterLoc
-
         fragmentMainLayoutBinding?.spinnerLocation?.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -226,13 +249,12 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         val customObjects = FacilityDataSource.getDepartmentList()
         val adapterDepartment = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
         fragmentMainLayoutBinding?.spinnerDepartment?.adapter = adapterDepartment
-
         fragmentMainLayoutBinding?.spinnerDepartment?.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (position == 0) return
                 val departmentTemp = parent.getSelectedItem() as DepartmentforfacilityList
-                departmentId = departmentTemp?.departmentId
+                departmentId = departmentTemp.departmentId
 //                if ((FacilityDataSource.getLocationForFacilityList().size > 0 && locationId > 0) || FacilityDataSource.getLocationForFacilityList().size == 0)
 //                    updateUI(facilityData!!)
             }
@@ -256,7 +278,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
     }
 
     private fun setFacilityListener() {
-        facilityViewModel?.facilityLiveData?.observe(viewLifecycleOwner, {
+        facilityViewModel?.facilityLiveData?.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
             if (it && FacilityDataSource.getFacilityList().isNotEmpty()) {
                 initSpinner()
@@ -266,7 +288,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        })
+        }
         facilityViewModel?.departmentLocationWithLiveData?.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
             if (it == null) return@observe
@@ -293,7 +315,15 @@ class ScheduleAppoinmentFragment : BaseFragment() {
 //                updateUI(facilityData!!)
 //            }
         }
-        scheduleAppointmentViewModel?.scheduleAppointmentLiveData?.observe(viewLifecycleOwner, {
+        facilityViewModel?.facilityMembersRequestWithLiveData?.observe(viewLifecycleOwner) {
+            if (it.responseCode == 1 && !it.responseData.isEmpty()) {
+                memberList = it.responseData
+                adapterMemberList?.updateMemberList(memberList!!)
+                submitLayoutBinding?.recMemberList?.visibility = View.VISIBLE
+            } else submitLayoutBinding?.recMemberList?.visibility = View.GONE
+
+        }
+        scheduleAppointmentViewModel?.scheduleAppointmentLiveData?.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
             if (it) {
                 launchSuccesPage();
@@ -303,7 +333,7 @@ class ScheduleAppoinmentFragment : BaseFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        })
+        }
     }
 
     private fun launchSuccesPage() {
@@ -345,7 +375,8 @@ class ScheduleAppoinmentFragment : BaseFragment() {
 
 
     fun launchAppointmentActivity() {
-        startActivity(Intent(requireContext(), AppointmentActivity::class.java))
+        activity?.finish()
+        //startActivity(Intent(requireContext(), AppointmentActivity::class.java))
     }
 
     fun basicAlert() {
@@ -371,4 +402,33 @@ class ScheduleAppoinmentFragment : BaseFragment() {
         return true
     }
 
+    private fun setOnBackPress() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override
+            fun handleOnBackPressed() {
+                activity?.finish()
+            }
+        })
+    }
+
+    override fun onItemOnClickCallBack(positionValue: Int) {
+        contactMemberId = memberList?.get(positionValue)?.individualId!!
+        submitLayoutBinding?.editTextTextPersonName?.setText(memberList?.get(positionValue)?.memberName!!)
+        validationSubmitButton()
+    }
+
+    fun validationSubmitButton() {
+        try {
+            if (contactMemberId == 0 || submitLayoutBinding?.editTextVisit?.text!!.isEmpty()||submitLayoutBinding?.editTextTextPersonName?.text!!.isEmpty()) {
+                submitLayoutBinding?.buttonSubmit?.alpha = .7f
+                submitLayoutBinding?.buttonSubmit?.isEnabled = false
+                submitLayoutBinding?.recMemberList?.visibility = View.GONE
+            } else {
+                submitLayoutBinding?.buttonSubmit?.alpha = 1f
+                submitLayoutBinding?.buttonSubmit?.isEnabled = true
+            }
+        } catch (e: Exception) {
+
+        }
+    }
 }

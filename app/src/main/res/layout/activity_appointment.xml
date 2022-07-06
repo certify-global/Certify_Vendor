@@ -10,7 +10,7 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/size_67"
+        android:layout_marginBottom="@dimen/size_70"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -39,14 +39,14 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/size_10"
         android:layout_marginBottom="@dimen/size_70"
+        android:backgroundTint="@color/green"
         android:clickable="true"
         android:orientation="horizontal"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:srcCompat="@drawable/ic_action_add"
-        tools:ignore="MissingConstraints"
-        android:backgroundTint="@color/green"/>
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

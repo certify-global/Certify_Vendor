@@ -15,7 +15,7 @@ class ScheduleAppoinmentRepository {
     }
 
     fun scheduleAppoinments(selectedDate: String,
-                            startTime: String, endTime: String, contactName: String,visitReason: String
+                            startTime: String, endTime: String, contactName: Int,visitReason: String
                             ,facilityID:Int,locationId:Int, departmentId:Int,onResult: (isSuccess: Boolean, scheduleAppointmentResponse: ScheduleAppointmentResponse?) -> Unit) {
 
         val scheduleAppointmentRequest = ScheduleAppointmentRequest(facilityID, Constants.VENDOR_APP, selectedDate, startTime, endTime, contactName,visitReason,locationId,departmentId)

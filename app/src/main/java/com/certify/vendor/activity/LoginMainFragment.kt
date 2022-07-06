@@ -69,7 +69,7 @@ class LoginMainFragment : BaseFragment() {
     }
 
     private fun validateEmptyFields(): Boolean {
-        if (fragmentLoginBinding.userName.text.isNullOrEmpty() || fragmentLoginBinding.incPassword.etPassword.text.isNullOrEmpty())
+        if (fragmentLoginBinding.userName.text.isNullOrEmpty() || fragmentLoginBinding.incPassword.etPassword.text!!.length < 8)
             return false
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(fragmentLoginBinding.userName.text).matches())
             return false

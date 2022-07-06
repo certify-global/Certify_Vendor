@@ -52,7 +52,7 @@
                 android:text="@string/consectetur_adipiscing_elit"
                 android:textColor="@color/gray" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/textview_scheduleAppoinment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,6 +60,8 @@
                 android:layout_marginTop="@dimen/size_10"
                 android:background="@color/green"
                 android:padding="@dimen/size_10"
+                android:textAllCaps="false"
+                android:elevation="@dimen/size_05"
                 android:text="@string/schedule_appointment"
                 android:textColor="@color/white" />
         </LinearLayout>

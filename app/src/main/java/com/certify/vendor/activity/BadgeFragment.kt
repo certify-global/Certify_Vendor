@@ -56,7 +56,7 @@ class BadgeFragment : Fragment() {
             setBadgeStatus()
             setOnBackPress()
         } catch (e: Exception) {
-            Log.e(TAG, "Exception in setting the badge UI")
+            Log.e(TAG, "Exception in setting the badge UI"+e.message)
         }
     }
 
@@ -119,10 +119,14 @@ class BadgeFragment : Fragment() {
     }
 
     private fun onBadgeConnectionStatus() {
-        onBadgeConnectionStatusUpdate(BadgeController.getInstance().connectionState.value)
-        badgeViewModel?.badgeConnectionStatus?.value = BadgeController.BadgeConnectionState.NOT_CONNECTED.value
-        badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
-            onBadgeConnectionStatusUpdate(it)
+        try {
+            onBadgeConnectionStatusUpdate(BadgeController.getInstance().connectionState.value)
+            badgeViewModel?.badgeConnectionStatus?.value = BadgeController.BadgeConnectionState.NOT_CONNECTED.value
+            badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
+                onBadgeConnectionStatusUpdate(it)
+            }
+        }catch (e:Exception){
+            Log.e(TAG,"onBadgeConnectionStatus "+e.message)
         }
     }
 

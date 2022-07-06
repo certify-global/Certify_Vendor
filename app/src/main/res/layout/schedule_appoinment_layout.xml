@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/constraintLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <include
-        android:id="@+id/facilityLayout"
-        layout="@layout/main_layout"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/facilityCalendarLayout"
-        layout="@layout/calendar_layout"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-    <include
-        android:id="@+id/appoinmentSubmitLayout"
-        layout="@layout/submit_layout"/>
-    <include
-        android:id="@+id/appoinmentSuccessLayout"
-        layout="@layout/success_layout"/>
+            android:paddingBottom="@dimen/size_15"
+            android:background="@color/white">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+            <include
+                android:id="@+id/facilityLayout"
+                layout="@layout/main_layout" />
+
+            <include
+                android:id="@+id/facilityCalendarLayout"
+                layout="@layout/calendar_layout" />
+
+            <include
+                android:id="@+id/appoinmentSubmitLayout"
+                layout="@layout/submit_layout" />
+
+            <include
+                android:id="@+id/appoinmentSuccessLayout"
+                layout="@layout/success_layout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

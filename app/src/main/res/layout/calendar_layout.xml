@@ -121,24 +121,28 @@
         android:layout_marginLeft="@dimen/size_20"
         android:layout_marginRight="@dimen/size_20">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/back"
             android:layout_margin="@dimen/size_10"
+            android:textAllCaps="false"
+            android:elevation="@dimen/size_05"
             android:background="@drawable/border_grey"
             android:textColor="@color/light_grey"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/next"
+            android:textAllCaps="false"
             android:background="@color/green"
             android:layout_margin="@dimen/size_10"
+            android:elevation="@dimen/size_05"
             android:textColor="@color/white"/>
     </LinearLayout>
 

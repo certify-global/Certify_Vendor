@@ -15,7 +15,7 @@ class ScheduleAppointmentViewModel : BaseViewModel() {
     }
 
     fun scheduleAppointments(selectedDate: String,
-                             startTime: String, endTime: String, contactName: String,visitReason: String,facilityID: Int,locationId:Int, departmentId:Int) {
+                             startTime: String, endTime: String, contactName: Int,visitReason: String,facilityID: Int,locationId:Int, departmentId:Int) {
         loading.value = true
         appointmentRepository.scheduleAppoinments(selectedDate,startTime,endTime,contactName,visitReason,facilityID,locationId,departmentId) { isSuccess, appointmentResponse ->
             loading.value = false

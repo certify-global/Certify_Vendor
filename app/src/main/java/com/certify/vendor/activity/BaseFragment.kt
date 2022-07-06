@@ -8,8 +8,8 @@ import com.certify.vendor.model.BaseViewModel
 
 open class BaseFragment : Fragment() {
 
-    var baseViewModel : BaseViewModel? = null
-    var progressIndicator : ProgressBar? = null
+    var baseViewModel: BaseViewModel? = null
+    var progressIndicator: ProgressBar? = null
 
     override fun onStart() {
         super.onStart()

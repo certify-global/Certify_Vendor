@@ -1,6 +1,7 @@
 package com.certify.vendor.activity
 
 import android.app.Dialog
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -86,7 +87,8 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
         adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getAppointmentList(), "UpComing")
         recyclerView?.adapter = adapter
         textviewscheduleAppoinment?.setOnClickListener {
-            findNavController().navigate(R.id.scheduleFragment)
+            //   findNavController().navigate(R.id.scheduleFragment)
+            startActivity(Intent(activity, ScheduleActivity::class.java))
         }
         swipeRefreshLayout?.setOnRefreshListener {
             appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
@@ -184,8 +186,8 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
     }
 
     override fun onAppointmentDetails(value: AppointmentData) {
-     //   AppointmentDataSource.setAppointmentData(value)
-     //   findNavController().navigate(R.id.appointmentViewFragment)
+        //   AppointmentDataSource.setAppointmentData(value)
+        //   findNavController().navigate(R.id.appointmentViewFragment)
     }
 
     fun updateAppointmentListener() {
