@@ -76,10 +76,8 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         calendarLayoutBinding = fragmentBinding?.facilityCalendarLayout
         submitLayoutBinding = fragmentBinding?.appoinmentSubmitLayout
         successLayoutBinding = fragmentBinding?.appoinmentSuccessLayout
-        facilityViewModel = ViewModelProvider(this)
-            .get(FacilityViewModel::class.java)
-        scheduleAppointmentViewModel = ViewModelProvider(this)
-            .get(ScheduleAppointmentViewModel::class.java)
+        facilityViewModel = ViewModelProvider(this).get(FacilityViewModel::class.java)
+        scheduleAppointmentViewModel = ViewModelProvider(this).get(ScheduleAppointmentViewModel::class.java)
         // baseViewModel = facilityViewModel
         //   baseViewModel = scheduleAppointmentViewModel
         return fragmentBinding?.root?.rootView
@@ -172,7 +170,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             launchCalendarLayout()
         }
         submitLayoutBinding?.editTextTextPersonName?.addTextChangedListener {
-            if (it.toString().length > 2 ) {
+            if (it.toString().length > 2) {
                 facilityViewModel?.getOnSiteContact(facilityData?.facilityId!!, it.toString())
             } else {
                 validationSubmitButton()
@@ -235,8 +233,6 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
                 if (position == 0) return
                 val temp = parent.getSelectedItem() as LocationforfacilityList
                 locationId = temp.locationId
-//                if ((FacilityDataSource.getDepartmentList().size > 0 && departmentId > 0) || FacilityDataSource.getDepartmentList().size == 0)
-//                    updateUI(facilityData!!)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -255,8 +251,6 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
                 if (position == 0) return
                 val departmentTemp = parent.getSelectedItem() as DepartmentforfacilityList
                 departmentId = departmentTemp.departmentId
-//                if ((FacilityDataSource.getLocationForFacilityList().size > 0 && locationId > 0) || FacilityDataSource.getLocationForFacilityList().size == 0)
-//                    updateUI(facilityData!!)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -317,6 +311,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         }
         facilityViewModel?.facilityMembersRequestWithLiveData?.observe(viewLifecycleOwner) {
             if (it.responseCode == 1 && !it.responseData.isEmpty()) {
+                Utils.hideKeyboard(requireActivity())
                 memberList = it.responseData
                 adapterMemberList?.updateMemberList(memberList!!)
                 submitLayoutBinding?.recMemberList?.visibility = View.VISIBLE
@@ -412,14 +407,19 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
     }
 
     override fun onItemOnClickCallBack(positionValue: Int) {
-        contactMemberId = memberList?.get(positionValue)?.individualId!!
-        submitLayoutBinding?.editTextTextPersonName?.setText(memberList?.get(positionValue)?.memberName!!)
-        validationSubmitButton()
+        try {
+            contactMemberId = memberList?.get(positionValue)?.individualId!!
+            submitLayoutBinding?.editTextTextPersonName?.setText(memberList?.get(positionValue)?.memberName!!)
+            submitLayoutBinding?.editTextTextPersonName?.setSelection(memberList?.get(positionValue)?.memberName!!.length)
+            validationSubmitButton()
+        } catch (e: Exception) {
+
+        }
     }
 
     fun validationSubmitButton() {
         try {
-            if (contactMemberId == 0 || submitLayoutBinding?.editTextVisit?.text!!.isEmpty()||submitLayoutBinding?.editTextTextPersonName?.text!!.isEmpty()) {
+            if (contactMemberId == 0 || submitLayoutBinding?.editTextVisit?.text!!.isEmpty() || submitLayoutBinding?.editTextTextPersonName?.text!!.isEmpty()) {
                 submitLayoutBinding?.buttonSubmit?.alpha = .7f
                 submitLayoutBinding?.buttonSubmit?.isEnabled = false
                 submitLayoutBinding?.recMemberList?.visibility = View.GONE

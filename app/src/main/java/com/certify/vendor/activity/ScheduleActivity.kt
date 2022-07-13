@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.certify.vendor.R
+import com.certify.vendor.data.AppointmentDataSource
 
 class ScheduleActivity : AppCompatActivity() {
 
@@ -17,7 +18,9 @@ class ScheduleActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        if(AppointmentDataSource.isSchedule)
         findNavController(R.id.nav_host_fragment).navigate(R.id.scheduleFragment)
+        else  findNavController(R.id.nav_host_fragment).navigate(R.id.appointmentViewFragment)
     }
 
     override fun onBackPressed() {

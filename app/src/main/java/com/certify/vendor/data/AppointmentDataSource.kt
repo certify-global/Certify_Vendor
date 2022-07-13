@@ -1,6 +1,7 @@
 package com.certify.vendor.data
 
 import com.certify.vendor.api.response.AppointmentData
+import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 
 object AppointmentDataSource {
@@ -10,6 +11,9 @@ object AppointmentDataSource {
     private var expiredAppointmentList = arrayListOf<AppointmentData>()
     private lateinit var appointmentData: AppointmentData
     private var unauthorized = 0
+      var isSchedule = true
+      var appointmentType = Constants.AppointmentTypes.UPCOMING.name
+
 
 
     fun addAppointmentList(apptmentList: List<AppointmentData>) {

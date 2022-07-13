@@ -37,152 +37,363 @@
                 android:visibility="visible" />
         </RelativeLayout>
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_20"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_facility_view"
-                style="@style/text"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/facility" />
+                android:orientation="vertical"
+                android:padding="@dimen/size_10">
 
-            <TextView
-                android:id="@+id/tv_facility_view_value"
-                style="@style/textValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/facility" />
-        </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
 
-            <TextView
-                android:id="@+id/tv_location_view"
-                style="@style/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/location" />
+                        <TextView
+                            android:id="@+id/tv_company_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/company" />
 
-            <TextView
-                android:id="@+id/tv_location_view_value"
-                style="@style/textValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/location" />
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_company_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
 
-            <TextView
-                android:id="@+id/tv_department_view"
-                style="@style/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/department" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
 
-            <TextView
-                android:id="@+id/tv_department_view_value"
-                style="@style/textValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/department" />
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_facility_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/facility" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+                        <TextView
+                            android:id="@+id/tv_facility_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/facility" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/tv_appointment_time_view"
-                style="@style/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_time_str" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
 
-            <TextView
-                android:id="@+id/tv_appointment_time_view_value"
-                style="@style/textValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_time_str" />
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+                        <TextView
+                            android:id="@+id/tv_location_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/location" />
 
-            <TextView
-                android:id="@+id/tv_appointment_status_view"
-                style="@style/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_status_str" />
+                        <TextView
+                            android:id="@+id/tv_location_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/location" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/tv_appointment_status_view_value"
-                style="@style/textValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/appointment_status_str" />
-        </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
 
-            <TextView
-                android:id="@+id/tv_purpose_of_view"
-                style="@style/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/purpose_of_visit" />
+                        <TextView
+                            android:id="@+id/tv_department_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/department" />
 
-            <TextView
-                android:id="@+id/tv_purpose_of_view_value"
-                style="@style/textValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/purpose_of_visit" />
-        </LinearLayout>
+                        <Spinner
+                            android:id="@+id/spinnerDepartment"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:paddingEnd="@dimen/size_10" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/size_10">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
 
-            <TextView
-                android:id="@+id/tv_address_view"
-                style="@style/text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/address" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
 
-            <TextView
-                android:id="@+id/tv_address_view_value"
-                style="@style/textValues"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/address" />
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tv_name_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/name" />
+
+                        <TextView
+                            android:id="@+id/tv_name_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/facility" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
+
+                        <TextView
+                            android:id="@+id/tv_appointment_time_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/appointment_time_str" />
+
+                        <TextView
+                            android:id="@+id/tv_appointment_time_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/appointment_time_str" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
+
+                        <TextView
+                            android:id="@+id/tv_appointment_status_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/appointment_status_str" />
+
+                        <TextView
+                            android:id="@+id/tv_appointment_status_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_10">
+
+                        <TextView
+                            android:id="@+id/tv_approved_by_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/approved_by" />
+
+                        <TextView
+                            android:id="@+id/tv_approved_by_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_05">
+
+                        <TextView
+                            android:id="@+id/tv_purpose_of_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/purpose_of_visit" />
+
+                        <EditText
+                            android:id="@+id/et_purpose_of_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/purpose_of_visit" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:elevation="@dimen/size_05"
+                    app:cardCornerRadius="@dimen/size_05">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size_05">
+
+                        <TextView
+                            android:id="@+id/tv_person_view"
+                            style="@style/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/person_to_visit" />
+
+                        <EditText
+                            android:id="@+id/et_person_view_value"
+                            style="@style/textValues"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/address" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rec_memberList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_05" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonCancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_20"
+                        android:layout_marginEnd="@dimen/size_20"
+                        android:layout_marginBottom="@dimen/size_20"
+                        android:layout_weight="1"
+                        android:background="@color/light_gray"
+                        android:elevation="@dimen/size_05"
+                        android:text="@string/tv_cancel"
+                        android:textColor="@color/light_black" />
+
+                    <Button
+                        android:id="@+id/buttonSubmit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_20"
+                        android:layout_marginBottom="@dimen/size_20"
+                        android:layout_weight="1"
+                        android:alpha=".7"
+                        android:background="@color/blue"
+                        android:elevation="@dimen/size_05"
+                        android:enabled="false"
+                        android:text="@string/save"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 </layout>

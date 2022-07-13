@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.certify.vendor.R
+import com.certify.vendor.data.AppointmentDataSource
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationBarView
@@ -26,7 +27,8 @@ class AppointmentActivity : AppCompatActivity() {
 
     private fun setClickListener() {
         floatingActionButton?.setOnClickListener {
-           // floatingActionButton?.isEnabled = false
+            floatingActionButton?.isEnabled = false
+            AppointmentDataSource.isSchedule = true
             startActivity(Intent(this, ScheduleActivity::class.java))
             ///     findNavController(R.id.nav_host_appointment).navigate(R.id.scheduleFragment)
         }
@@ -81,7 +83,7 @@ class AppointmentActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-     //   floatingActionButton?.isEnabled = true
+        floatingActionButton?.isEnabled = true
 
     }
 

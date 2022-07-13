@@ -1,6 +1,7 @@
 package com.certify.vendor.activity
 
 import android.app.Dialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -24,6 +25,7 @@ class LoginMainFragment : BaseFragment() {
     private lateinit var fragmentLoginBinding: FragmentLoginBinding
     private var loginViewModel: LoginViewModel? = null
     private var pDialog: Dialog? = null
+    private var sharedPreferences: SharedPreferences? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +50,7 @@ class LoginMainFragment : BaseFragment() {
     }
 
     private fun initView() {
+        sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         pDialog = Utils.ShowProgressDialog(requireContext())
         fragmentLoginBinding.userName.addTextChangedListener(loginTextWatcher)
         fragmentLoginBinding.incPassword.etPassword.addTextChangedListener(loginTextWatcher)
@@ -110,55 +113,32 @@ class LoginMainFragment : BaseFragment() {
     private fun showPass() {
         fragmentLoginBinding.incPassword.icPasswordShow.setVisibility(View.GONE)
         fragmentLoginBinding.incPassword.icPasswordHide.setVisibility(View.VISIBLE)
-        fragmentLoginBinding.incPassword.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
+        fragmentLoginBinding.incPassword.etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+        fragmentLoginBinding.incPassword.etPassword.setSelection(fragmentLoginBinding.incPassword.etPassword.text!!.length)
+
     }
 
     private fun hidePass() {
         fragmentLoginBinding.incPassword.icPasswordShow.setVisibility(View.VISIBLE)
         fragmentLoginBinding.incPassword.icPasswordHide.setVisibility(View.GONE)
-        fragmentLoginBinding.incPassword.etPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+        fragmentLoginBinding.incPassword.etPassword.setTransformationMethod(PasswordTransformationMethod.getInstance())
+        fragmentLoginBinding.incPassword.etPassword.setSelection(fragmentLoginBinding.incPassword.etPassword.text!!.length)
     }
 
     private fun setLoginDataListener() {
         loginViewModel?.signInLiveData?.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
             if (it) {
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.IS_LOGGEDIN, true
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.FIRST_NAME, LoginDataSource.loginData?.firstName
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.VENDOR_ID, LoginDataSource.loginData?.vendorId!!
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.USER_PROFILE_PIC, LoginDataSource.userProfilePicEncoded
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.BADGE_EXPIRY, LoginDataSource.loginData?.badgeExpiry
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.LAST_NAME, LoginDataSource.loginData?.lastName
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.BADGE_ID, LoginDataSource.loginData?.badgeId!!
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.VENDOR_COMPANY_NAME, LoginDataSource.loginData?.vendorCompanyName
-                )
-                AppSharedPreferences.writeSp(
-                    (AppSharedPreferences.getSharedPreferences(context)),
-                    Constants.USER_EMAIL, LoginDataSource.loginData?.userEmail
-                )
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.IS_LOGGEDIN, true)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.FIRST_NAME, LoginDataSource.loginData?.firstName)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.LAST_NAME, LoginDataSource.loginData?.lastName)
+
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.VENDOR_ID, LoginDataSource.loginData?.vendorId!!)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.USER_PROFILE_PIC, LoginDataSource.userProfilePicEncoded)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_EXPIRY, LoginDataSource.loginData?.badgeExpiry)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_ID, LoginDataSource.loginData?.badgeId!!)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.VENDOR_COMPANY_NAME, LoginDataSource.loginData?.vendorCompanyName)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.USER_EMAIL, LoginDataSource.loginData?.userEmail)
                 activity?.finish()
             } else {
                 if (loginViewModel?.responseMessage?.value!!.isNotEmpty()) {

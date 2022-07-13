@@ -84,10 +84,11 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
         textviewscheduleAppoinment = upcomingAppointView.findViewById(R.id.textview_scheduleAppoinment)
         swipeRefreshLayout = upcomingAppointView.findViewById(R.id.swipeContainer)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getAppointmentList(), "UpComing")
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getAppointmentList(), Constants.AppointmentTypes.UPCOMING.name)
         recyclerView?.adapter = adapter
         textviewscheduleAppoinment?.setOnClickListener {
             //   findNavController().navigate(R.id.scheduleFragment)
+            AppointmentDataSource.isSchedule = true
             startActivity(Intent(activity, ScheduleActivity::class.java))
         }
         swipeRefreshLayout?.setOnRefreshListener {
@@ -186,8 +187,11 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
     }
 
     override fun onAppointmentDetails(value: AppointmentData) {
-        //   AppointmentDataSource.setAppointmentData(value)
-        //   findNavController().navigate(R.id.appointmentViewFragment)
+        AppointmentDataSource.setAppointmentData(value)
+        AppointmentDataSource.isSchedule = false
+        AppointmentDataSource.appointmentType = Constants.AppointmentTypes.UPCOMING.name
+        startActivity(Intent(activity, ScheduleActivity::class.java))
+
     }
 
     fun updateAppointmentListener() {

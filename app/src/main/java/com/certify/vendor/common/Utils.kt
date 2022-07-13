@@ -1,6 +1,7 @@
 package com.certify.vendor.common
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.bluetooth.BluetoothAdapter
@@ -16,6 +17,7 @@ import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Window
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.certify.vendor.R
 import com.certify.vendor.activity.LoginActivity
@@ -273,7 +275,8 @@ class Utils {
             tv_cancel.setOnClickListener { d.dismiss() }
             d.show()
         }
-        fun basicAlert(context: Context?,str:String) {
+
+        fun basicAlert(context: Context?, str: String) {
             val dialogBuilder = AlertDialog.Builder(context)
             dialogBuilder.setMessage(str)
                 .setCancelable(false)
@@ -283,7 +286,8 @@ class Utils {
             val alert = dialogBuilder.create()
             alert.show()
         }
-        fun validateFacilityAddress(location : FacilityAddress?) : Boolean {
+
+        fun validateFacilityAddress(location: FacilityAddress?): Boolean {
             return (location?.address1.isNullOrEmpty() && location?.city.isNullOrEmpty() && location?.state.isNullOrEmpty()
                     && location?.zip.isNullOrEmpty())
         }
@@ -294,6 +298,20 @@ class Utils {
 
         fun convertPixelsToDp(px: Float, context: Context?): Float {
             return px / (context?.resources?.displayMetrics?.densityDpi?.toFloat()!! / DisplayMetrics.DENSITY_DEFAULT)
+        }
+
+        fun hideKeyboard(activity: Activity) {
+            try {
+                val view = activity.currentFocus
+                val methodManager =
+                    activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                methodManager.hideSoftInputFromWindow(
+                    view!!.windowToken,
+                    InputMethodManager.HIDE_NOT_ALWAYS
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.certify.vendor.activity
 
 import android.app.Dialog
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -19,6 +20,7 @@ import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentListAdapter
 import com.certify.vendor.api.response.AppointmentData
 import com.certify.vendor.callback.AppointmentCheckIn
+import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.data.AppSharedPreferences
 import com.certify.vendor.data.AppointmentDataSource
@@ -68,7 +70,7 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
         swipeRefreshLayoutExpired = expiredAppointmentView.findViewById(R.id.swipeContainer_post)
         tvNoOAppointment = expiredAppointmentView.findViewById(R.id.tv_no_appointment)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getExpiredAppointmentList(), "Expired")
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getExpiredAppointmentList(), Constants.AppointmentTypes.EXPIRED.name)
         recyclerView?.adapter = adapter
         swipeRefreshLayoutExpired?.setOnRefreshListener { appointmentViewModel.getExpiredAppointments() }
     }
@@ -102,7 +104,9 @@ class ExpiredAppointmentFragment : Fragment(), AppointmentCheckIn {
     }
 
     override fun onAppointmentDetails(value: AppointmentData) {
-       // AppointmentDataSource.setAppointmentData(value)
-       // findNavController().navigate(R.id.appointmentViewFragment)
+        AppointmentDataSource.setAppointmentData(value)
+        AppointmentDataSource.isSchedule = false
+        AppointmentDataSource.appointmentType = Constants.AppointmentTypes.EXPIRED.name
+        startActivity(Intent(activity, ScheduleActivity::class.java))
     }
 }

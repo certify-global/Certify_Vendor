@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.certify.vendor.R
 import com.certify.vendor.api.response.AppointmentData
 import com.certify.vendor.callback.AppointmentCheckIn
+import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.common.Utils.Companion.getDateValidation
 
@@ -69,9 +70,9 @@ class AppointmentListAdapter(
 
             appointmentLagenar.onAppointmentDetails(appointmentList.get(position))
         }
-        if (selectionType.equals("Expired")) {
+        if (selectionType.equals(Constants.AppointmentTypes.EXPIRED.name)) {
             readColor(holder)
-        } else if (selectionType.equals("Past")) {
+        } else if (selectionType.equals(Constants.AppointmentTypes.PAST.name)) {
             blueColor(holder)
         } else {
             when (appointmentList.get(position).statusFlag) {

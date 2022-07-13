@@ -31,4 +31,7 @@ interface ApiInterface {
     @POST("GetFacilityMembers")
     fun getFacilityMembers(@Body facilityMembersRequest: GetFacilityMembersRequest): Call<GetFacilityMembersResponse>
 
+    @POST("UpdateVendorAppointment")
+    fun updateVendorAppointment(@Body editVendorAppointmentRequest: EditVendorAppointmentRequest): Call<DataResponse>
+
 }

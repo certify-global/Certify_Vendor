@@ -40,8 +40,9 @@ class FacilityViewModel : BaseViewModel() {
     fun getOnSiteContact(facilityID: Int, memberName: String) {
 
         facilityRepository.getFacilityMembers(facilityID, memberName) { isSuccess, response ->
-            Log.i("WithLiveData Members = ",""+response)
+            Log.i("WithLiveData Members = ", "" + response)
             facilityMembersRequestWithLiveData.value = response
         }
     }
+
 }

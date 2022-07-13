@@ -27,14 +27,22 @@ class Constants {
 
 
     }
+
     enum class AppointmentStatus {
-        PENDING ,
-        APPROVED ,
-        DECLINED ,
+        PENDING,
+        APPROVED,
+        DECLINED,
         CANCELLED,
         CHECKEDIN,
         CHECKEDOUT,
         EXPIRED
+
+    }
+
+    enum class AppointmentTypes {
+        EXPIRED,
+        PAST,
+        UPCOMING
 
     }
 }
