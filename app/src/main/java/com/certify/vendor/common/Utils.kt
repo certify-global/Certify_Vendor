@@ -1,5 +1,6 @@
 package com.certify.vendor.common
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -8,6 +9,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -19,6 +21,8 @@ import android.util.Log
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.certify.vendor.R
 import com.certify.vendor.activity.LoginActivity
 import com.certify.vendor.api.response.FacilityAddress
@@ -37,7 +41,30 @@ class Utils {
 
     companion object {
         private val TAG = Utils::class.java.name
+        const val PERMISSION_REQUEST_CODE = 200
 
+        fun permissionCheck(context: Context?) {
+            if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED
+
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+                val permissionList = arrayOf(
+                    Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.BLUETOOTH_SCAN,
+                    Manifest.permission.BLUETOOTH_CONNECT,
+                    Manifest.permission.ACCESS_NETWORK_STATE
+                )
+                ActivityCompat.requestPermissions((context as Activity?)!!, permissionList, PERMISSION_REQUEST_CODE)
+            }
+        }
         fun encodeToBase64(data: String): String =
             Base64.encodeToString(data.toByteArray(), Base64.DEFAULT)
 
@@ -59,6 +86,18 @@ class Utils {
             return ""
         }
 
+        fun getDateExpired(inputData: String, format: String): String {
+            try {
+                val yyyyMMDD = inputData.split("T")
+                val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val date: Date? = simpleDateFormat.parse(yyyyMMDD.get(0))
+                val simpleDateFormat2 = SimpleDateFormat(format, Locale.getDefault())
+                return simpleDateFormat2.format(date)
+            } catch (e: Exception) {
+                Log.e(TAG, "getDate(inputData: String, format: String)" + e.message)
+            }
+            return ""
+        }
         fun getTime(inputData: String): String {
             try {
                 val simpleDateFormat =

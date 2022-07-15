@@ -136,6 +136,8 @@ class LoginMainFragment : BaseFragment() {
                 AppSharedPreferences.writeSp(sharedPreferences, Constants.VENDOR_ID, LoginDataSource.loginData?.vendorId!!)
                 AppSharedPreferences.writeSp(sharedPreferences, Constants.USER_PROFILE_PIC, LoginDataSource.userProfilePicEncoded)
                 AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_EXPIRY, LoginDataSource.loginData?.badgeExpiry)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_EXPIRY_MM_DD_YY, LoginDataSource.loginData?.badgeExpiry?.let { it1 -> Utils.getDateExpired(it1,"MM/dd/YYYY") })
+
                 AppSharedPreferences.writeSp(sharedPreferences, Constants.BADGE_ID, LoginDataSource.loginData?.badgeId!!)
                 AppSharedPreferences.writeSp(sharedPreferences, Constants.VENDOR_COMPANY_NAME, LoginDataSource.loginData?.vendorCompanyName)
                 AppSharedPreferences.writeSp(sharedPreferences, Constants.USER_EMAIL, LoginDataSource.loginData?.userEmail)

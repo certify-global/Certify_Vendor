@@ -318,16 +318,17 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             } else submitLayoutBinding?.recMemberList?.visibility = View.GONE
 
         }
-        scheduleAppointmentViewModel?.scheduleAppointmentLiveData?.observe(viewLifecycleOwner) {
+        scheduleAppointmentViewModel?.scheduleAppointmentResponseLiveData?.observe(viewLifecycleOwner) {
             pDialog?.dismiss()
-            if (it) {
-                launchSuccesPage();
-            } else {
-                Toast.makeText(
-                    requireContext(), "Something went wrong with schedule appoinment",
-                    Toast.LENGTH_SHORT
-                ).show()
+            if (it == null) {
+                Toast.makeText(requireContext(), "Something went wrong with schedule appoinment", Toast.LENGTH_SHORT).show()
+                return@observe
             }
+            if (it.responseCode == 1) {
+                launchSuccesPage();
+            } else if (it.responseMessage.isNullOrEmpty()) {
+                Toast.makeText(requireContext(), "Something went wrong with schedule appoinment", Toast.LENGTH_SHORT).show()
+            } else Toast.makeText(requireContext(), it.responseMessage, Toast.LENGTH_SHORT).show()
         }
     }
 

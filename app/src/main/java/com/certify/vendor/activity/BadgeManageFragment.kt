@@ -69,7 +69,7 @@ class BadgeManageFragment : Fragment() {
         badgeManageFragmentBinding.badgeStatus.text = getString(R.string.active)
         badgeManageFragmentBinding.badgeCompanyName.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
         badgeManageFragmentBinding.badgeExpires.text =
-            String.format(getString(R.string.expires_on), AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_DATE))
+            String.format(getString(R.string.expires), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY_MM_DD_YY))
     }
 
     private fun setFirmwareInfo() {

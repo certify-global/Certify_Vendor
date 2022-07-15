@@ -1,23 +1,14 @@
 package com.certify.vendor.activity
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
-import android.location.Criteria
-import android.location.Geocoder
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.certify.vendor.R
 import com.certify.vendor.adapter.AppointmentTypeAdapter
@@ -92,81 +83,6 @@ class AppointmentListFragment : BaseFragment() {
 
 
     }
-
-
-
-        private fun setBadgeUI(statDate: String, endDate: String, appointmentStatus: Int, vendorGuid: String) = try {
-        val badgeUILayout: ConstraintLayout = appointView.findViewById(R.id.badge_screen)
-        val badgeLayout = appointView.findViewById<LinearLayout>(R.id.rl_badge_status)
-        val userImage: ImageView? = appointView.findViewById(R.id.img_user_badge)
-        val QRCodeImage: ImageView? = appointView.findViewById(R.id.img_qa_badge)
-        val companyName: TextView? = appointView.findViewById(R.id.tv_company_name)
-        val badgeId: TextView? = appointView.findViewById(R.id.tv_id_badge)
-        val userName: TextView? = appointView.findViewById(R.id.tv_user_name_badge)
-        val validity: TextView? = appointView.findViewById(R.id.tv_expires_badge)
-        val timeStamp: TextView? = appointView.findViewById(R.id.tv_appt_badge)
-        //val inactive: ImageView? = appointView.findViewById(R.id.img_inactive_badge)
-        if (appointmentStatus == 3) {
-            //inactive?.visibility = View.VISIBLE
-            badgeLayout.visibility = View.GONE
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, "")
-
-        } else {
-            //inactive?.visibility = View.GONE
-            badgeLayout.visibility = View.VISIBLE
-            val userPicStr = AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
-            if (userPicStr.isNotEmpty()) userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
-            badgeId?.text = String.format("%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_END_TIME, endDate)
-            QRCodeImage?.setImageBitmap(Utils.QRCodeGenerator(AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_GUID), 150, 150))
-
-            companyName?.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
-            userName?.text = String.format(
-                getString(R.string.badge_user_name),
-                AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
-                AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
-            )
-            val dateStr = endDate.let { Utils.getDate(it, "MM/dd/yyyy") }
-            validity?.text = String.format(getString(R.string.expires), dateStr)
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_DATE, dateStr)
-            val apptTime = Utils.getTime(statDate) + "-" + Utils.getTime(endDate)
-            val timeStampStr = context?.getString(R.string.appointment_status)?.let {
-                String.format(it, apptTime)
-            }
-            timeStamp?.text = timeStampStr
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_TIME, apptTime)
-        }
-        BadgeController.getInstance().convertUIToImage(badgeUILayout, context)
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-
-
-    @SuppressLint("MissingPermission")
-    fun getUserLocation() {
-        val lm = activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val criteria = Criteria()
-        val bestProvider = lm.getBestProvider(criteria, false)
-        if (bestProvider != null) {
-            val location = lm.getLastKnownLocation(bestProvider!!)
-            if (location == null) {
-                //   Toast.makeText(activity, "Location Not found", Toast.LENGTH_LONG).show()
-            } else {
-                val geocoder = Geocoder(activity)
-                try {
-                    val user = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    userLocation?.latitude = user.get(0).latitude;
-                    userLocation?.longitude = user.get(0).longitude;
-                    Log.i("getUserLocation", "" + user.get(0).latitude + "," + user.get(0).longitude)
-                    userLocation?.let { it1 -> AppointmentController.getInstance()?.setAppointmentLocation(it1)
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
     private fun setOnBackPress() {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override

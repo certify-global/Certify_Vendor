@@ -19,6 +19,7 @@ class Constants {
         val APPOINT_END_TIME = "appoint_end_time"
         val BADGE_ID = "BadgeId"
         val BADGE_EXPIRY = "BadgeExpiry"
+        val BADGE_EXPIRY_MM_DD_YY = "BadgeExpiry_mm_dd_yy"
         val BADGE_FIRMWARE_VERSION = "BadgeFirmwareVersion"
         val BADGE_FW_UPDATE_TIME = "BadgeFWUpdateTime"
         val BADGE_MAC_ADDRESS = "BadgeMacAddress"

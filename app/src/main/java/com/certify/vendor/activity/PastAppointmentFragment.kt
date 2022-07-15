@@ -55,19 +55,20 @@ class PastAppointmentFragment : Fragment(), AppointmentCheckIn {
             .get(AppointmentViewModel::class.java)
         pDialog?.show()
         appointmentViewModel.init(context)
-        sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
+
         appointmentViewModel.getPastAppointments()
         setAppointmentListener()
 
     }
 
     private fun initView() {
+        sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         pDialog = Utils.ShowProgressDialog(requireContext())
         recyclerView = upcomingAppointView.findViewById(R.id.post_expired_recycler_view)
         swipeRefreshLayoutPost = upcomingAppointView.findViewById(R.id.swipeContainer_post)
         tvNoOAppointment = upcomingAppointView.findViewById(R.id.tv_no_appointment)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getPostAppointmentList(), Constants.AppointmentTypes.PAST.name)
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getPostAppointmentList(), Constants.AppointmentTypes.PAST.name, sharedPreferences!!)
         recyclerView?.adapter = adapter
         swipeRefreshLayoutPost?.setOnRefreshListener {
             appointmentViewModel.getPastAppointments()

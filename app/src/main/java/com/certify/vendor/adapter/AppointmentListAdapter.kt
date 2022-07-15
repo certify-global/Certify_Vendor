@@ -1,6 +1,7 @@
 package com.certify.vendor.adapter
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +16,14 @@ import com.certify.vendor.callback.AppointmentCheckIn
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
 import com.certify.vendor.common.Utils.Companion.getDateValidation
+import com.certify.vendor.data.AppSharedPreferences
 
 class AppointmentListAdapter(
     var context: Context,
     var appointmentLagenar: AppointmentCheckIn,
     var appointmentList: List<AppointmentData>,
-    var selectionType: String
+    var selectionType: String,
+    var sharedPreferences: SharedPreferences
 ) : RecyclerView.Adapter<AppointmentListAdapter.AppointmentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
@@ -50,6 +53,9 @@ class AppointmentListAdapter(
                 else holder.checkInOut.visibility = View.GONE
                 if (appointmentList[position].statusFlag == 1) holder.checkInOut.text = context?.getString(R.string.check_out)
                 else holder.checkInOut.text = context?.getString(R.string.check_in)
+                val apptTime = Utils.getTime(appointmentList[position].start) + "-" + Utils.getTime(appointmentList[position].end)
+                AppSharedPreferences.writeSp(sharedPreferences, Constants.APPOINT_TIME, apptTime)
+
             } else {
                 holder.checkInOut.visibility = View.GONE
             }

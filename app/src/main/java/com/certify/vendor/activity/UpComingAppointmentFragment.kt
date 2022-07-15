@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -70,7 +69,6 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
         if (!pDialog!!.isShowing)
             pDialog?.show()
         appointmentViewModel.init(context)
-        sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         appointmentViewModel.getAppointments(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
         setAppointmentListener()
         setBadgeListener()
@@ -78,13 +76,14 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
     }
 
     private fun initView() {
+        sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         pDialog = Utils.ShowProgressDialog(requireContext())
         recyclerView = upcomingAppointView.findViewById(R.id.upcoming_recycler_view)
         llNoAppointment = upcomingAppointView.findViewById(R.id.ll_no_appointment)
         textviewscheduleAppoinment = upcomingAppointView.findViewById(R.id.textview_scheduleAppoinment)
         swipeRefreshLayout = upcomingAppointView.findViewById(R.id.swipeContainer)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getAppointmentList(), Constants.AppointmentTypes.UPCOMING.name)
+        adapter = AppointmentListAdapter(requireContext(), this, AppointmentDataSource.getAppointmentList(), Constants.AppointmentTypes.UPCOMING.name, sharedPreferences!!)
         recyclerView?.adapter = adapter
         textviewscheduleAppoinment?.setOnClickListener {
             //   findNavController().navigate(R.id.scheduleFragment)
@@ -153,14 +152,14 @@ class UpComingAppointmentFragment : Fragment(), AppointmentCheckIn {
                 AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
             )
             val dateStr = endDate.let { Utils.getDate(it, "MM/dd/yyyy") }
-            validity?.text = String.format(getString(R.string.expires), dateStr)
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_DATE, dateStr)
+            validity?.text = String.format(getString(R.string.expires), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY_MM_DD_YY))
+            AppSharedPreferences.writeSp(sharedPreferences, Constants.APPOINT_DATE, dateStr)
             val apptTime = Utils.getTime(statDate) + "-" + Utils.getTime(endDate)
             val timeStampStr = context?.getString(R.string.appointment_status)?.let {
                 String.format(it, apptTime)
             }
             timeStamp?.text = timeStampStr
-            AppSharedPreferences.writeSp((AppSharedPreferences.getSharedPreferences(context)), Constants.APPOINT_TIME, apptTime)
+            AppSharedPreferences.writeSp(sharedPreferences, Constants.APPOINT_TIME, apptTime)
         }
         BadgeController.getInstance().convertUIToImage(badgeUILayout, context)
     } catch (e: Exception) {
