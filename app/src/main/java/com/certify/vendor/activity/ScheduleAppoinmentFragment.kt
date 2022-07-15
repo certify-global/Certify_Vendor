@@ -3,7 +3,6 @@ package com.certify.vendor.activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,7 +25,6 @@ import com.certify.vendor.api.response.DepartmentforfacilityList
 import com.certify.vendor.api.response.FacilityData
 import com.certify.vendor.api.response.LocationforfacilityList
 import com.certify.vendor.api.response.ResponseDataMember
-import com.certify.vendor.badge.BadgeController
 import com.certify.vendor.callback.ItemOnClickCallback
 import com.certify.vendor.common.Constants
 import com.certify.vendor.common.Utils
@@ -36,7 +34,6 @@ import com.certify.vendor.databinding.*
 import com.certify.vendor.model.FacilityViewModel
 import com.certify.vendor.model.ScheduleAppointmentViewModel
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
@@ -71,13 +68,15 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentBinding = DataBindingUtil.inflate(inflater, R.layout.schedule_appoinment_layout, container, false)
+        fragmentBinding =
+            DataBindingUtil.inflate(inflater, R.layout.schedule_appoinment_layout, container, false)
         fragmentMainLayoutBinding = fragmentBinding?.facilityLayout
         calendarLayoutBinding = fragmentBinding?.facilityCalendarLayout
         submitLayoutBinding = fragmentBinding?.appoinmentSubmitLayout
         successLayoutBinding = fragmentBinding?.appoinmentSuccessLayout
         facilityViewModel = ViewModelProvider(this).get(FacilityViewModel::class.java)
-        scheduleAppointmentViewModel = ViewModelProvider(this).get(ScheduleAppointmentViewModel::class.java)
+        scheduleAppointmentViewModel =
+            ViewModelProvider(this).get(ScheduleAppointmentViewModel::class.java)
         // baseViewModel = facilityViewModel
         //   baseViewModel = scheduleAppointmentViewModel
         return fragmentBinding?.root?.rootView
@@ -85,10 +84,16 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        requireActivity().getWindow()
+            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initView();
         pDialog?.show()
-        facilityViewModel?.facility(AppSharedPreferences.readInt(sharedPreferences, Constants.VENDOR_ID))
+        facilityViewModel?.facility(
+            AppSharedPreferences.readInt(
+                sharedPreferences,
+                Constants.VENDOR_ID
+            )
+        )
         setOnClickListener()
         setFacilityListener()
         setOnBackPress()
@@ -104,7 +109,12 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         endTime = Utils.getCurrentTime24()
         pDialog = Utils.ShowProgressDialog(requireContext())
         submitLayoutBinding?.recMemberList?.layoutManager = LinearLayoutManager(context)
-        submitLayoutBinding?.recMemberList?.addItemDecoration(DividerItemDecoration(submitLayoutBinding?.recMemberList?.context, DividerItemDecoration.VERTICAL))
+        submitLayoutBinding?.recMemberList?.addItemDecoration(
+            DividerItemDecoration(
+                submitLayoutBinding?.recMemberList?.context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         adapterMemberList = MemberListAdapter(requireContext(), this, memberList!!)
         submitLayoutBinding?.recMemberList?.adapter = adapterMemberList
 //        var mBottomNavigationView:BottomNavigationView = (requireActivity().findViewById<View>(R.id.navigation_menu_view) as BottomNavigationView)
@@ -117,9 +127,19 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             mTimePicker = TimePickerDialog(
                 requireContext(),
                 { view, hourOfDay, minute ->
-                    val minute = if (minute < 10) "0$minute" else minute.toString()
-                    startTime = String.format("%d", hourOfDay) + ":" + minute
-                    calendarLayoutBinding?.textClockStart?.setText(Utils.getTime24to12(startTime))
+                    val c = Calendar.getInstance()
+                    if (hourOfDay >= c.get(Calendar.HOUR_OF_DAY) && minute >= c.get(Calendar.MINUTE)) {
+                        val minute = if (minute < 10) "0$minute" else minute.toString()
+                        startTime = String.format("%d", hourOfDay) + ":" + minute
+                        calendarLayoutBinding?.textClockStart?.setText(Utils.getTime24to12(startTime))
+                    } else {
+                        Toast.makeText(
+                            context,
+                            context?.getString(R.string.invalid_time),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
                 }, hour, minute, false
             )
             mTimePicker?.show()
@@ -128,9 +148,18 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             mTimePicker = TimePickerDialog(
                 requireContext(),
                 { view, hourOfDay, minute ->
-                    val minute = if (minute < 10) "0$minute" else minute.toString()
-                    endTime = String.format("%d", hourOfDay) + ":" + minute
-                    calendarLayoutBinding?.textClockEnd?.setText(Utils.getTime24to12(endTime))
+                    val c = Calendar.getInstance()
+                    if (hourOfDay >= c.get(Calendar.HOUR_OF_DAY) && minute >= c.get(Calendar.MINUTE)) {
+                        val minute = if (minute < 10) "0$minute" else minute.toString()
+                        endTime = String.format("%d", hourOfDay) + ":" + minute
+                        calendarLayoutBinding?.textClockEnd?.setText(Utils.getTime24to12(endTime))
+                    } else {
+                        Toast.makeText(
+                            context,
+                            context?.getString(R.string.invalid_time),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }, hour, minute, false
             )
             mTimePicker?.show()
@@ -151,7 +180,11 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             if (Utils.isTimeBigger(startTime, endTime)) {
                 launchAppoinmentSchedulePage()
             } else {
-                Toast.makeText(requireContext(), "Start time should be greater that end time", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Start time should be greater than the system Time",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -204,7 +237,12 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         fragmentMainLayoutBinding?.spinnerFacility?.adapter = adapter
         fragmentMainLayoutBinding?.spinnerFacility?.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 FacilityDataSource.addLocationForFacilityList(ArrayList())
                 FacilityDataSource.addDepartmentList(ArrayList())
                 facilityData = parent.getSelectedItem() as FacilityData
@@ -225,11 +263,17 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
 
     private fun initSpinnerLocation() {
         val customObjects = FacilityDataSource.getLocationForFacilityList()
-        val adapterLoc = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
+        val adapterLoc =
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
         fragmentMainLayoutBinding?.spinnerLocation?.adapter = adapterLoc
         fragmentMainLayoutBinding?.spinnerLocation?.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 if (position == 0) return
                 val temp = parent.getSelectedItem() as LocationforfacilityList
                 locationId = temp.locationId
@@ -243,11 +287,17 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
 
     private fun initSpinnerDepartment() {
         val customObjects = FacilityDataSource.getDepartmentList()
-        val adapterDepartment = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
+        val adapterDepartment =
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, customObjects)
         fragmentMainLayoutBinding?.spinnerDepartment?.adapter = adapterDepartment
         fragmentMainLayoutBinding?.spinnerDepartment?.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
                 if (position == 0) return
                 val departmentTemp = parent.getSelectedItem() as DepartmentforfacilityList
                 departmentId = departmentTemp.departmentId
@@ -318,16 +368,26 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             } else submitLayoutBinding?.recMemberList?.visibility = View.GONE
 
         }
-        scheduleAppointmentViewModel?.scheduleAppointmentResponseLiveData?.observe(viewLifecycleOwner) {
+        scheduleAppointmentViewModel?.scheduleAppointmentResponseLiveData?.observe(
+            viewLifecycleOwner
+        ) {
             pDialog?.dismiss()
             if (it == null) {
-                Toast.makeText(requireContext(), "Something went wrong with schedule appoinment", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Something went wrong with schedule appoinment",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@observe
             }
             if (it.responseCode == 1) {
                 launchSuccesPage();
             } else if (it.responseMessage.isNullOrEmpty()) {
-                Toast.makeText(requireContext(), "Something went wrong with schedule appoinment", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Something went wrong with schedule appoinment",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else Toast.makeText(requireContext(), it.responseMessage, Toast.LENGTH_SHORT).show()
         }
     }
@@ -350,8 +410,10 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
         submitLayoutBinding?.appointmentDate?.text = Utils.getmonthstring(selectedDate)
         submitLayoutBinding?.appointmentTime?.text = startTime + "-" + endTime
-        submitLayoutBinding?.appointmentPlace?.text = resources.getString(R.string.appoinment) + " " + facilityData?.facilityName
-        submitLayoutBinding?.appointmentLocation?.text = facilityData?.facilityName + "," + facilityData?.streetAddress + "," + facilityData?.city + "," + facilityData?.state + " " + facilityData?.zip
+        submitLayoutBinding?.appointmentPlace?.text =
+            resources.getString(R.string.appoinment) + " " + facilityData?.facilityName
+        submitLayoutBinding?.appointmentLocation?.text =
+            facilityData?.facilityName + "," + facilityData?.streetAddress + "," + facilityData?.city + "," + facilityData?.state + " " + facilityData?.zip
 
     }
 
@@ -399,12 +461,14 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
     }
 
     private fun setOnBackPress() {
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override
-            fun handleOnBackPressed() {
-                activity?.finish()
-            }
-        })
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override
+                fun handleOnBackPressed() {
+                    activity?.finish()
+                }
+            })
     }
 
     override fun onItemOnClickCallBack(positionValue: Int) {
