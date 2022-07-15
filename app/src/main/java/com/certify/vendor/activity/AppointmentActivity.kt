@@ -3,6 +3,7 @@ package com.certify.vendor.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -21,7 +22,7 @@ class AppointmentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_appointment)
-        Utils.permissionCheck(this)
+            Utils.permissionCheckAllS(this)
         initView()
         setClickListener()
     }
@@ -43,15 +44,6 @@ class AppointmentActivity : AppCompatActivity() {
         super.onStart()
         findNavController(R.id.nav_host_appointment).navigate(R.id.appointmentListFragment)
         setNavigationMenu()
-    }
-
-    private fun checkPermission() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1000)
-        }
-        if (checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(arrayOf(Manifest.permission.BLUETOOTH_SCAN), 1000)
-        }
     }
 
     private fun setNavigationMenu() {

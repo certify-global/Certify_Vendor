@@ -1,6 +1,9 @@
 package com.certify.vendor.activity
 
+import android.Manifest
+import android.app.Activity
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,10 +30,10 @@ import com.certify.vendor.model.BadgeViewModel
 class BadgeFragment : Fragment() {
 
     private val TAG = BadgeFragment::class.java.name
-    private lateinit var badgeFragmentBinding : FragmentBadgeBinding
-    private var badgeViewModel : BadgeViewModel? = null
+    private lateinit var badgeFragmentBinding: FragmentBadgeBinding
+    private var badgeViewModel: BadgeViewModel? = null
     private var sharedPreferences: SharedPreferences? = null
-    private var container : ViewGroup? = null
+    private var container: ViewGroup? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,17 +57,27 @@ class BadgeFragment : Fragment() {
             setUserProfile()
             setQrCodeImage()
             setAppointmentStatus()
-            setBadgeStatus()
+            Utils.enableBluetooth()
+            if(Utils.permissionCheckBluetooth(context))
+                setBadgeStatus()
+            else {
+                val permissionList = arrayOf(Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT)
+                ActivityCompat.requestPermissions((context as Activity?)!!, permissionList, Utils.PERMISSION_REQUEST_CODE)
+            }
             setOnBackPress()
         } catch (e: Exception) {
-            Log.e(TAG, "Exception in setting the badge UI"+e.message)
+            Log.e(TAG, "Exception in setting the badge UI" + e.message)
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d (TAG, "onResume ")
-        onBadgeConnectionStatus()
+        try {
+            onBadgeConnectionStatus()
+        } catch (e: Exception) {
+            Log.e(TAG, "onResume" + e.message)
+
+        }
     }
 
     override fun onDestroy() {
@@ -76,22 +90,11 @@ class BadgeFragment : Fragment() {
             AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
         if (userPicStr.isNotEmpty())
             badgeFragmentBinding.badgeUserImage.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
-
-        badgeFragmentBinding.badgeUserName.text = String.format(
-            getString(R.string.badge_user_name),
-            AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME),
-            AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME)
-        )
-
-        badgeFragmentBinding.badgeId.text = String.format(
-            "%s%s",
-            getString(R.string.id),
-            AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID)
-        )
+        badgeFragmentBinding.badgeUserName.text = String.format(getString(R.string.badge_user_name), AppSharedPreferences.readString(sharedPreferences, Constants.FIRST_NAME), AppSharedPreferences.readString(sharedPreferences, Constants.LAST_NAME))
+        badgeFragmentBinding.badgeId.text = String.format("%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
         badgeFragmentBinding.badgeStatus.text = getString(R.string.active)
         badgeFragmentBinding.badgeCompanyName.text = AppSharedPreferences.readString(sharedPreferences, Constants.VENDOR_COMPANY_NAME)
-        badgeFragmentBinding.badgeExpires.text =
-            String.format(getString(R.string.expires), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY_MM_DD_YY))
+        badgeFragmentBinding.badgeExpires.text = String.format(getString(R.string.expires), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_EXPIRY_MM_DD_YY))
     }
 
     private fun setQrCodeImage() {
@@ -102,8 +105,10 @@ class BadgeFragment : Fragment() {
     }
 
     private fun setAppointmentStatus() {
-        badgeFragmentBinding.badgeAppt.text =  String.format(getString(R.string.appt),
-            AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_TIME))
+        badgeFragmentBinding.badgeAppt.text = String.format(
+            getString(R.string.appt),
+            AppSharedPreferences.readString(sharedPreferences, Constants.APPOINT_TIME)
+        )
     }
 
     private fun setBadgeStatus() {
@@ -120,17 +125,18 @@ class BadgeFragment : Fragment() {
 
     private fun onBadgeConnectionStatus() {
         try {
+          //  if (!Utils.permissionCheckBluetooth(context))
             onBadgeConnectionStatusUpdate(BadgeController.getInstance().connectionState.value)
             badgeViewModel?.badgeConnectionStatus?.value = BadgeController.BadgeConnectionState.NOT_CONNECTED.value
             badgeViewModel?.badgeConnectionStatus?.observe(viewLifecycleOwner) {
                 onBadgeConnectionStatusUpdate(it)
             }
-        }catch (e:Exception){
-            Log.e(TAG,"onBadgeConnectionStatus "+e.message)
+        } catch (e: Exception) {
+            Log.e(TAG, "onBadgeConnectionStatus " + e.message)
         }
     }
 
-    private fun onBadgeConnectionStatusUpdate(connectionStatus : Int) {
+    private fun onBadgeConnectionStatusUpdate(connectionStatus: Int) {
         when (connectionStatus) {
             BadgeController.BadgeConnectionState.CONNECTED.value -> {
                 badgeFragmentBinding.badgeConnectionImage.setImageResource(R.drawable.ic_badge_connected)
@@ -146,7 +152,7 @@ class BadgeFragment : Fragment() {
         }
     }
 
-    private fun onGetBattery(batteryLevel : Int) {
+    private fun onGetBattery(batteryLevel: Int) {
         badgeFragmentBinding.batteryStatusLayout.visibility = View.VISIBLE
 
         when (batteryLevel) {
@@ -183,18 +189,22 @@ class BadgeFragment : Fragment() {
     }
 
     private fun setBadgeBattery() {
-        val batteryLevel = sharedPreferences?.getInt(Constants.BADGE_BATTERY_STATUS, -1)
-        if (batteryLevel == -1) {
-            badgeViewModel?.getBattery()
-            badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
-                onGetBattery(it)
-            }
-        } else {
-            if (!BadgeController.getInstance().isBadgeDisconnected) {
-                batteryLevel?.let { onGetBattery(it) }
+        try {
+            val batteryLevel = sharedPreferences?.getInt(Constants.BADGE_BATTERY_STATUS, -1)
+            if (batteryLevel == -1) {
+                badgeViewModel?.getBattery()
+                badgeViewModel?.batteryLevel?.observe(viewLifecycleOwner) {
+                    onGetBattery(it)
+                }
             } else {
-                onGetBattery(batteryLevel!!)
+                if (!BadgeController.getInstance().isBadgeDisconnected) {
+                    batteryLevel?.let { onGetBattery(it) }
+                } else {
+                    onGetBattery(batteryLevel!!)
+                }
             }
+        } catch (e: Exception) {
+
         }
 
     }
@@ -208,13 +218,11 @@ class BadgeFragment : Fragment() {
         val userName: TextView? = view?.findViewById(R.id.tv_user_name_badge)
         val validity: TextView? = view?.findViewById(R.id.tv_expires_badge)
         val apptTime: TextView? = view?.findViewById(R.id.tv_appt_badge)
-
         apptTime?.visibility = View.GONE
         validity?.visibility = View.GONE
         val userPicStr = AppSharedPreferences.readString(sharedPreferences, Constants.USER_PROFILE_PIC)
         if (userPicStr.isNotEmpty()) userImage?.setImageBitmap(Utils.decodeBase64ToImage(userPicStr))
-        badgeId?.text = String.format(
-            "%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
+        badgeId?.text = String.format("%s%s", getString(R.string.id), AppSharedPreferences.readString(sharedPreferences, Constants.BADGE_ID))
 
         val vendorGuid = sharedPreferences?.getString(Constants.VENDOR_GUID, "")
         if (vendorGuid?.isNotEmpty() == true) {
@@ -250,5 +258,16 @@ class BadgeFragment : Fragment() {
                 activity?.finish()
             }
         })
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var isGrant = false
+        for (item in grantResults.iterator()) {
+            Log.i(TAG, "onRequestPermissionsResult -> item = " + item)
+            isGrant = item == 200
+        }
+        if (isGrant)
+            setBadgeStatus()
     }
 }

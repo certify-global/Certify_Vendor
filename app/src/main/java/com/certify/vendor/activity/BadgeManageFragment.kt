@@ -24,8 +24,8 @@ import com.certify.vendor.model.BadgeViewModel
 class BadgeManageFragment : Fragment() {
 
     private val TAG = BadgeManageFragment::class.java.name
-    private lateinit var badgeManageFragmentBinding : FragmentManageBadgeBinding
-    private var badgeViewModel : BadgeViewModel? = null
+    private lateinit var badgeManageFragmentBinding: FragmentManageBadgeBinding
+    private var badgeViewModel: BadgeViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +37,7 @@ class BadgeManageFragment : Fragment() {
             lifecycleOwner = viewLifecycleOwner
             viewmodel = badgeViewModel
         }
+        Utils.enableBluetooth()
         badgeViewModel = ViewModelProvider(this).get(BadgeViewModel::class.java)
         return badgeManageFragmentBinding.root
     }
@@ -74,17 +75,22 @@ class BadgeManageFragment : Fragment() {
 
     private fun setFirmwareInfo() {
         badgeViewModel?.init(this.context)
+
         val sharedPreferences = AppSharedPreferences.getSharedPreferences(this.context)
-        badgeManageFragmentBinding.firmwareVersion.text = String.format(getString(R.string.firmware_version),
-                                                                        sharedPreferences?.getString(Constants.BADGE_FIRMWARE_VERSION,
-                                                                        BadgeFirmwareUpdate.FIRMWARE_VERSION1))
+        badgeManageFragmentBinding.firmwareVersion.text = String.format(getString(R.string.firmware_version), sharedPreferences?.getString(Constants.BADGE_FIRMWARE_VERSION, BadgeFirmwareUpdate.FIRMWARE_VERSION1))
         if (badgeViewModel?.isBadgeFirmwareUpdateToDate(this.context) == true) {
             badgeManageFragmentBinding.firmwareUpdateAvailable.text =
                 getString(R.string.firmware_upto_date)
             badgeManageFragmentBinding.firmwareUpdate.isEnabled = false
             badgeManageFragmentBinding.firmwareUpdate.setBackgroundColor(ContextCompat.getColor(this.requireContext(), R.color.gray))
         } else {
-            badgeManageFragmentBinding.firmwareUpdate.isEnabled = true
+            if (Utils.permissionCheckBluetooth(context)) {
+                badgeManageFragmentBinding.firmwareUpdate.isEnabled = true
+                badgeManageFragmentBinding.firmwareUpdate.alpha = 1f
+            } else {
+                badgeManageFragmentBinding.firmwareUpdate.isEnabled = false
+                badgeManageFragmentBinding.firmwareUpdate.alpha = .5f
+            }
             badgeManageFragmentBinding.firmwareUpdateAvailable.text =
                 getString(R.string.new_firmware_update_available)
         }
