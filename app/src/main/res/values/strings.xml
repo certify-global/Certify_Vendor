@@ -140,6 +140,7 @@
     <string name="person_to_visit">Person to visit:</string>
     <string name="name">Name:</string>
     <string name="save">Save</string>
+    <string name="invalid_time">Please select the future time</string>
 
 
 </resources>
