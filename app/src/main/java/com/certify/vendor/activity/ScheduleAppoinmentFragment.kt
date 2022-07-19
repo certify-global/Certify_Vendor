@@ -147,7 +147,6 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             mTimePicker = TimePickerDialog(
                 requireContext(),
                 { view, hourOfDay, minute ->
-                    val c = Calendar.getInstance()
                     if (hourOfDay >=  mcurrentTime.get(Calendar.HOUR_OF_DAY) && minute >= mcurrentTime.get(Calendar.MINUTE)) {
                         val minute = if (minute < 10) "0$minute" else minute.toString()
                         endTime = String.format("%d", hourOfDay) + ":" + minute
