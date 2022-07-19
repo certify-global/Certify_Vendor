@@ -127,8 +127,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             mTimePicker = TimePickerDialog(
                 requireContext(),
                 { view, hourOfDay, minute ->
-                    val c = Calendar.getInstance()
-                    if (hourOfDay >= c.get(Calendar.HOUR_OF_DAY) && minute >= c.get(Calendar.MINUTE)) {
+                    if (hourOfDay >=  mcurrentTime.get(Calendar.HOUR_OF_DAY) && minute >= mcurrentTime.get(Calendar.MINUTE)) {
                         val minute = if (minute < 10) "0$minute" else minute.toString()
                         startTime = String.format("%d", hourOfDay) + ":" + minute
                         calendarLayoutBinding?.textClockStart?.setText(Utils.getTime24to12(startTime))
@@ -149,7 +148,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
                 requireContext(),
                 { view, hourOfDay, minute ->
                     val c = Calendar.getInstance()
-                    if (hourOfDay >= c.get(Calendar.HOUR_OF_DAY) && minute >= c.get(Calendar.MINUTE)) {
+                    if (hourOfDay >=  mcurrentTime.get(Calendar.HOUR_OF_DAY) && minute >= mcurrentTime.get(Calendar.MINUTE)) {
                         val minute = if (minute < 10) "0$minute" else minute.toString()
                         endTime = String.format("%d", hourOfDay) + ":" + minute
                         calendarLayoutBinding?.textClockEnd?.setText(Utils.getTime24to12(endTime))
