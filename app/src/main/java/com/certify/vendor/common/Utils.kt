@@ -15,14 +15,12 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.util.Base64
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.certify.vendor.R
@@ -36,6 +34,7 @@ import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -184,7 +183,7 @@ class Utils {
         fun getDateCompareEndDate(endDate: String): Boolean {
             try {
                 if (endDate.isEmpty()) return true;
-                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val endDateTime = format.parse(endDate)
                 val currentDateTime = Date(System.currentTimeMillis())
                 return endDateTime.time < currentDateTime.time
@@ -260,6 +259,22 @@ class Utils {
             return ""
         }
 
+        fun getTime12to24(inputData: String): String {
+            try {
+                try {
+                    val _24HourSDF = SimpleDateFormat("HH:mm")
+                    val _12HourSDF = SimpleDateFormat("hh:mm a")
+                    val _12HourDt = _12HourSDF.parse(inputData)
+                    return _24HourSDF.format(_12HourDt)
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in parsing the time " + e.message)
+            }
+            return ""
+        }
+
         fun getCurrentTime24(): String {
             val currentTime: String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
             return currentTime;
@@ -269,6 +284,15 @@ class Utils {
             val currentTime: String =
                 SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
             return currentTime;
+        }
+        fun getCurrentTimeIncrement(extraMinutes:Int): String {
+            val df = SimpleDateFormat("hh:mm a")
+            val d = df.parse(getCurrentTime())
+            val cal = Calendar.getInstance()
+            cal.time = d
+            cal.add(Calendar.MINUTE, extraMinutes)
+            val newTime = df.format(cal.time)
+            return newTime.toString();
         }
 
         fun getCurrentDate(): String {
@@ -395,6 +419,23 @@ class Utils {
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
+        }
+
+        fun isDateBigger(selectedDate: String?, inputDate: String?, format: String?): Boolean {
+            var result = false
+            val sdf = SimpleDateFormat(format)
+            var dt1: Date? = null
+            var dt2: Date? = null
+            try {
+                dt1 = sdf.parse(selectedDate)
+                dt2 = sdf.parse(inputDate)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+            if (dt1!!.time > dt2!!.time) {
+                result = true
+            }
+            return result
         }
     }
 }

@@ -33,6 +33,7 @@ import com.certify.vendor.data.FacilityDataSource
 import com.certify.vendor.databinding.*
 import com.certify.vendor.model.FacilityViewModel
 import com.certify.vendor.model.ScheduleAppointmentViewModel
+import com.journeyapps.barcodescanner.Util
 import java.util.*
 
 
@@ -102,11 +103,11 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
     private fun initView() {
         sharedPreferences = AppSharedPreferences.getSharedPreferences(context)
         facilityViewModel?.init(context)
-        calendarLayoutBinding?.textClockStart?.setText(Utils.getCurrentTime())
-        calendarLayoutBinding?.textClockEnd?.setText(Utils.getCurrentTime())
+        calendarLayoutBinding?.textClockStart?.setText(Utils.getCurrentTimeIncrement(5))//5 minutes greater than current time
+        calendarLayoutBinding?.textClockEnd?.setText(Utils.getCurrentTimeIncrement(20))
         selectedDate = Utils.getCurrentDate()
-        startTime = Utils.getCurrentTime24()
-        endTime = Utils.getCurrentTime24()
+        startTime = Utils.getTime12to24(Utils.getCurrentTimeIncrement(5))
+        endTime = Utils.getTime12to24(Utils.getCurrentTimeIncrement(20))
         pDialog = Utils.ShowProgressDialog(requireContext())
         submitLayoutBinding?.recMemberList?.layoutManager = LinearLayoutManager(context)
         submitLayoutBinding?.recMemberList?.addItemDecoration(
@@ -127,7 +128,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             mTimePicker = TimePickerDialog(
                 requireContext(),
                 { view, hourOfDay, minute ->
-                    if (hourOfDay >=  mcurrentTime.get(Calendar.HOUR_OF_DAY) && minute >= mcurrentTime.get(Calendar.MINUTE)) {
+                    if (hourOfDay >=  mcurrentTime.get(Calendar.HOUR_OF_DAY)) {
                         val minute = if (minute < 10) "0$minute" else minute.toString()
                         startTime = String.format("%d", hourOfDay) + ":" + minute
                         calendarLayoutBinding?.textClockStart?.setText(Utils.getTime24to12(startTime))
@@ -147,7 +148,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             mTimePicker = TimePickerDialog(
                 requireContext(),
                 { view, hourOfDay, minute ->
-                    if (hourOfDay >=  mcurrentTime.get(Calendar.HOUR_OF_DAY) && minute >= mcurrentTime.get(Calendar.MINUTE)) {
+                    if (hourOfDay >=  mcurrentTime.get(Calendar.HOUR_OF_DAY)) {
                         val minute = if (minute < 10) "0$minute" else minute.toString()
                         endTime = String.format("%d", hourOfDay) + ":" + minute
                         calendarLayoutBinding?.textClockEnd?.setText(Utils.getTime24to12(endTime))
@@ -176,6 +177,8 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         }
         calendarLayoutBinding?.buttonNext?.setOnClickListener {
             if (Utils.isTimeBigger(startTime, endTime)) {
+                launchAppoinmentSchedulePage()
+            }else if(Utils.isDateBigger(selectedDate,Utils.getCurrentDate(),"yyyy-MM-dd") && Utils.isTimeBigger(startTime, endTime)){
                 launchAppoinmentSchedulePage()
             } else {
                 Toast.makeText(
