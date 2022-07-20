@@ -57,6 +57,7 @@
                         android:layout_width="@dimen/size_96"
                         android:layout_height="@dimen/size_96"
                         android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/size_05"
                         android:contentDescription="@string/badge_user_image"
                         android:src="@drawable/ic_user_pic" />
 
