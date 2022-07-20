@@ -183,7 +183,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Start time should be greater than the system Time",
+                    "End time should be greater than the start Time",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -410,7 +410,7 @@ class ScheduleAppoinmentFragment : Fragment(), ItemOnClickCallback {
         submitLayoutBinding?.constraintSubmitLayout?.setVisibility(View.VISIBLE)
         successLayoutBinding?.constraintLayoutSuccess?.setVisibility(View.GONE)
         submitLayoutBinding?.appointmentDate?.text = Utils.getmonthstring(selectedDate)
-        submitLayoutBinding?.appointmentTime?.text = startTime + "-" + endTime
+        submitLayoutBinding?.appointmentTime?.text = Utils.getTime24to12(startTime) + "-" + Utils.getTime24to12(endTime)
         submitLayoutBinding?.appointmentPlace?.text =
             resources.getString(R.string.appoinment) + " " + facilityData?.facilityName
         submitLayoutBinding?.appointmentLocation?.text =
